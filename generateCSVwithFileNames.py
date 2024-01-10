@@ -12,6 +12,12 @@ gptModel = "gpt-3.5-turbo-1106"
 # gptmodel = "gpt-4"
 
 
+def get_category():
+    # Prompt the user for the category
+    category = input("Enter the category for all files: ")
+    return category
+
+
 def translate_title(title):
     # Use GPT-4 to translate the title
 
@@ -22,7 +28,7 @@ def translate_title(title):
         },
         {
             "role": "user",
-            "content": f"I'm going to give you a title in English and you should translate it to Portuguese, the title should not be longer than 200 letters! \n\n {title}",
+            "content": f"I'm going to give you a title in English and you should translate it to Portuguese, the title should not be longer than 200 letters! \n\n {title} \n just give me the translation with no other information in your response.",
         },
     ]
 
@@ -50,7 +56,7 @@ def getKeywords(title):
         },
         {
             "role": "user",
-            "content": f"Me dê 30 palavras chaves que sejam relacionadas ao seguinte título de uma imagem: \n\n {title} \n\n Organize as palavras chave por ordem de relevância, e não utilize palavras genéricas como 'imagem', ou 'cena'. Todas as palavras chave devem ser separadas por vírgulas e sem espaços e sem pontos finais",
+            "content": f"Me dê 30 palavras chaves que sejam relacionadas ao seguinte título de uma imagem: \n\n {title} \n\n Organize as palavras chave por ordem de relevância, e não utilize palavras genéricas como 'imagem', ou 'cena'. Todas as palavras chave devem ser separadas por vírgulas e sem espaços e sem pontos finais, \n just give me the keywords in portuguese with no other information in your response.",
         },
     ]
 
@@ -94,6 +100,7 @@ def create_csv(folder_path):
         filename_info = {}
 
         current_file_count = 0  # Counter for unique filenames
+        category = get_category()
 
         for file in files:
             # Process each unique filename
@@ -109,19 +116,19 @@ def create_csv(folder_path):
 
                 # Prompt for title, keywords, and category for each unique filename
                 title = input(
-                    f"({current_file_count}/{len(set(files))}) Enter title for {filename_base}: "
+                    f"({current_file_count}) Enter title for: \n {filename_base}: "
                 )
                 gptTitle = translate_title(title)
 
                 gptKeywords = getKeywords(gptTitle)
 
-                category = input(
-                    f"({current_file_count}/{len(set(files))}) Enter category for {filename_base}: "
-                )
+                category = category.strip()
 
                 # Remove leading and trailing whitespaces
                 gptTitle = gptTitle.strip()
+                gptTitle = gptTitle.strip("\n")
                 gptKeywords = gptKeywords.strip(".")
+                gptKeywords = gptKeywords.strip("\n")
                 category = category.strip()
 
                 # Enclose keywords in double quotes
@@ -145,9 +152,7 @@ def create_csv(folder_path):
                 }
             )
 
-            print(
-                f"({current_file_count}/{len(set(files))}) Information for {file} written to CSV."
-            )
+            print(f"{file} | written to CSV.")
 
     print(f"CSV file created successfully: {os.path.abspath(csv_file_name)}")
     print(f"Processing complete. {len(set(files))} unique files processed.")
