@@ -1,6 +1,70 @@
-import os
-import csv
-import argparse
+import os, csv, argparse
+from dotenv import load_dotenv
+from openai import OpenAI
+
+load_dotenv()
+api_key = os.getenv("OPENAI_API_KEY")
+OpenAI.api_key = api_key
+
+client = OpenAI()
+
+
+def translate_title(title):
+    # Use GPT-4 to translate the title
+
+    gptPrompt = [
+        {
+            "role": "system",
+            "content": "You are an award-winning director of photography specialized in stock photography.",
+        },
+        {
+            "role": "user",
+            "content": f"I'm going to give you a title in English and you should translate it to Portuguese, the title should not be longer than 200 letters! \n\n {title}",
+        },
+    ]
+
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=gptPrompt,
+        temperature=1,
+        max_tokens=256,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0,
+    )
+
+    # Extract the translated text from the GPT-4 response
+    gptAwnser = response.choices[0].message.content
+
+    return gptAwnser
+
+
+def getKeywords(title):
+    gptPrompt = [
+        {
+            "role": "system",
+            "content": "You are an award-winning director of photography specialized in stock photography.",
+        },
+        {
+            "role": "user",
+            "content": f"Me dê 30 palavras chaves que sejam relacionadas ao seguinte título de uma imagem: \n\n {title} \n\n Organize as palavras chave por ordem de relevância, e não utilize palavras genéricas como 'imagem', ou 'cena'. Todas as palavras chave devem ser separadas por vírgulas e sem espaços.",
+        },
+    ]
+
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=gptPrompt,
+        temperature=1,
+        max_tokens=256,
+        top_p=1,
+        frequency_penalty=0,
+        presence_penalty=0,
+    )
+
+    # Extract the translated text from the GPT-4 response
+    gptAwnser = response.choices[0].message.content
+
+    return gptAwnser
 
 
 def create_csv(folder_path):
@@ -37,25 +101,26 @@ def create_csv(folder_path):
                 title = input(
                     f"({current_file_count}/{len(set(files))}) Enter title for {filename_base}: "
                 )
-                keywords = input(
-                    f"({current_file_count}/{len(set(files))}) Enter keywords (comma separated) for {filename_base}: "
-                )
+                gptTitle = translate_title(title)
+
+                gptKeywords = getKeywords(gptTitle)
+
                 category = input(
                     f"({current_file_count}/{len(set(files))}) Enter category for {filename_base}: "
                 )
 
                 # Remove leading and trailing whitespaces
-                title = title.strip()
-                keywords = keywords.strip()
+                gptTitle = gptTitle.strip()
+                gptKeywords = gptKeywords.strip()
                 category = category.strip()
 
                 # Enclose keywords in double quotes
-                keywords = f"{keywords}"
+                gptKeywords = f"{gptKeywords}"
 
                 # Store title, keywords, and category for the unique filename
                 filename_info[filename_base] = {
-                    "Title": title,
-                    "Keywords": keywords,
+                    "Title": gptTitle,
+                    "Keywords": gptKeywords,
                     "Category": category,
                 }
 
