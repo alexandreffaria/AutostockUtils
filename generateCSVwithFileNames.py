@@ -12,6 +12,9 @@ client = OpenAI()
 def translate_title(title):
     # Use GPT-4 to translate the title
 
+    gptModel = "gpt-3.5-turbo-1106"
+    # gptmodel = "gpt-4"
+
     gptPrompt = [
         {
             "role": "system",
@@ -24,7 +27,7 @@ def translate_title(title):
     ]
 
     response = client.chat.completions.create(
-        model="gpt-4",
+        model=gptModel,
         messages=gptPrompt,
         temperature=1,
         max_tokens=256,
@@ -52,7 +55,7 @@ def getKeywords(title):
     ]
 
     response = client.chat.completions.create(
-        model="gpt-4",
+        model=gptModel,
         messages=gptPrompt,
         temperature=1,
         max_tokens=256,
