@@ -8,12 +8,12 @@ OpenAI.api_key = api_key
 
 client = OpenAI()
 
+gptModel = "gpt-3.5-turbo-1106"
+# gptmodel = "gpt-4"
+
 
 def translate_title(title):
     # Use GPT-4 to translate the title
-
-    gptModel = "gpt-3.5-turbo-1106"
-    # gptmodel = "gpt-4"
 
     gptPrompt = [
         {
