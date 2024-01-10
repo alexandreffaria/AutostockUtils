@@ -47,7 +47,7 @@ def getKeywords(title):
         },
         {
             "role": "user",
-            "content": f"Me dê 30 palavras chaves que sejam relacionadas ao seguinte título de uma imagem: \n\n {title} \n\n Organize as palavras chave por ordem de relevância, e não utilize palavras genéricas como 'imagem', ou 'cena'. Todas as palavras chave devem ser separadas por vírgulas e sem espaços.",
+            "content": f"Me dê 30 palavras chaves que sejam relacionadas ao seguinte título de uma imagem: \n\n {title} \n\n Organize as palavras chave por ordem de relevância, e não utilize palavras genéricas como 'imagem', ou 'cena'. Todas as palavras chave devem ser separadas por vírgulas e sem espaços e sem pontos finais",
         },
     ]
 
@@ -99,6 +99,7 @@ def create_csv(folder_path):
                 if "_" in file
                 else file
             )
+
             if filename_base not in filename_info:
                 # Increment the counter for unique filenames
                 current_file_count += 1
@@ -117,7 +118,7 @@ def create_csv(folder_path):
 
                 # Remove leading and trailing whitespaces
                 gptTitle = gptTitle.strip()
-                gptKeywords = gptKeywords.strip()
+                gptKeywords = gptKeywords.strip(".")
                 category = category.strip()
 
                 # Enclose keywords in double quotes
