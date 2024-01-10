@@ -68,6 +68,10 @@ def getKeywords(title):
 
 
 def create_csv(folder_path):
+    parent_folder_name = os.path.basename(
+        os.path.normpath(os.path.join(folder_path, ".."))
+    )
+
     # Get a list of all files in the specified folder
     files = [
         f
@@ -75,8 +79,10 @@ def create_csv(folder_path):
         if os.path.isfile(os.path.join(folder_path, f))
     ]
 
+    csv_file_name = f"{parent_folder_name}_output.csv"
+
     # Create a CSV file and write the header
-    with open("output.csv", "w", newline="") as csvfile:
+    with open(csv_file_name, "w", newline="") as csvfile:
         fieldnames = ["Filename", "Title", "Keywords", "Category", "Releases"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
@@ -139,7 +145,7 @@ def create_csv(folder_path):
                 f"({current_file_count}/{len(set(files))}) Information for {file} written to CSV."
             )
 
-    print(f'CSV file created successfully: {os.path.abspath("output.csv")}')
+    print(f"CSV file created successfully: {os.path.abspath(csv_file_name)}")
     print(f"Processing complete. {len(set(files))} unique files processed.")
 
 
