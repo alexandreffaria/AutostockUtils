@@ -48,7 +48,7 @@ def sftp_upload_file(
 
 
 def sftp_upload_folder(
-    local_folder, remote_folder, hostname, port, username, password, max_threads=48
+    local_folder, remote_folder, hostname, port, username, password, max_threads=12
 ):
     # Create an executor with a ThreadPool to upload files concurrently
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_threads) as executor:
