@@ -1,12 +1,14 @@
-﻿F2::ExitApp
+﻿#SingleInstance Force
+
+F2::ExitApp
 
 
 
 F1::
 
 ; Set the range of time in milliseconds
-MinTime := 30000 ; 1/2 minute in milliseconds 
-MaxTime := 90000 ; 1,5 minutes in milliseconds
+MinTime := 45000 ; 45s 
+MaxTime := 90000 ; 90s
 ; Generate a random time within the specified range
 Random, RandomTime, %MinTime%, %MaxTime%
 
