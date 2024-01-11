@@ -1,10 +1,15 @@
 ﻿F2::ExitApp
 
-; Set the range of time in milliseconds
-MinTime := 30000 ; 1/2 minute in milliseconds 
-MaxTime := 60000 ; 1 minutes in milliseconds
+
 
 F1::
+
+; Set the range of time in milliseconds
+MinTime := 30000 ; 1/2 minute in milliseconds 
+MaxTime := 90000 ; 1,5 minutes in milliseconds
+; Generate a random time within the specified range
+Random, RandomTime, %MinTime%, %MaxTime%
+
    Loop
    {
         Loop, 25
@@ -13,8 +18,9 @@ F1::
             SendInput, /imagine
             Sleep, 500
             SendInput, {Enter}
+            Sleep, 300 
             SendInput, {LWin Down}v{LWin Up}
-            Sleep, 1000  ; delay to ensure the paste window appears
+            Sleep, 300  ; delay to ensure the paste window appears
 
             DownNum := A_Index - 1
             Loop, %DownNum%
@@ -22,15 +28,14 @@ F1::
                 SendInput, {Down}
                 Sleep, 50
             }
-            Sleep, 1000
+            Sleep, 500
             SendInput, {Enter}
-            Sleep, 500  ; delay to ensure the paste action completes and paste window disappears
+            Sleep, 2000  ; delay to ensure the paste action completes and paste window disappears
             SendInput, {Space}
             SendInput, full screen, sharp focus, stock image, 8k, ultra realistic --ar 16:9 --c 20
             Send, {Enter}
 
-            ; Generate a random time within the specified range
-            Random, RandomTime, %MinTime%, %MaxTime%
+            
             Sleep, %RandomTime% 
         }
     }
