@@ -34,7 +34,7 @@ Random, RandomTime, %MinTime%, %MaxTime%
             SendInput, {Enter}
             Sleep, 2000  ; delay to ensure the paste action completes and paste window disappears
             SendInput, {Space}
-            SendInput, full screen, sharp focus, stock image, 8k, ultra realistic --ar 16:9 --c 20
+            SendInput, full screen, sharp focus, stock image, 8k, ultra hd, ultra realistic, in the style of realistic hyper-detailed, topcor 58mm f/1.4  --ar 16:9 --c 80
             Send, {Enter}
 
             
