@@ -5,8 +5,8 @@ F2::ExitApp
 F1::
 
 ; Set the range of time in milliseconds
-MinTime := 700 ; 45s 
-MaxTime := 900 ; 90s
+MinTime := 70000 ; 45s 
+MaxTime := 90000 ; 90s
 
 ; Generate a random time within the specified range
 Random, RandomTime, %MinTime%, %MaxTime%
