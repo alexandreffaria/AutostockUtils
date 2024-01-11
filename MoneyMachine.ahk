@@ -1,8 +1,8 @@
 ﻿F2::ExitApp
 
 ; Set the range of time in milliseconds
-MinTime := 60000 ; 1 minute in milliseconds 
-MaxTime := 120000 ; 2 minutes in milliseconds
+MinTime := 30000 ; 1/2 minute in milliseconds 
+MaxTime := 60000 ; 1 minutes in milliseconds
 
 F1::
    Loop
