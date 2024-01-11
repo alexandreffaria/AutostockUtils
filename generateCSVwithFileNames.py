@@ -56,7 +56,17 @@ def getKeywords(title):
         },
         {
             "role": "user",
-            "content": f"Me dê 30 palavras chaves que sejam relacionadas ao seguinte título de uma imagem: \n\n {title} \n\n Organize as palavras chave por ordem de relevância, e não utilize palavras genéricas como 'imagem', ou 'cena'. Todas as palavras chave devem ser separadas por vírgulas e sem espaços e sem pontos finais, \n just give me the keywords in portuguese with no other information in your response.",
+            "content": f"""
+                Me dê 30 palavras chaves que sejam relacionadas ao seguinte título de uma imagem: 
+                {title}
+                Organize as palavras chave por ordem de relevância, e nunca utilize palavras genéricas como 'imagem', ou 'cena'. 
+                Todas as palavras chave devem ser separadas por vírgulas 
+                Just give me the keywords in portuguese with no other information in your response.
+                Here is an example:
+                Title: Uma imagem visualmente marcante de um soprador de vidro criando arte abstrata de vidro, mostrando a fluidez e transparência do meio na criação de formas únicas e intrincadas.
+                Keywords: soprador de vidro, arte abstrata, fluidez, transparência, vidro, criação, formas únicas, intrincadas, artesanato, ofício, material, habilidade, artista, obra de arte, artístico, criatividade, colorido, vidro soprado, técnica, processo, produção, fundição, moldagem, soprando, soprador, escultura, moldar, soprar, derretimento, soprando vidro, vidro fundido
+                ",
+            """,
         },
     ]
 
