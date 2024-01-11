@@ -129,14 +129,15 @@ def create_csv(folder_path):
                     f"({current_file_count}) Enter title for: \n {filename_base}: "
                 )
                 gptTitle = translate_title(title)
+                gptTitle = gptTitle.strip('"')
+                gptTitle = gptTitle.strip("\n")
 
                 gptKeywords = getKeywords(gptTitle)
 
                 category = category.strip()
 
                 # Remove leading and trailing whitespaces
-                gptTitle = gptTitle.strip()
-                gptTitle = gptTitle.strip("\n")
+
                 gptKeywords = gptKeywords.strip(".")
                 gptKeywords = gptKeywords.strip("\n")
                 category = category.strip()
