@@ -115,9 +115,9 @@ def create_csv(folder_path):
         for file in files:
             # Process each unique filename
             filename_base = (
-                file.split("_", 1)[-1].rsplit("_", 1)[0].replace("_", " ")
-                if "_" in file
-                else file
+                file[8:63].rsplit("_", 1)[0].replace("_", " ")
+                if "_" in file[63:]
+                else file[63:]
             )
 
             if filename_base not in filename_info:
@@ -129,15 +129,15 @@ def create_csv(folder_path):
                     f"({current_file_count}) Enter title for: \n {filename_base}: "
                 )
                 gptTitle = translate_title(title)
-                gptTitle = gptTitle.strip('"')
-                gptTitle = gptTitle.strip("\n")
 
                 gptKeywords = getKeywords(gptTitle)
 
                 category = category.strip()
 
                 # Remove leading and trailing whitespaces
-
+                gptTitle = gptTitle.strip()
+                gptTitle = gptTitle.strip("\n")
+                gptTitle = gptTitle.strip(",")
                 gptKeywords = gptKeywords.strip(".")
                 gptKeywords = gptKeywords.strip("\n")
                 category = category.strip()
