@@ -12,23 +12,28 @@ gptModel = "gpt-3.5-turbo-1106"
 # gptmodel = "gpt-4"
 prompts_file_path = "prompts.txt"
 
+
 def find_prompt_for_filename(filename_base):
     # Read prompts from the file
     print(filename_base)
     with open(prompts_file_path, "r") as prompts_file:
-        prompts = prompts_file.read().split('\n')
-    
+        prompts = prompts_file.read().split("\n")
+
     # Search for the prompt containing the unique part of the filename
     for prompt in prompts:
-        if filename_base.lower().strip("\',") in prompt.lower():
+        if filename_base in prompt.replace(",", "").replace(".", "").replace("'", ""):
             print("FOUND")
             return prompt.strip()
     print("NOT FOUND")
     return None
 
+
 def getGPTResponse(model, role, content):
     gptPrompt = [
-        {"role": "system", "content": "You are an award-winning director of photography specialized in stock photography."},
+        {
+            "role": "system",
+            "content": "You are an award-winning director of photography specialized in stock photography.",
+        },
         {"role": role, "content": content},
     ]
 
@@ -44,6 +49,7 @@ def getGPTResponse(model, role, content):
 
     return response.choices[0].message.content.strip()
 
+
 def get_category():
     # Prompt the user for the category
     category = input("Enter the category for all files: ")
@@ -51,13 +57,22 @@ def get_category():
 
 
 def translate_title(title):
-    gptTitle = getGPTResponse(gptModel, "user", f"I'm going to give you a title in English and you should translate it to Portuguese, the title should not be longer than 200 letters! \n\n {title} \n just give me the translation with no other information in your response. Don't use any pontualtion like (',.-!)")
+    gptTitle = getGPTResponse(
+        gptModel,
+        "user",
+        f"I'm going to give you a title in English and you should translate it to Portuguese, the title should not be longer than 200 letters! \n\n {title} \n just give me the translation with no other information in your response. Don't use any pontualtion like (',.-!)",
+    )
     return gptTitle
 
 
 def getKeywords(title):
-    gptKeywords = getGPTResponse(gptModel, "user", f"Me dê 30 palavras chaves que sejam relacionadas ao seguinte título de uma imagem: \n{title}\nOrganize as palavras chave por ordem de relevância, e nunca utilize palavras genéricas como 'imagem', ou 'cena'.\nTodas as palavras chave devem ser separadas por vírgulas\nJust give me the keywords in portuguese with no other information in your response.\nHere is an example:")
-    return gptKeywords
+    gptKeywords = getGPTResponse(
+        gptModel,
+        "user",
+        f"Me dê 30 palavras chaves que sejam relacionadas ao seguinte título de uma imagem: \n{title}\nOrganize as palavras chave por ordem de relevância, e nunca utilize palavras genéricas como 'imagem', ou 'cena'.\nTodas as palavras chave devem ser separadas por vírgulas\nJust give me the keywords in portuguese with no other information in your response.\nHere is an example:",
+    )
+    return gptKeywords.replace('"', "")
+
 
 def create_csv(folder_path):
     parent_folder_name = os.path.basename(
@@ -98,9 +113,9 @@ def create_csv(folder_path):
                 current_file_count += 1
                 fullPrompt = find_prompt_for_filename(filename_base.strip())
                 # Prompt for title, keywords, and category for each unique filename
-                
+
                 gptTitle = translate_title(fullPrompt)
-                gptTitle = gptTitle.replace(',', '').replace('.', '')
+                gptTitle = gptTitle.replace(",", "").replace(".", "").replace("'", "")
 
                 gptKeywords = getKeywords(gptTitle)
                 category = category.strip()
