@@ -11,6 +11,22 @@ client = OpenAI()
 gptModel = "gpt-3.5-turbo-1106"
 # gptmodel = "gpt-4"
 
+prompts_file_path = "prompts.txt"
+
+def find_prompt_for_filename(filename_base):
+    # Read prompts from the file
+    print(filename_base)
+    with open(prompts_file_path, "r") as prompts_file:
+        prompts = prompts_file.read().split('\n')
+    
+    # Search for the prompt containing the unique part of the filename
+    for prompt in prompts:
+        if filename_base.lower().strip("\',") in prompt.lower():
+            print("FOUND")
+            return prompt.strip()
+    print("NOT FOUND")
+    return None
+
 
 def get_category():
     # Prompt the user for the category
@@ -43,9 +59,9 @@ def translate_title(title):
     )
 
     # Extract the translated text from the GPT-4 response
-    gptAwnser = response.choices[0].message.content
+    gptAnswer  = response.choices[0].message.content
 
-    return gptAwnser
+    return gptAnswer
 
 
 def getKeywords(title):
@@ -81,9 +97,9 @@ def getKeywords(title):
     )
 
     # Extract the translated text from the GPT-4 response
-    gptAwnser = response.choices[0].message.content
+    gptAnswer  = response.choices[0].message.content
 
-    return gptAwnser
+    return gptAnswer 
 
 
 def create_csv(folder_path):
@@ -123,12 +139,10 @@ def create_csv(folder_path):
             if filename_base not in filename_info:
                 # Increment the counter for unique filenames
                 current_file_count += 1
-
+                fullPrompt = find_prompt_for_filename(filename_base.strip())
                 # Prompt for title, keywords, and category for each unique filename
-                title = input(
-                    f"({current_file_count}) Enter title for: \n {filename_base}: "
-                )
-                gptTitle = translate_title(title)
+                
+                gptTitle = translate_title(fullPrompt)
 
                 gptKeywords = getKeywords(gptTitle)
 
