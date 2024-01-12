@@ -136,7 +136,7 @@ Loop
         SendInput, {Space}
         Sleep, 200  ; delay to ensure the paste window appears
         SendInput, full screen, sharp focus, stock image, 8k, ultra hd, ultra realistic, 
-        SendInput, in the style of realistic hyper-detailed, topcor 58mm f/1.4 --ar 16:9 --c 80
+        SendInput, in the style of realistic hyper-detailed, topcor 58mm f/1.4 --ar 16:9 --c 30
         Sleep, 500  ; delay to ensure the paste window appears
         Send, {Enter}
 
