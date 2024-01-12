@@ -127,7 +127,7 @@ def create_csv(folder_path):
             writer.writerow(
                 {
                     "Filename": file,
-                    "Title": filename_info[filename_base]["Title"].strip('",.-'),
+                    "Title": filename_info[filename_base]["Title"],
                     "Keywords": filename_info[filename_base]["Keywords"],
                     "Category": filename_info[filename_base]["Category"],
                     "Releases": "",
