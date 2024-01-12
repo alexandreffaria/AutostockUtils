@@ -133,12 +133,11 @@ Loop
         Sleep, 300 
         SendInput, %Prompt%
         Sleep, 300  ; delay to ensure the paste window appears
-        SendInput, {Enter}
-        Sleep, 2000  ; delay to ensure the paste action completes and paste window disappears
         SendInput, {Space}
+        Sleep, 200  ; delay to ensure the paste window appears
         SendInput, full screen, sharp focus, stock image, 8k, ultra hd, ultra realistic, 
-        SendInput, in the style of realistic hyper-detailed, topcor 58mm f/1.4  
-        SendInput, --ar 16:9 --c 80
+        SendInput, in the style of realistic hyper-detailed, topcor 58mm f/1.4 --ar 16:9 --c 80
+        Sleep, 500  ; delay to ensure the paste window appears
         Send, {Enter}
 
         if (ArrayIndex > PromptSize){
