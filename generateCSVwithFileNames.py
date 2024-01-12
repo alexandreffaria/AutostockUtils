@@ -197,5 +197,10 @@ if __name__ == "__main__":
 
     # Call the function to create the CSV file
     create_csv(args.folder_path)
+
+    parent_folder_name = os.path.basename(
+        os.path.normpath(os.path.join(args.folder_path, ".."))
+    )
+    csv_file_name = f"{parent_folder_name}_output.csv"
     # Remove pesky quotes
     subprocess.run(['python3', 'wtfAreThisQuotes.py', csv_file_name])
