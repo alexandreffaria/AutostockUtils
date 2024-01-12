@@ -1,4 +1,4 @@
-import os, csv, argparse
+import os, csv, argparse, subprocess
 from dotenv import load_dotenv
 from openai import OpenAI
 
@@ -197,3 +197,5 @@ if __name__ == "__main__":
 
     # Call the function to create the CSV file
     create_csv(args.folder_path)
+    # Remove pesky quotes
+    subprocess.run(['python3', 'wtfAreThisQuotes.py', csv_file_name])
