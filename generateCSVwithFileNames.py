@@ -28,13 +28,13 @@ def find_prompt_for_filename(filename_base):
     return None
 
 
-def getGPTResponse(model, role, content):
+def getGPTResponse(model, content):
     gptPrompt = [
         {
             "role": "system",
             "content": "You are an award-winning director of photography specialized in stock photography.",
         },
-        {"role": role, "content": content},
+        {"role": "user", "content": content},
     ]
 
     response = client.chat.completions.create(
@@ -59,7 +59,6 @@ def get_category():
 def translate_title(title):
     gptTitle = getGPTResponse(
         gptModel,
-        "user",
         f"I'm going to give you a title in English and you should translate it to Portuguese, the title should not be longer than 200 letters! \n\n {title} \n just give me the translation with no other information in your response. Don't use any pontualtion like (',.-!)",
     )
     return gptTitle
@@ -68,7 +67,6 @@ def translate_title(title):
 def getKeywords(title):
     gptKeywords = getGPTResponse(
         gptModel,
-        "user",
         f"Me dê 30 palavras chaves que sejam relacionadas ao seguinte título de uma imagem: \n{title}\nOrganize as palavras chave por ordem de relevância, e nunca utilize palavras genéricas como 'imagem', ou 'cena'.\nTodas as palavras chave devem ser separadas por vírgulas\nJust give me the keywords in portuguese with no other information in your response.\nHere is an example:",
     )
     return gptKeywords.replace('"', "")
