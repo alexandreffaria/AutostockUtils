@@ -16,27 +16,27 @@ prompts_file_path = "prompts.txt"
 
 
 categorias = {
-    1 : "Animais",
-    2 : "Construções e Arquitetura",
-    3 : "Negócios",
-    4 : "Bebidas",
-    5 : "Meio Ambiente",
-    6 : "Sentimentos, Emoções e Estados mentais",
-    7 : "Comida",
-    8 : "Recursos Gráficos",
-    9 : "Hobbies e Lazer",
-    10 : "Indústria",
-    11 : "Paisagens",
-    12 : "Estilo de Vida",
-    13 : "Pessoas",
-    14 : "Plantas e Flores",
-    15 : "Religião e Cultura",
-    16 : "Ciência",
-    17 : "Problemas Sociais",
-    18 : "Esportes",
-    19 : "Tecnologia",
-    20 : "Transportes",
-    21 : "Viagens",
+    1: "Animals",
+    2: "Buildings and Architecture",
+    3: "Business",
+    4: "Drinks",
+    5: "Environment",
+    6: "Feelings, Emotions, and Mental States",
+    7: "Food",
+    8: "Graphic Resources",
+    9: "Hobbies and Leisure",
+    10: "Industry",
+    11: "Landscapes",
+    12: "Lifestyle",
+    13: "People",
+    14: "Plants and Flowers",
+    15: "Religion and Culture",
+    16: "Science",
+    17: "Social Issues",
+    18: "Sports",
+    19: "Technology",
+    20: "Transportation",
+    21: "Travel",
 }
 
 
@@ -46,13 +46,11 @@ def getGPTResponse(model, content):
             "role": "system",
             "content": "You are a stock image photographer with years of experience.",
         },
-        {"role": "user", "content": f'''
-                                        {content}
-                                        generate a profissional description of an image within that topic.
-                                        don't add anything to your anwser that isn't the description.
-                                        here is an example of what your anwser should look like:
-                                        A highangle shot of a modern home office setup featuring a sleek and uncluttered desk with a laptop a notepad and a cup of coffee The large windows in the background let in plenty of natural light creating a bright and inviting atmosphere The workspace is adorned with a few potted plants adding a touch of greenery to the scene This image evokes a sense of productivity tranquility and flexibility catering to the growing demand for remote workrelated visuals in todays professional landscape
-                                    '''},
+        {
+            "role": "user", 
+            "content": f'''
+                            {content}
+                        '''},
     ]
 
     response = client.chat.completions.create(
@@ -72,7 +70,8 @@ def main(category, strategy, amount, description):
     output_folder = "promptGeneratorOutput"
     os.makedirs(output_folder, exist_ok=True)  # Create the folder if it doesn't exist
     filename = f"{output_folder}/prompts_{categorias[category]}_{strategy}_{date}.txt"
-
+    if not description:
+        description = categorias[category]
     with open(filename, "a") as file:
         for _ in range(amount):
             for _ in range(10):  # Loop to get 10 topics
@@ -84,7 +83,7 @@ def main(category, strategy, amount, description):
                 vivid_description = ""
                 vivid_description_request = f'''
                 "{topic}"
-                generate a very descriptive scene, paint it with words, like if you were describing it to a blind person.
+                Describe a scene, with the maximum of 180 letters, summarizing the the feeling of the above topic, using descriptive words.
                 don't add anything to your answer that isn't the description, don't address me or anything else.
                 '''
                 while not vivid_description.strip() or "sorry" in vivid_description.lower():
