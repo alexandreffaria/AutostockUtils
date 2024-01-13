@@ -236,8 +236,8 @@ F1::
             Sleep, 300 ; delay to ensure the paste window appears
             SendInput, {Space}
             Sleep, 200 ; delay to ensure the paste window appears
-            SendInput, full screen, sharp focus, stock image, ; bbc, planet earth,
-            SendInput, Blackmagic URSA Mini Pro 12K, topcor 58mm f/1.4 --ar 16:9 --c 30
+            SendInput, cinematic, shot by hasselblad X1D, editorial photogtaphy, ; bbc, planet earth,
+            SendInput, Sony FE 24-70mm f/2.8 GM --ar 16:9 
             Sleep, 500 ; delay to ensure the paste window appears
             Send, {Enter}
 
