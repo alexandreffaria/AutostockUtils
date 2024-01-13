@@ -44,12 +44,14 @@ def getGPTResponse(model, content):
     gptPrompt = [
         {
             "role": "system",
-            "content": "Witness the unyielding precision and impact of a stock image maestro, draped in accolades.",
+            "content": "You are a stock image photographer with years of experience.",
         },
         {"role": "user", "content": f'''
                                         {content}
-                                        generate a very descriptive scene, paint it with words, like if you were describing it to a blind person.
-                                        don't add anything to your anwser that isn't the description, don't adress me or anything else.
+                                        generate a profissional description of an image within that topic.
+                                        don't add anything to your anwser that isn't the description.
+                                        here is an example of what your anwser should look like:
+                                        A highangle shot of a modern home office setup featuring a sleek and uncluttered desk with a laptop a notepad and a cup of coffee The large windows in the background let in plenty of natural light creating a bright and inviting atmosphere The workspace is adorned with a few potted plants adding a touch of greenery to the scene This image evokes a sense of productivity tranquility and flexibility catering to the growing demand for remote workrelated visuals in todays professional landscape
                                     '''},
     ]
 
@@ -63,62 +65,32 @@ def getGPTResponse(model, content):
         presence_penalty=0,
     )
 
-    return response.choices[0].message.content.strip()
+    return response.choices[0].message.content.strip().replace("'", "").replace(",", "").replace(".", "").replace("-", "").replace("(", "").replace(")", "")
 
 def main(category, strategy, amount, description):
     date = datetime.now().strftime("%Y-%m-%d")
-    filename = f"prompts_{categorias[category]}_{strategy}_{date}.txt"
+    output_folder = "promptGeneratorOutput"
+    os.makedirs(output_folder, exist_ok=True)  # Create the folder if it doesn't exist
+    filename = f"{output_folder}/prompts_{categorias[category]}_{strategy}_{date}.txt"
 
     with open(filename, "a") as file:
         for _ in range(amount):
-            topic_request = f"{description}\nGive me 10 interesting topics on the information above for stock photography that would be easily sold on a stock photography website."
-            topics = getGPTResponse(gptModel, topic_request)
-            
-            # Separate the topics
-            topic_list = topics.split("\n")
-
-            for topic in topic_list:
-                vivid_description_request = f'''
-                "{topic}"
-                generate a very descriptive scene, paint it with words, like you were describing it to a blind person.
-                don't add anything to your answer that isn't the description, don't address me or anything else.
-                '''
-                vivid_description = getGPTResponse(gptModel, vivid_description_request)
+            for _ in range(10):  # Loop to get 10 topics
+                topic_request = f"{description}\nGive me an interesting topic for stock photography that would be easily sold on a stock photography website."
+                topic = ""
+                while not topic.strip() or "sorry" in topic.lower():
+                    topic = getGPTResponse(gptModel, topic_request)
                 
-                file.write(
-                vivid_description.replace("'", "")
-                .replace(",", "") 
-                .replace(".", "") 
-                .replace("-", "")  
-                .replace("(", "")
-                .replace(")", "")  
-                + '\n')
-
-def main(category, strategy, amount, description):
-    date = datetime.now().strftime("%Y-%m-%d")
-    filename = f"prompts_{categorias[category]}_{strategy}_{date}.txt"
-
-    if description is None:
-        description = f"I want to create images in the topic of {categorias[category]}."
-
-    with open(filename, "a") as file:
-        for _ in range(amount):
-            topic_request = f"{description}\nGive me 10 interesting topics for stock photography that would be easily sold on a stock photography website."
-            topics = getGPTResponse(gptModel, topic_request)
-            
-            topic_list = topics.split("\n")
-
-            for topic in topic_list:
+                vivid_description = ""
                 vivid_description_request = f'''
                 "{topic}"
                 generate a very descriptive scene, paint it with words, like if you were describing it to a blind person.
                 don't add anything to your answer that isn't the description, don't address me or anything else.
                 '''
-                vivid_description = getGPTResponse(gptModel, vivid_description_request)
+                while not vivid_description.strip() or "sorry" in vivid_description.lower():
+                    vivid_description = getGPTResponse(gptModel, vivid_description_request)
                 
                 file.write(vivid_description + "\n")
-            
-
 
 
 if __name__ == "__main__":
