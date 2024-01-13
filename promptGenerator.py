@@ -83,8 +83,9 @@ def main(category, strategy, amount, description):
                 vivid_description = ""
                 vivid_description_request = f'''
                 "{topic}"
-                Describe a scene, with the maximum of 180 letters, summarizing the the feeling of the above topic, using descriptive words.
-                don't add anything to your answer that isn't the description, don't address me or anything else.
+                Describe a scene, summarizing the the feeling of the above topic, using descriptive words.
+                Don't add anything to your answer that isn't the description, don't address me or anything else.
+                
                 '''
                 while not vivid_description.strip() or "sorry" in vivid_description.lower():
                     vivid_description = getGPTResponse(gptModel, vivid_description_request)
