@@ -10,7 +10,7 @@ client = OpenAI()
 
 gptModel = "gpt-3.5-turbo-1106"
 # gptmodel = "gpt-4"
-prompts_file_path = "Prompts/Technology.txt"
+prompts_file_path = "Prompts/Animals.txt"
 
 categorias = {
     1: "Animals",
