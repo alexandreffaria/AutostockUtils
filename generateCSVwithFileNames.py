@@ -37,7 +37,6 @@ categorias = {
 }
 
 
-
 def find_prompt_for_filename(filename_base):
     # Read prompts from the file
     print(filename_base)
@@ -115,7 +114,6 @@ def create_csv(folder_path, category):
         filename_info = {}
 
         current_file_count = 0  # Counter for unique filenames
-        
 
         for file in files:
             # Process each unique filename
@@ -180,9 +178,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "folder_path", type=str, help="Path to the folder containing files."
     )
-    parser.add_argument(
-        "category", type=str, help="Category of the images."
-    )
+    parser.add_argument("category", type=str, help="Category of the images.")
 
     # Parse the command-line arguments
     args = parser.parse_args()
@@ -194,4 +190,4 @@ if __name__ == "__main__":
         category = categorias[args.category]
 
     # Call the function to create the CSV file
-    create_csv(args.folder_path, gategory)
+    create_csv(args.folder_path, category)
