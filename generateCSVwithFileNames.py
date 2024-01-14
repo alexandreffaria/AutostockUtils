@@ -10,7 +10,7 @@ client = OpenAI()
 
 gptModel = "gpt-3.5-turbo-1106"
 # gptmodel = "gpt-4"
-prompts_file_path = "prompts.txt"
+prompts_file_path = "Prompts/Technology.txt"
 
 categorias = {
     1: "Animals",
@@ -133,7 +133,6 @@ def create_csv(folder_path, category):
                 gptTitle = gptTitle.replace(",", "").replace(".", "").replace("'", "")
 
                 gptKeywords = getKeywords(gptTitle)
-                category = category.strip()
 
                 # Remove leading and trailing whitespaces
                 gptTitle = gptTitle.strip()
@@ -141,7 +140,6 @@ def create_csv(folder_path, category):
                 gptTitle = gptTitle.strip(",")
                 gptKeywords = gptKeywords.strip(".")
                 gptKeywords = gptKeywords.strip("\n")
-                category = category.strip()
 
                 # Enclose keywords in double quotes
                 gptKeywords = f"{gptKeywords}"
@@ -178,16 +176,17 @@ if __name__ == "__main__":
     parser.add_argument(
         "folder_path", type=str, help="Path to the folder containing files."
     )
-    parser.add_argument("category", type=str, help="Category of the images.")
+    parser.add_argument("--category", type=str, help="Category of the images.")
 
     # Parse the command-line arguments
     args = parser.parse_args()
-
-    intCategory = int(arg.category)
-    if 1 <= intCategory <= 21:
+    try:
+        intCategory = int(args.category)
         category = intCategory
-    else:
-        category = categorias[args.category]
+    except ValueError:
+        for key, value in categorias.items():
+            if value == args.category:
+                category = key
 
     # Call the function to create the CSV file
     create_csv(args.folder_path, category)
