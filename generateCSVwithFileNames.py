@@ -190,7 +190,7 @@ if __name__ == "__main__":
     intCategory = int(arg.category)
     if 1 <= intCategory <= 21:
         category = intCategory
-    else
+    else:
         category = categorias[args.category]
 
     # Call the function to create the CSV file
