@@ -18,20 +18,20 @@ F1::{
     Loop{
         Sleep 2000
         Loop read, SelectedFile
-            {
-                RandomTime := Random(MinTime,MaxTime)
-                ; tooltip  A_Index " : " A_LoopReadLine " " RandomTime
-                Click
-                SendInput "/imdagine"
-                Sleep 1000
-                SendInput "{Enter}"
-                SendInput A_LoopReadLine
-                SendInput "cinematic, shot by hasselblad X1D, editorial photogtaphy, " ; bbc, planet earth,
-                SendInput "Sony FE 24-70mm f/2.8 GM " ; Lens
-                SendInput "--ar 16:9" ; AR
-                Sleep 1000
-                SendInput "{Enter}"
-                Sleep RandomTime
-            }
-    }    
+        {
+            RandomTime := Random(MinTime,MaxTime)
+            ; tooltip  A_Index " : " A_LoopReadLine " " RandomTime
+            Click
+            SendInput "/imagine"
+            Sleep 1000
+            SendInput "{Enter}"
+            SendInput A_LoopReadLine
+            SendInput "cinematic, shot by hasselblad X1D, editorial photogtaphy, " ; bbc, planet earth,
+            SendInput "Sony FE 24-70mm f/2.8 GM " ; Lens
+            SendInput "--ar 16:9" ; AR
+            Sleep 1000
+            SendInput "{Enter}"
+            Sleep RandomTime
+        }
+    } 
 }
