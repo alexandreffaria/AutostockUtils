@@ -11,8 +11,9 @@ def load_credentials():
 
     # Get SFTP username
     username = os.getenv("SFTP_USERNAME")
+    password = os.getenv("SFTP_PASSWORD")
 
-    return username
+    return username, password
 
 
 def sftp_upload_folder(local_folder, remote_folder, hostname, port, username, password):
@@ -37,7 +38,7 @@ def sftp_upload_folder(local_folder, remote_folder, hostname, port, username, pa
     transport.close()
 
 
-def run_generate_csv_script(local_folder):
+def run_generate_csv_script(local_folder, category):
     # Get the directory of the current script
     current_script_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -45,9 +46,9 @@ def run_generate_csv_script(local_folder):
     generate_csv_script_path = os.path.join(
         current_script_dir, "generateCSVwithFileNames.py"
     )
-
+    flagCategory = f"--category {category}"
     # Run the generateCSVwithFileNames.py script
-    subprocess.run(["python", generate_csv_script_path, local_folder])
+    subprocess.run(["python", generate_csv_script_path, local_folder, category])
 
 
 if __name__ == "__main__":
@@ -58,20 +59,18 @@ if __name__ == "__main__":
     parser.add_argument(
         "local_folder", help="Path to the local folder containing files to upload"
     )
+    parser.add_argument("--category", help="Category to generate csv later.")
 
     # Parse command-line arguments
     args = parser.parse_args()
 
     # Load SFTP username from .env file
-    username = load_credentials()
+    username, password = load_credentials()
 
     # Example usage
-    remote_folder_path = "/path/to/remote/folder"
+    remote_folder_path = "/"
     hostname = "sftp.contributor.adobestock.com"
     port = 22
-
-    # Prompt user for password
-    password = input("Enter the password for {}: ".format(username))
 
     # Upload files from local folder to remote folder
     sftp_upload_folder(
@@ -79,4 +78,4 @@ if __name__ == "__main__":
     )
 
     # Run the second script
-    run_generate_csv_script(args.local_folder)
+    run_generate_csv_script(args.local_folder, args.category)
