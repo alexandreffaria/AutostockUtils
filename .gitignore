@@ -1,4 +1,3 @@
-*.csv
 .env
 /openai/output_results
 discordClicker/venv/
