@@ -12,6 +12,31 @@ gptModel = "gpt-3.5-turbo-1106"
 # gptmodel = "gpt-4"
 prompts_file_path = "prompts.txt"
 
+categorias = {
+    1: "Animals",
+    2: "Buildings and Architecture",
+    3: "Business",
+    4: "Drinks",
+    5: "Environment",
+    6: "Feelings, Emotions, and Mental States",
+    7: "Food",
+    8: "Graphic Resources",
+    9: "Hobbies and Leisure",
+    10: "Industry",
+    11: "Landscapes",
+    12: "Lifestyle",
+    13: "People",
+    14: "Plants and Flowers",
+    15: "Religion and Culture",
+    16: "Science",
+    17: "Social Issues",
+    18: "Sports",
+    19: "Technology",
+    20: "Transportation",
+    21: "Travel",
+}
+
+
 
 def find_prompt_for_filename(filename_base):
     # Read prompts from the file
@@ -50,12 +75,6 @@ def getGPTResponse(model, content):
     return response.choices[0].message.content.strip()
 
 
-def get_category():
-    # Prompt the user for the category
-    category = input("Enter the category for all files: ")
-    return category
-
-
 def translate_title(title):
     gptTitle = getGPTResponse(
         gptModel,
@@ -72,7 +91,7 @@ def getKeywords(title):
     return gptKeywords.replace('"', "")
 
 
-def create_csv(folder_path):
+def create_csv(folder_path, category):
     parent_folder_name = os.path.basename(
         os.path.normpath(os.path.join(folder_path, ".."))
     )
@@ -96,7 +115,7 @@ def create_csv(folder_path):
         filename_info = {}
 
         current_file_count = 0  # Counter for unique filenames
-        category = get_category()
+        
 
         for file in files:
             # Process each unique filename
@@ -161,9 +180,18 @@ if __name__ == "__main__":
     parser.add_argument(
         "folder_path", type=str, help="Path to the folder containing files."
     )
+    parser.add_argument(
+        "category", type=str, help="Category of the images."
+    )
 
     # Parse the command-line arguments
     args = parser.parse_args()
 
+    intCategory = int(arg.category)
+    if 1 <= intCategory <= 21:
+        category = intCategory
+    else
+        category = categorias[args.category]
+
     # Call the function to create the CSV file
-    create_csv(args.folder_path)
+    create_csv(args.folder_path, gategory)
