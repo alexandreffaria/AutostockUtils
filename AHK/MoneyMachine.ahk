@@ -26,7 +26,7 @@ F1::{
             Sleep 1000
             SendInput "{Enter}"
             SendInput A_LoopReadLine
-            SendInput "cinematic, shot by hasselblad X1D, editorial photogtaphy, " ; bbc, planet earth,
+            SendInput " cinematic, shot by hasselblad X1D, editorial photogtaphy, " ; bbc, planet earth,
             SendInput "Sony FE 24-70mm f/2.8 GM " ; Lens
             SendInput "--ar 16:9" ; AR
             Sleep 1000
