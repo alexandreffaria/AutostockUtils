@@ -10,7 +10,8 @@ client = OpenAI()
 
 gptModel = "gpt-3.5-turbo-1106"
 # gptmodel = "gpt-4"
-prompts_file_path = "Prompts/Environment.txt"
+prompts_folder_path = "Prompts"
+prompts_extension = ".txt"
 
 categorias = {
     1: "Animals",
@@ -35,6 +36,22 @@ categorias = {
     20: "Transportation",
     21: "Travel",
 }
+
+
+def get_prompts_file_path(category):
+    # Check if the category is valid
+    if category not in categorias:
+        raise ValueError(f"Invalid category: {category}")
+
+    category_name = categorias[category]
+    prompts_file_path = os.path.join(
+        prompts_folder_path, f"{category_name}{prompts_extension}"
+    )
+
+    if not os.path.exists(prompts_file_path):
+        raise FileNotFoundError(f"Prompts file not found for category {category_name}")
+
+    return prompts_file_path
 
 
 def find_prompt_for_filename(filename_base):
@@ -176,17 +193,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "folder_path", type=str, help="Path to the folder containing files."
     )
-    parser.add_argument("--category", type=str, help="Category of the images.")
+    parser.add_argument("--category", type=int, help="Category of the images.")
 
     # Parse the command-line arguments
     args = parser.parse_args()
-    try:
-        intCategory = int(args.category)
-        category = intCategory
-    except ValueError:
-        for key, value in categorias.items():
-            if value == args.category:
-                category = key
+
+    # Get the prompts file path based on the provided category
+    prompts_file_path = get_prompts_file_path(args.category)
 
     # Call the function to create the CSV file
-    create_csv(args.folder_path, category)
+    create_csv(args.folder_path, args.category, prompts_file_path)
