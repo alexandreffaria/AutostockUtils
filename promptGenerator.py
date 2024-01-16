@@ -84,8 +84,9 @@ def main(category, strategy, amount, description):
                 vivid_description_request = f'''
                 "{topic}"
                 Describe a scene, summarizing the the feeling of the above topic, using descriptive words.
-                Don't add anything to your answer that isn't the description, don't address me or anything else.
-                
+                Don't describe people faces. Don't add anything to your answer that isn't the description and don't address me or anything else.
+                Here is an example of a correct response:
+                A group of business professionals mingle and chat animatedly amidst a vibrant city skyline The warm glow of the setting sun accents the stylish rooftop bar creating a relaxed and sophisticated atmosphere The clinking of glasses and laughter blend with the soft jazz music in the background as the group unwinds after a day of hard work The citys lights begin to twinkle as the evening unfolds adding to the sense of camaraderie and enjoyment in the air            
                 '''
                 while not vivid_description.strip() or "sorry" in vivid_description.lower():
                     vivid_description = getGPTResponse(gptModel, vivid_description_request)
