@@ -119,6 +119,8 @@ class ImageViewer(QGraphicsView):
             QImage(img.data, width, height, width * channels, QImage.Format_RGB888)
         )
 
+        # Set window title with current file index
+        self.setWindowTitle(f"{file_name} - {self.current_index + 1}/{len(self.files)}")
         # Get the size of the viewport
         view_size = self.viewport().size()
 
@@ -165,5 +167,9 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     viewer = ImageViewer(folder_path, files)
+
+    # Start in fullscreen mode
+    viewer.showMaximized()
+
     viewer.show()
     sys.exit(app.exec_())
