@@ -48,14 +48,6 @@ class ImageViewer(QGraphicsView):
         elif key == Qt.Key_B:
             self.move_image_to_folder("letterbox")
 
-    def wheelEvent(self, event):
-        # Use the mouse wheel to navigate between images
-        delta = event.angleDelta().y()
-        if delta > 0:
-            self.previous_image()
-        else:
-            self.next_image()
-
     def move_image_to_folder(self, target_folder):
         if not self.files:
             return
