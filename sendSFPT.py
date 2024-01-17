@@ -48,7 +48,7 @@ def run_generate_csv_script(local_folder, category):
     )
     flagCategory = f"--category {category}"
     # Run the generateCSVwithFileNames.py script
-    subprocess.run(["python", generate_csv_script_path, local_folder, category])
+    subprocess.run(["python", generate_csv_script_path, local_folder, flagCategory])
 
 
 if __name__ == "__main__":
