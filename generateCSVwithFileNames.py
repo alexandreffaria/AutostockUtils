@@ -54,7 +54,7 @@ def get_prompts_file_path(category):
     return prompts_file_path
 
 
-def find_prompt_for_filename(filename_base):
+def find_prompt_for_filename(filename_base, prompts_file_path):
     # Read prompts from the file
     print(filename_base)
     with open(prompts_file_path, "r") as prompts_file:
@@ -107,7 +107,7 @@ def getKeywords(title):
     return gptKeywords.replace('"', "")
 
 
-def create_csv(folder_path, category):
+def create_csv(folder_path, category, prompts_file_path):
     parent_folder_name = os.path.basename(
         os.path.normpath(os.path.join(folder_path, ".."))
     )
@@ -143,7 +143,9 @@ def create_csv(folder_path, category):
             if filename_base not in filename_info:
                 # Increment the counter for unique filenames
                 current_file_count += 1
-                fullPrompt = find_prompt_for_filename(filename_base.strip())
+                fullPrompt = find_prompt_for_filename(
+                    filename_base.strip(), prompts_file_path
+                )
                 # Prompt for title, keywords, and category for each unique filename
 
                 gptTitle = translate_title(fullPrompt)
