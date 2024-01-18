@@ -12,6 +12,10 @@ def crop_title(title, max_length=200):
     for phrase in phrases:
         phrase_length = len(phrase)
         if current_length + phrase_length > max_length:
+            # Find the last space within the limit
+            last_space_index = cropped_title.rfind(" ", 0, max_length)
+            if last_space_index != -1:
+                cropped_title = cropped_title[:last_space_index]
             break
         else:
             if current_length > 0:
