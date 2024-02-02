@@ -52,7 +52,7 @@ def getPromptList(promptsListPath):
 def getPrompt():
     global promptList
     randomPrompt = random.uniform(0, len(promptList) - 1 )    
-    prompt = promptList[randomPrompt]
+    prompt = promptList[int(randomPrompt)]
 
     return prompt
 
