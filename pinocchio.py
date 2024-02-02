@@ -46,7 +46,7 @@ start_time, end_time = getWorkHours()
 while True:
         
     current_time = datetime.now().time()
-    print(f"Agora: {current_time}")
+    
 
     if start_time.time() <= current_time <= end_time.time():
 
@@ -70,5 +70,7 @@ while True:
                     end_time = datetime.strptime("21:00", "%H:%M") + timedelta(minutes=random.uniform(0,15))
 
                     print(f"Back from break. New working hours: {start_time.strftime('%H:%M')} - {end_time.strftime('%H:%M')}")
-
+    else:
+        print("in a break")
+        time.sleep(10)
 
