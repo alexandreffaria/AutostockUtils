@@ -17,8 +17,8 @@ def getWorkHours():
 
 def isLunchBreak():
     current_time = datetime.now().time()
-    lunch_start = datetime.strptime("12:00", "%H:%M") + timedelta(minutes=random.uniform(0,15))
-    lunch_end = datetime.strptime("13:00", "%H:%M") + timedelta(minutes=random.uniform(0,15))
+    lunch_start = datetime.strptime("12:00", "%H:%M").time()
+    lunch_end = datetime.strptime("13:00", "%H:%M").time()
 
     return lunch_start <= current_time <= lunch_end
 
