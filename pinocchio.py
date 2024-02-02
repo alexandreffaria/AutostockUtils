@@ -58,15 +58,4 @@ while True:
 
                     print(f"Back from break. New working hours: {start_time.strftime('%H:%M')} - {end_time.strftime('%H:%M')}")
 
-    
-    else:
-        print("Time to go to bed")
-
-        break_duration = random.uniform(30,60)
-        print(f'Break of : {break_duration}')
-        time.sleep(break_duration * 60)
-        start_time = datetime.strptime("08:00", "%H:%M") + timedelta(minutes=random.uniform(0,15))
-        end_time = datetime.strptime("21:00", "%H:%M") + timedelta(minutes=random.uniform(0,15))
-        print(f"Back from break. New working hours: {start_time.strftime('%H:%M')} - {end_time.strftime('%H:%M')}")
-
 
