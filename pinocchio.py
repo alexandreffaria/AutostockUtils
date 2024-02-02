@@ -51,18 +51,13 @@ def getPromptList(promptsListPath):
 
 def getPrompt():
     global promptList
-    randomPrompt = random.uniform(0, len(promptList) - 1 )
-
-    if currentPromptIndex >= len(promptList):
-        currentPromptIndex = 0
-    
+    randomPrompt = random.uniform(0, len(promptList) - 1 )    
     prompt = promptList[randomPrompt]
 
     return prompt
 
 promptsListPath = sys.argv[1] # Prompt list
 promptList = getPromptList(promptsListPath)
-currentPromptIndex = 0
 
 time.sleep(10)
 
