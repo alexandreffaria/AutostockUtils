@@ -15,13 +15,21 @@ def getWorkHours():
     print(f"Working hours are: {start_time}-{end_time}")
     return start_time, end_time
 
+def isLunchBreak():
+    current_time = datetime.now().time()
+    lunch_start = datetime.strptime("12:00", "%H:%M") + timedelta(minutes=random.uniform(0,15))
+    lunch_end = datetime.strptime("13:00", "%H:%M") + timedelta(minutes=random.uniform(0,15))
+
+    return lunch_start <= current_time <= lunch_end
+
+
 def sendPrompt(prompt):
     pyau.moveTo(550,720)
 
     pyau.click()
     time.sleep(5)
 
-    pyau.typewrite("/imaine")
+    pyau.typewrite("/imagine")
     time.sleep(10)
 
     pyau.press("enter")
@@ -34,43 +42,53 @@ def sendPrompt(prompt):
 
     pyau.press("enter")
 
+def getPromptList(promptsListPath):
+    promptList = []
+    with open(promptsListPath, 'r') as f:
+        for prompt in f:
+            promptList.append(prompt)
+    return promptList
 
+def getPrompt():
+    global promptList
+    global currentPromptIndex
 
-promptsList = sys.argv[1] # Prompt list
+    if currentPromptIndex >= len(promptList):
+        currentPromptIndex = 0
+    
+    prompt = promptList[currentPromptIndex]
+    currentPromptIndex += 1
+    
+    return prompt
+
+promptsListPath = sys.argv[1] # Prompt list
+
+promptList = getPromptList(promptsListPath)
+currentPromptIndex = 0
 
 time.sleep(10)
 
-
 start_time, end_time = getWorkHours()
 
-while True:
-        
+while True:        
     current_time = datetime.now().time()
     
+    if start_time.time() <= current_time <= end_time.time() and not isLunchBreak():
+        
+        prompt = getPrompt()
+        sendPrompt(prompt)
 
-    if start_time.time() <= current_time <= end_time.time():
+        sleep_duration = random.uniform(3 * 60, 7 * 60)
 
-        with open(promptsList, 'r') as f:
+        time.sleep(sleep_duration)
 
-            for prompt in f:
-
-                sendPrompt(prompt)
-
-                sleep_duration = random.uniform(3 * 60, 7 * 60)
-
-                time.sleep(sleep_duration)
-
-                current_time = datetime.now().time()
-                if not (start_time.time() <= current_time <= end_time.time()):
-                    print("Time for a break c:")
-                    break_duration = random.uniform(15,60)
-                    time.sleep(break_duration * 60)
-
-                    start_time = datetime.strptime("08:00", "%H:%M") + timedelta(minutes=random.uniform(0,15))
-                    end_time = datetime.strptime("21:00", "%H:%M") + timedelta(minutes=random.uniform(0,15))
-
-                    print(f"Back from break. New working hours: {start_time.strftime('%H:%M')} - {end_time.strftime('%H:%M')}")
+        current_time = datetime.now().time()
+        
     else:
-        print("in a break")
-        time.sleep(10)
+        if isLunchBreak():
+            print("in a lunch break")
+        else:
+            print("in a bed")
+        
+        time.sleep(100)
 
