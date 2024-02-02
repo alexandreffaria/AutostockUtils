@@ -47,7 +47,7 @@ def shufflePromptList():
     print("Prompt list has been shuffled.")
 
 def getPromptList(promptsListPath):
-    global promptList
+    promptList = []
     with open(promptsListPath, 'r') as f:
         for prompt in f:
             promptList.append(prompt)
