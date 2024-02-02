@@ -22,7 +22,6 @@ def isLunchBreak():
 
     return lunch_start <= current_time <= lunch_end
 
-
 def sendPrompt(prompt):
     pyau.moveTo(550,720)
 
@@ -48,7 +47,7 @@ def shufflePromptList():
     print("Prompt list has been shuffled.")
 
 def getPromptList(promptsListPath):
-    promptList = []
+    global promptList
     with open(promptsListPath, 'r') as f:
         for prompt in f:
             promptList.append(prompt)
@@ -97,4 +96,3 @@ while True:
             print("in a bed")
         
         time.sleep(100)
-
