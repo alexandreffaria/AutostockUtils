@@ -42,11 +42,17 @@ def sendPrompt(prompt):
 
     pyau.press("enter")
 
+def shufflePromptList():
+    global promptList
+    random.shuffle(promptList)
+    print("Prompt list has been shuffled.")
+
 def getPromptList(promptsListPath):
     promptList = []
     with open(promptsListPath, 'r') as f:
         for prompt in f:
             promptList.append(prompt)
+    shufflePromptList()
     return promptList
 
 def getPrompt():
@@ -54,6 +60,7 @@ def getPrompt():
     global currentPromptIndex
 
     if currentPromptIndex >= len(promptList):
+        shufflePromptList()
         currentPromptIndex = 0
     
     prompt = promptList[currentPromptIndex]
@@ -62,7 +69,6 @@ def getPrompt():
     return prompt
 
 promptsListPath = sys.argv[1] # Prompt list
-
 promptList = getPromptList(promptsListPath)
 currentPromptIndex = 0
 
