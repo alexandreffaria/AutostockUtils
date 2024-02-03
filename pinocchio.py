@@ -12,19 +12,16 @@ def isLunchBreak():
     current_time = datetime.now().time()
     lunch_start = datetime.strptime("12:00", "%H:%M").time()
     lunch_end = datetime.strptime("13:00", "%H:%M").time()
-
+    print("time to eat? ", lunch_start <= current_time <= lunch_end)
     return lunch_start <= current_time <= lunch_end
 
 def isNapTime():
     current_time = datetime.now().time()
     randomMinute = int(random.uniform(1,10))
-    start_time = f"08:{randomMinute}0"
-    print("start_time: ", start_time)
-    awake_start = datetime.strptime(start_time, "%H:%M").time()
-    randomMinute = int(random.uniform(1,15))
-    awake_end = datetime.strptime("21:00", "%H:%M").time()
-    print(awake_end)
-
+    awake_start = datetime.strptime(f"08:0{randomMinute}", "%H:%M").time()
+    randomMinute = int(random.uniform(1,10))
+    awake_end = datetime.strptime(f"13:0{randomMinute}", "%H:%M").time()
+    print("time for a nap? ", awake_start <= current_time <= awake_end)
     return awake_start <= current_time <= awake_end
 
 def sendPrompt(prompt):
