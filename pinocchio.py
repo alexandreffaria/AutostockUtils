@@ -10,9 +10,10 @@ if len(sys.argv) != 2:
 
 def isLunchBreak():
     current_time = datetime.now().time()
-    lunch_start = datetime.strptime("12:00", "%H:%M").time()
-    lunch_end = datetime.strptime("13:00", "%H:%M").time()
-    print("time to eat? ", lunch_start <= current_time <= lunch_end)
+    randomMinute = int(random.uniform(1,10))
+    lunch_start = datetime.strptime(f"12:0{randomMinute}", "%H:%M").time()
+    randomMinute = int(random.uniform(1,10))
+    lunch_end = datetime.strptime(f"13:0{randomMinute}", "%H:%M").time()
     return lunch_start <= current_time <= lunch_end
 
 def isNapTime():
@@ -21,7 +22,6 @@ def isNapTime():
     awake_start = datetime.strptime(f"08:0{randomMinute}", "%H:%M").time()
     randomMinute = int(random.uniform(1,10))
     awake_end = datetime.strptime(f"21:0{randomMinute}", "%H:%M").time()
-    print("time for a nap? ", current_time < awake_start or current_time > awake_end)
     return current_time < awake_start or current_time > awake_end
 
 def sendPrompt(prompt):
