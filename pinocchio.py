@@ -8,19 +8,21 @@ if len(sys.argv) != 2:
     print("Usage: python3 pinocchio.py <prompt list.txt>")
     sys.exit(1)
 
-def getWorkHours():
-    print("Getting working hours....")
-    start_time = datetime.strptime("08:00", "%H:%M") + timedelta(minutes=random.uniform(0,15))
-    end_time = datetime.strptime("21:00", "%H:%M") + timedelta(minutes=random.uniform(0,15))
-    print(f"Working hours are: {start_time}-{end_time}")
-    return start_time, end_time
-
 def isLunchBreak():
     current_time = datetime.now().time()
     lunch_start = datetime.strptime("12:00", "%H:%M").time()
     lunch_end = datetime.strptime("13:00", "%H:%M").time()
 
     return lunch_start <= current_time <= lunch_end
+
+def isNapTime():
+    current_time = datetime.now().time()
+    randomMinute = int(random.uniform(1,15))
+    awake_start = datetime.strptime(f"08:{randomMinute}0", "%H:%M").time()
+    randomMinute = int(random.uniform(1,15))
+    awake_end = datetime.strptime(f"13:{randomMinute}0", "%H:%M").time()
+
+    return awake_start <= current_time <= awake_end
 
 def sendPrompt(prompt):
     pyau.moveTo(550,720)
@@ -61,12 +63,11 @@ promptList = getPromptList(promptsListPath)
 
 time.sleep(10)
 
-start_time, end_time = getWorkHours()
 
 while True:        
     current_time = datetime.now().time()
     
-    if start_time.time() <= current_time <= end_time.time() and not isLunchBreak():
+    if not isNapTime() and not isLunchBreak():
         
         prompt = getPrompt()
         sendPrompt(prompt)
@@ -79,8 +80,8 @@ while True:
         
     else:
         if isLunchBreak():
-            print("in a lunch break")
+            print("Eating some bytes...")
         else:
-            print("in a bed")
+            print("Taking a nap....")
         
-        time.sleep(100)
+        time.sleep(1000)
