@@ -19,10 +19,10 @@ def isNapTime():
     current_time = datetime.now().time()
     randomMinute = int(random.uniform(1,15))
     start_time = f"08:{randomMinute}0"
-    print(start_time)
+    print("start_time: ", start_time)
     awake_start = datetime.strptime(start_time, "%H:%M").time()
     randomMinute = int(random.uniform(1,15))
-    awake_end = datetime.strptime("13:00", "%H:%M").time()
+    awake_end = datetime.strptime("21:00", "%H:%M").time()
     print(awake_end)
 
     return awake_start <= current_time <= awake_end
