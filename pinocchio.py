@@ -16,11 +16,13 @@ def isLunchBreak():
     return lunch_start <= current_time <= lunch_end
 
 def isNapTime():
-    current_time = datetime.now().time()
-    randomMinute = int(random.uniform(1,15))
-    awake_start = datetime.strptime(f"08:{randomMinute:02}", "%H:%M").time()
-    randomMinute = int(random.uniform(1,15))
-    awake_end = datetime.strptime(f"21:{randomMinute:02}", "%H:%M").time()
+    current_datetime = datetime.now()
+    random_minute = int(random.uniform(1, 10))
+    awake_start = datetime(current_datetime.year, current_datetime.month, current_datetime.day, 8, random_minute)
+    random_minute = int(random.uniform(1, 10))
+    awake_end = datetime(current_datetime.year, current_datetime.month, current_datetime.day, 21, random_minute)
+
+    current_time = current_datetime.time()
 
     print(f"awake_start: {awake_start}, awake_end: {awake_end}, current_time: {current_time}")
     print("time for a nap? ", awake_start <= current_time <= awake_end)
