@@ -22,8 +22,8 @@ def isNapTime():
     randomMinute = int(random.uniform(1,10))
     awake_end = datetime.strptime(f"21:0{randomMinute}", "%H:%M").time()
     print(f"awake_start: {awake_start}, awake_end: {awake_end}, current_time: {current_time}")
-    print("time for a nap? ", awake_start <= current_time <= awake_end)
-    return awake_start <= current_time <= awake_end
+    print("time for a nap? ", current_time < awake_start or current_time > awake_end)
+    return current_time < awake_start or current_time > awake_end
 
 def sendPrompt(prompt):
     pyau.moveTo(550,720)
