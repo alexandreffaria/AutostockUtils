@@ -20,7 +20,8 @@ def isNapTime():
     randomMinute = int(random.uniform(1,10))
     awake_start = datetime.strptime(f"08:0{randomMinute}", "%H:%M").time()
     randomMinute = int(random.uniform(1,10))
-    awake_end = datetime.strptime(f"13:0{randomMinute}", "%H:%M").time()
+    awake_end = datetime.strptime(f"21:0{randomMinute}", "%H:%M").time()
+    print(f"awake_start: {awake_start}, awake_end: {awake_end}")
     print("time for a nap? ", awake_start <= current_time <= awake_end)
     return awake_start <= current_time <= awake_end
 
