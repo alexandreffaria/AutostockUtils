@@ -17,7 +17,7 @@ def isLunchBreak():
 
 def isNapTime():
     current_time = datetime.now().time()
-    randomMinute = int(random.uniform(1,15))
+    randomMinute = int(random.uniform(1,10))
     start_time = f"08:{randomMinute}0"
     print("start_time: ", start_time)
     awake_start = datetime.strptime(start_time, "%H:%M").time()
