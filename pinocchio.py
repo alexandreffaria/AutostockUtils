@@ -61,6 +61,7 @@ def getPrompt():
 
 promptsListPath = sys.argv[1] # Prompt list
 promptList = getPromptList(promptsListPath)
+print(promptList)
 
 time.sleep(10)
 
