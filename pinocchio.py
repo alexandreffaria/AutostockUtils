@@ -18,9 +18,12 @@ def isLunchBreak():
 def isNapTime():
     current_time = datetime.now().time()
     randomMinute = int(random.uniform(1,15))
-    awake_start = datetime.strptime(f"08:{randomMinute}0", "%H:%M").time()
+    start_time = f"08:{randomMinute}0"
+    print(start_time)
+    awake_start = datetime.strptime(start_time, "%H:%M").time()
     randomMinute = int(random.uniform(1,15))
-    awake_end = datetime.strptime(f"13:{randomMinute}0", "%H:%M").time()
+    awake_end = datetime.strptime("13:00", "%H:%M").time()
+    print(awake_end)
 
     return awake_start <= current_time <= awake_end
 
