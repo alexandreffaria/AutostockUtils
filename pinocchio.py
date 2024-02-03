@@ -16,7 +16,7 @@ def isLunchBreak():
     return lunch_start <= current_time <= lunch_end
 
 def isNapTime():
-    current_time = datetime.now().strftime('%H:%M')
+    current_time = datetime.now().time()
     randomMinute = int(random.uniform(1,15))
     awake_start = datetime.strptime(f"08:{randomMinute:02}", "%H:%M").time()
     randomMinute = int(random.uniform(1,15))
@@ -63,7 +63,7 @@ def getPrompt():
 promptsListPath = sys.argv[1] # Prompt list
 promptList = getPromptList(promptsListPath)
 
-time.sleep(10)
+time.sleep(5)
 
 
 while True:        
