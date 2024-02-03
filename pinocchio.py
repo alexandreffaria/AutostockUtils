@@ -63,19 +63,15 @@ promptsListPath = sys.argv[1] # Prompt list
 promptList = getPromptList(promptsListPath)
 
 
-time.sleep(10)
+time.sleep(5)
 
 
 while True:        
     current_time = datetime.now().time()
     
     if not isNapTime() and not isLunchBreak():
-        
-        prompt = getPrompt()
-        sendPrompt(prompt)
-
-        sleep_duration = random.uniform(3 * 60, 7 * 60)
-        time.sleep(sleep_duration)
+        sendPrompt(getPrompt())
+        time.sleep(random.uniform(3 * 60, 7 * 60))
         
     else:
         if isLunchBreak():
