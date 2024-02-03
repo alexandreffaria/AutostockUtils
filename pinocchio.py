@@ -76,7 +76,12 @@ while True:
     else:
         if isLunchBreak():
             print("Eating some bytes...")
-        else:
+            while isLunchBreak():
+                print("Nom nom nom nom nom nom")
+                time.sleep(60)
+        elif isNapTime():
             print("Taking a nap....")
+            while isNapTime():
+                print("Zzzzzzzz")
         
-        time.sleep(1000)
+    time.sleep(10)
