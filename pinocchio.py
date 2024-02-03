@@ -9,7 +9,7 @@ if len(sys.argv) != 2:
     sys.exit(1)
 
 def isLunchBreak():
-    current_time = datetime.now().strftime('%H:%M')
+    current_time = datetime.now().time()
     lunch_start = datetime.strptime("12:00", "%H:%M").time()
     lunch_end = datetime.strptime("13:00", "%H:%M").time()
     print("time to eat? ", lunch_start <= current_time <= lunch_end)
@@ -17,11 +17,10 @@ def isLunchBreak():
 
 def isNapTime():
     current_time = datetime.now().time()
-    randomMinute = int(random.uniform(1,15))
-    awake_start = datetime.strptime(f"08:{randomMinute:02}", "%H:%M").time()
-    randomMinute = int(random.uniform(1,15))
-    awake_end = datetime.strptime(f"21:{randomMinute:02}", "%H:%M").time()
-
+    randomMinute = int(random.uniform(1,10))
+    awake_start = datetime.strptime(f"08:0{randomMinute}", "%H:%M").time()
+    randomMinute = int(random.uniform(1,10))
+    awake_end = datetime.strptime(f"21:0{randomMinute}", "%H:%M").time()
     print(f"awake_start: {awake_start}, awake_end: {awake_end}, current_time: {current_time}")
     print("time for a nap? ", awake_start <= current_time <= awake_end)
     return awake_start <= current_time <= awake_end
@@ -63,7 +62,7 @@ def getPrompt():
 promptsListPath = sys.argv[1] # Prompt list
 promptList = getPromptList(promptsListPath)
 
-time.sleep(5)
+time.sleep(10)
 
 
 while True:        
