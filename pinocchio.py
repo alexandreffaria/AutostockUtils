@@ -39,7 +39,7 @@ def sendPrompt(prompt):
 
     pyau.typewrite(prompt.strip())
     time.sleep(5)
-    pyau.typewrite(". Sony FE 24-70mm f/2.8 GM cinematic, shot by hasselblad X1D, editorial photogtaphy ")
+    pyau.typewrite(" Sony FE 24-70mm f/2.8 GM cinematic, shot by hasselblad X1D, editorial photogtaphy ")
     pyau.typewrite("--ar 16:9 --style raw")
 
     pyau.press("enter")
@@ -75,10 +75,7 @@ while True:
         sendPrompt(prompt)
 
         sleep_duration = random.uniform(3 * 60, 7 * 60)
-
         time.sleep(sleep_duration)
-
-        current_time = datetime.now().time()
         
     else:
         if isLunchBreak():
