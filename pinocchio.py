@@ -56,12 +56,12 @@ def getPrompt():
     global promptList
     randomPrompt = random.uniform(0, len(promptList) - 1 )    
     prompt = promptList[int(randomPrompt)]
-
+    print(f"Selected prompt: {prompt}")
     return prompt
 
 promptsListPath = sys.argv[1] # Prompt list
 promptList = getPromptList(promptsListPath)
-print(promptList)
+
 
 time.sleep(10)
 
