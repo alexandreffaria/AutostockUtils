@@ -2,7 +2,7 @@ import pyautogui as pyau
 import time
 import sys
 import random
-from datetime import datetime, timedelta
+from datetime import datetime
 
 if len(sys.argv) != 2:
     print("Usage: python3 pinocchio.py <prompt list.txt>")
