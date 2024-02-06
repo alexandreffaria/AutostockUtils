@@ -45,7 +45,7 @@ def get_prompts_file_path(category):
 
     category_name = categorias[category]
     prompts_file_path = os.path.join(
-        prompts_folder_path, f"{category_name}{prompts_extension}"
+        prompts_folder_path, f"{category}-{category_name}{prompts_extension}"
     )
 
     if not os.path.exists(prompts_file_path):
