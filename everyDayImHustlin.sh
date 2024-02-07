@@ -12,12 +12,6 @@ while IFS= read -r -d '' file; do
     fi
 done < <(find "$folder" -maxdepth 1 -type f -name '*.txt' -print0 | sort -zV)
 
-# Process the files in the array
-for file in "${files[@]}"; do
-    echo "Processing file: $file"
-    # Add your processing logic here
-done
-
 index=$(<dailyIndexFile)
 echo "Starting pinocchio with: ${files[index]}"
 ((index++))
