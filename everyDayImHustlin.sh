@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Path to the folder containing the files
-folder="/Prompts/"
+folder="/Prompts"
 # Path to the file storing the last used file
 index_file="/Prompts/dailyIndexFile"
 
@@ -24,7 +24,7 @@ next_index=$(( (index + 1) % ${#files[@]} ))
 next_file="${files[next_index]}"
 
 # Execute pinocchio.py with the next file
-python3 "$folder/pinocchio.py" "$folder/$next_file"
+python3 "pinocchio.py" "$folder/$next_file"
 
 # Update the index file with the next index
 echo "$next_index" > "$index_file"
