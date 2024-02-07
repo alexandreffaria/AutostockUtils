@@ -24,15 +24,16 @@ fi
 files=($(ls -1 "$folder" | sort))
 
 # Calculate the index of the next file
-next_index=$(( (index + 1) % ${#files[@]} ))
+next_index=$((index % ${#files[@]}))
 
 # Get the next file using the calculated index
 next_file="${files[next_index]}"
 
-echo "python3 pinnochio.py Prompts/"$next_file
+echo "python3 pinocchio.py Prompts/$next_file"
 
 # Execute pinocchio.py with the next file
 python3 "pinocchio.py" "$folder/$next_file"
 
 # Update the index file with the next index
+next_index=$(( (index + 1) % ${#files[@]} ))
 echo "$next_index" > "$index_file"
