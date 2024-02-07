@@ -20,13 +20,13 @@ done
 
 index=$(<dailyIndexFile)
 echo "Starting pinocchio with: ${files[index]}"
-
-# # Execute pinocchio.py with the next file
-python3 "pinocchio.py" "${files[index]}"
-
 ((index++))
 index=$((index % ${#files[@]}))
 echo "$index" > dailyIndexFile
+# # Execute pinocchio.py with the next file
+python3 "pinocchio.py" "${files[index]}"
+
+
 
 
 
