@@ -1,9 +1,15 @@
 #!/bin/bash
 
-# Path to the folder containing the files
-folder="/Prompts"
+# Path to the folder containing the files (assuming it's in the same directory as the script)
+folder="$(dirname "$0")/Prompts"
 # Path to the file storing the last used file
-index_file="/Prompts/dailyIndexFile"
+index_file="$folder/dailyIndexFile"
+
+# Check if the directory exists and contains files
+if [ ! -d "$folder" ] || [ -z "$(ls -A "$folder")" ]; then
+    echo "Error: '$folder' directory doesn't exist or is empty."
+    exit 1
+fi
 
 # Check if the index file exists
 if [ -f "$index_file" ]; then
