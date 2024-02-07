@@ -4,6 +4,8 @@
 folder="/home/meulindux/Desktop/AutostockUtils/Prompts"
 files=()
 
+export DISPLAY=:0
+
 # Loop through each file in the folder, sorted numerically
 while IFS= read -r -d '' file; do
     # Check if the file is a regular file (not a directory)
