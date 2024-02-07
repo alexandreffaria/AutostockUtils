@@ -82,7 +82,6 @@ while True:
         elif isNapTime():
             print("Taking a nap....")
             while isNapTime():
-                print("Zzzzzzzz")
-                time.sleep(600)
+                sys.exit(1)
         
     time.sleep(10)
