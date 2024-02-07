@@ -73,26 +73,28 @@ def main(category, strategy, amount, description):
     if not description:
         description = categorias[category]
     with open(filename, "a") as file:
-        totalIndex = 0
-        for _ in range(amount):
-            for _ in range(10):  # Loop to get 10 topics
-                topic_request = f"{description}\nGive me an interesting topic for stock photography that would be easily sold on a stock photography website."
-                topic = ""
-                while not topic.strip() or "sorry" in topic.lower():
-                    topic = getGPTResponse(gptModel, topic_request)
-                
-                vivid_description = ""
+        
+        for i in range(amount):
                 vivid_description_request = f'''
-                "{topic}"
-                Describe a scene, summarizing the the feeling of the above topic, using descriptive words.
-                Don't describe people faces. Don't add anything to your answer that isn't the description and don't address me or anything else.
-                Here is an example of a correct response:
-                A group of business professionals mingle and chat animatedly amidst a vibrant city skyline The warm glow of the setting sun accents the stylish rooftop bar creating a relaxed and sophisticated atmosphere The clinking of glasses and laughter blend with the soft jazz music in the background as the group unwinds after a day of hard work The citys lights begin to twinkle as the evening unfolds adding to the sense of camaraderie and enjoyment in the air            
+                I want you to describe images for me for a topic that I'm going to give you, those images should give descriptions commonly found in stock image photography. 
+                Here are a few rules I want you to follow:
+                - If there is people in your description, you should always make sure to include "close up shot" in your description. You only have to to this if there are people in your description
+                - You should avoid describing scenes that focus on human hands, like people toasting, high fiving, holding hands. The only exception is *shaking hands*
+                - Every description should be focused and of one scene at a time.
+                - You should be brief but you should describe the whole frame of the image, like the background, the foreground, what is in focus and everything you think is important to be in the image.
+                - Your description should be like a director of photography planning, in the way that you should describe the type of lens (macro, telephoto, etc) what is the framing (close, medium or wide shot), at what position the point of focus should be (center frame, bottom third, golden ratio, etc) , soft natural light, warm tones, etc.
+                Here is an example of the first rule:
+                WRONG - A diverse group of professionals engaged in a lively discussion around a conference table, with laptops and paperwork scattered across the surface.
+                RIGHT - A close up shot with a 35mm lens with a diverse group of professionals framed at the center of the frame, engaged in a lively discussion around a conference table, with laptops and paperwork scattered across the surface.
+
+                Here is the topic:
+                Topic: "{description}"
                 '''
-                while not vivid_description.strip() or "sorry" in vivid_description.lower():
-                    vivid_description = getGPTResponse(gptModel, vivid_description_request)
-                print(f"{totalIndex}: {vivid_description}")
-                totalIndex += 1
+               
+                vivid_description = getGPTResponse(gptModel, vivid_description_request)
+
+                print(f"{i}: {vivid_description}")
+
                 file.write(vivid_description + "\n")
 
 
