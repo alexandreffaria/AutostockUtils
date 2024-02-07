@@ -90,7 +90,7 @@ def main(category, strategy, amount, description):
                 '''
                 while not vivid_description.strip() or "sorry" in vivid_description.lower():
                     vivid_description = getGPTResponse(gptModel, vivid_description_request)
-                
+                print(vivid_description)
                 file.write(vivid_description + "\n")
 
 
