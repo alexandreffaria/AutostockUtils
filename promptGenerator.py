@@ -73,6 +73,7 @@ def main(category, strategy, amount, description):
     if not description:
         description = categorias[category]
     with open(filename, "a") as file:
+        totalIndex = 0
         for _ in range(amount):
             for _ in range(10):  # Loop to get 10 topics
                 topic_request = f"{description}\nGive me an interesting topic for stock photography that would be easily sold on a stock photography website."
@@ -90,7 +91,8 @@ def main(category, strategy, amount, description):
                 '''
                 while not vivid_description.strip() or "sorry" in vivid_description.lower():
                     vivid_description = getGPTResponse(gptModel, vivid_description_request)
-                print(vivid_description)
+                print(f"{totalIndex}: {vivid_description}")
+                totalIndex += 1
                 file.write(vivid_description + "\n")
 
 
