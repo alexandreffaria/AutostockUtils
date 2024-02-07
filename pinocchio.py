@@ -69,8 +69,9 @@ while True:
     current_time = datetime.now().time()
     
     if not isNapTime() and not isLunchBreak():
-        sendPrompt(getPrompt())
         time.sleep(random.uniform(3 * 60, 7 * 60))
+        sendPrompt(getPrompt())
+        
         
     else:
         if isLunchBreak():
