@@ -16,18 +16,20 @@ if [ -f "$index_file" ]; then
     # Read the index from the file
     index=$(<"$index_file")
 else
-    # If the index file doesn't exist, start from the first file
+    # If the index file doesn't exist, start from 0
     index=0
 fi
 
 # Get the list of files sorted by name
 files=($(ls -1 "$folder" | sort))
 
-# Calculate the index of the next file
-next_index=$((index % ${#files[@]}))
+# Ensure index is within range of files
+if [ "$index" -ge "${#files[@]}" ]; then
+    index=0
+fi
 
 # Get the next file using the calculated index
-next_file="${files[next_index]}"
+next_file="${files[index]}"
 
 echo "python3 pinocchio.py Prompts/$next_file"
 
