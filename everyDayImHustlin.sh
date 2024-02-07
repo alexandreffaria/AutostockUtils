@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Specify the folder path
-folder="Prompts"
+folder="/home/meulindux/Desktop/AutostockUtils/Prompts"
 files=()
 
 # Loop through each file in the folder, sorted numerically
