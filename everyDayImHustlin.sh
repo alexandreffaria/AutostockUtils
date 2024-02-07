@@ -29,6 +29,8 @@ next_index=$(( (index + 1) % ${#files[@]} ))
 # Get the next file using the calculated index
 next_file="${files[next_index]}"
 
+echo "python3 pinnochio.py Prompts/"$next_file
+
 # Execute pinocchio.py with the next file
 python3 "pinocchio.py" "$folder/$next_file"
 
