@@ -75,6 +75,7 @@ def main(category, strategy, amount, description):
     with open(filename, "a") as file:
         
         for i in range(amount):
+                vivid_description = ""
                 vivid_description_request = f'''
                 I want you to describe images for me for a topic that I'm going to give you, those images should give descriptions commonly found in stock image photography. 
                 Here are a few rules I want you to follow:
@@ -89,9 +90,12 @@ def main(category, strategy, amount, description):
 
                 Here is the topic:
                 Topic: "{description}"
+                ***ONLY GIVE ONE DESCRIPTION AT THE TIME WITH NO INFORMATION OTHER THAN THE DESCRIPTION ITSELF***
                 '''
+                while not vivid_description.strip() or "sorry" in vivid_description.lower():
+                    vivid_description = getGPTResponse(gptModel, vivid_description_request)
+                    print(vivid_description)
                
-                vivid_description = getGPTResponse(gptModel, vivid_description_request)
 
                 print(f"{i}: {vivid_description}")
 
