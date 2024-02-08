@@ -28,16 +28,16 @@ def sendPrompt(prompt):
     pyau.moveTo(550,720)
 
     pyau.click()
-    time.sleep(5)
+    time.sleep(random.uniform(3,10))
 
     pyau.typewrite("/imagine")
-    time.sleep(10)
+    time.sleep(random.uniform(3,10))
 
     pyau.press("enter")
-    time.sleep(5)
+    time.sleep(random.uniform(3,10))
 
     pyau.typewrite(prompt.strip())
-    time.sleep(5)
+    time.sleep(random.uniform(3,10))
     pyau.typewrite(" shot by hasselblad X1D, editorial photogtaphy ")
     pyau.typewrite("--ar 16:9 --style raw")
 
@@ -69,7 +69,7 @@ while True:
     current_time = datetime.now().time()
     
     if not isNapTime() and not isLunchBreak():
-        time.sleep(random.uniform(3 * 60, 7 * 60))
+        time.sleep(random.uniform(3 * random.uniform(40,60), 7 * random.uniform(40,60)))
         sendPrompt(getPrompt())
         
         
