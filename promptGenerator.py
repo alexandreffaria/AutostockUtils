@@ -92,11 +92,9 @@ def main(category, strategy, amount, description):
                 Topic: "{description}"
                 ***ONLY GIVE ONE DESCRIPTION AT THE TIME WITH NO INFORMATION OTHER THAN THE DESCRIPTION ITSELF***
                 '''
-                while not vivid_description.strip() or "sorry" in vivid_description.lower():
+                while not vivid_description.strip() or "sorry" in vivid_description.lower() or "cannot" in vivid_description.lower():
                     vivid_description = getGPTResponse(gptModel, vivid_description_request)
-                    print(vivid_description)
-               
-
+                    
                 print(f"{i}: {vivid_description}")
 
                 file.write(vivid_description + "\n")
