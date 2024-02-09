@@ -66,7 +66,9 @@ def find_prompt_for_filename(filename_base, prompts_folder_path):
 
                 # Search for the prompt containing the unique part of the filename
                 for prompt in prompts:
-                    if filename_base in prompt.replace(",", "").replace(".", "").replace("'", ""):
+                    if filename_base in prompt.replace(",", "").replace(
+                        ".", ""
+                    ).replace("'", ""):
                         print("FOUND")
                         return prompt.strip()
     print("NOT FOUND")
@@ -170,7 +172,7 @@ def create_csv(folder_path, category, prompts_file_path):
                 filename_info[filename_base] = {
                     "Title": gptTitle,
                     "Keywords": gptKeywords,
-                    "Category": categorias[category],
+                    "Category": category,
                 }
 
             # Write the information to the CSV file for the current file
