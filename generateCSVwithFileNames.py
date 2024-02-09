@@ -53,22 +53,22 @@ def get_prompts_file_path(category):
 
 
 def find_prompt_for_filename(filename_base, prompts_folder_path):
-    # Loop over every text file in the prompts folder
-    for filename in os.listdir(prompts_folder_path):
-        if filename.endswith(".txt"):
-            prompts_file_path = os.path.join(prompts_folder_path, filename)
+    # Loop over the directory tree
+    for root, dirs, files in os.walk(prompts_folder_path):
+        # Loop over files in the current directory
+        for filename in files:
+            if filename.endswith(".txt"):
+                prompts_file_path = os.path.join(root, filename)
 
-            # Read prompts from the file
-            with open(prompts_file_path, "r") as prompts_file:
-                prompts = prompts_file.read().split("\n")
+                # Read prompts from the file
+                with open(prompts_file_path, "r") as prompts_file:
+                    prompts = prompts_file.read().split("\n")
 
-            # Search for the prompt containing the unique part of the filename
-            for prompt in prompts:
-                if filename_base in prompt.replace(",", "").replace(".", "").replace(
-                    "'", ""
-                ):
-                    print("FOUND")
-                    return prompt.strip()
+                # Search for the prompt containing the unique part of the filename
+                for prompt in prompts:
+                    if filename_base in prompt.replace(",", "").replace(".", "").replace("'", ""):
+                        print("FOUND")
+                        return prompt.strip()
     print("NOT FOUND")
 
 
