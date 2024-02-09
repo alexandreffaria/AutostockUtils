@@ -32,15 +32,27 @@ def process_csv(input_file):
         fieldnames = reader.fieldnames
 
         output_file_name, output_file_extension = os.path.splitext(input_file)
+        output_problem_file = output_file_name + "_problem.csv"
         output_file_name += "_cropped_titles"
         output_csv_file = output_file_name + output_file_extension
 
-        with open(output_csv_file, "w", encoding="utf-8", newline="") as output_csv:
+        with open(
+            output_csv_file, "w", encoding="utf-8", newline=""
+        ) as output_csv, open(
+            output_problem_file, "w", encoding="utf-8", newline=""
+        ) as output_problem_csv:
             writer = csv.DictWriter(output_csv, fieldnames=fieldnames)
             writer.writeheader()
 
+            problem_writer = csv.DictWriter(output_problem_csv, fieldnames=fieldnames)
+            problem_writer.writeheader()
+
             for row in reader:
-                title = row["Title"]
+                title = row["Title"].strip()
+                if title.lower() == "nenhum" or not title:
+                    problem_writer.writerow(row)
+                    continue
+
                 cropped_title = crop_title(title)
                 row["Title"] = cropped_title
                 writer.writerow(row)
