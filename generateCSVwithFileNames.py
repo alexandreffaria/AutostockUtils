@@ -54,19 +54,23 @@ def get_prompts_file_path(category):
     return prompts_file_path
 
 
-def find_prompt_for_filename(filename_base, prompts_file_path):
-    # Read prompts from the file
-    print(filename_base)
-    with open(prompts_file_path, "r") as prompts_file:
-        prompts = prompts_file.read().split("\n")
+def find_prompt_for_filename(filename_base, prompts_folder_path):
+    # Loop over every text file in the prompts folder
+    for filename in os.listdir(prompts_folder_path):
+        if filename.endswith(".txt"):
+            prompts_file_path = os.path.join(prompts_folder_path, filename)
 
-    # Search for the prompt containing the unique part of the filename
-    for prompt in prompts:
-        if filename_base in prompt.replace(",", "").replace(".", "").replace("'", ""):
-            print("FOUND")
-            return prompt.strip()
+            # Read prompts from the file
+            with open(prompts_file_path, "r") as prompts_file:
+                prompts = prompts_file.read().split("\n")
+
+            # Search for the prompt containing the unique part of the filename
+            for prompt in prompts:
+                if filename_base in prompt.replace(",", "").replace(".", "").replace("'", ""):
+                    print("FOUND")
+                    return prompt.strip()
     print("NOT FOUND")
-    return None
+
 
 
 def getGPTResponse(model, content):
