@@ -44,9 +44,7 @@ def get_prompts_file_path(category):
         raise ValueError(f"Invalid category: {category}")
 
     category_name = categorias[category]
-    prompts_file_path = os.path.join(
-        prompts_folder_path, f"{category}-{category_name}{prompts_extension}"
-    )
+    prompts_file_path = os.path.join(prompts_folder_path)
 
     if not os.path.exists(prompts_file_path):
         raise FileNotFoundError(f"Prompts file not found for category {category_name}")
@@ -66,11 +64,12 @@ def find_prompt_for_filename(filename_base, prompts_folder_path):
 
             # Search for the prompt containing the unique part of the filename
             for prompt in prompts:
-                if filename_base in prompt.replace(",", "").replace(".", "").replace("'", ""):
+                if filename_base in prompt.replace(",", "").replace(".", "").replace(
+                    "'", ""
+                ):
                     print("FOUND")
                     return prompt.strip()
     print("NOT FOUND")
-
 
 
 def getGPTResponse(model, content):
@@ -171,7 +170,7 @@ def create_csv(folder_path, category, prompts_file_path):
                 filename_info[filename_base] = {
                     "Title": gptTitle,
                     "Keywords": gptKeywords,
-                    "Category": category,
+                    "Category": categorias[category],
                 }
 
             # Write the information to the CSV file for the current file
@@ -205,7 +204,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Get the prompts file path based on the provided category
-    prompts_file_path = get_prompts_file_path(args.category)
+    prompts_file_path = "promptGeneratorOutput/"
 
     # Call the function to create the CSV file
     create_csv(args.folder_path, args.category, prompts_file_path)
