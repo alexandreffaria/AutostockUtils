@@ -61,7 +61,7 @@ Here is and example:
 INPUT:
 A close up shot with a 50mm lens capturing a young woman enjoying a cozy moment by the fireplace with a book in hand and a warm blanket draped around her shoulders Soft natural light illuminates the scene creating a tranquil and peaceful atmosphere
 OUTPUT:
-Uma jovem moça aproveitando um momento aconchegante perto de uma lareira lendo um livro em atmosfera tranquila
+Uma jovem moça aproveitando um momento aconchegante perto de uma lareira lendo um livro em atmosfera tranquila com um cobertor quente nos ombros
 
 Here is the title:
 {title}
