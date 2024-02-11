@@ -44,7 +44,7 @@ def getGPTResponse(model, content):
     gptPrompt = [
         {
             "role": "system",
-            "content": "You are a stock image photographer with years of experience.",
+            "content": "",
         },
         {
             "role": "user", 
@@ -86,7 +86,7 @@ def main(category, strategy, amount, description):
                 - Your description should be like a director of photography planning, in the way that you should describe the type of lens (macro, telephoto, etc) what is the framing (close, medium or wide shot), at what position the point of focus should be (center frame, bottom third, golden ratio, etc) , soft natural light, warm tones, etc.
                 Here is an example of the first rule:
                 WRONG - A diverse group of professionals engaged in a lively discussion around a conference table, with laptops and paperwork scattered across the surface.
-                RIGHT - A close up shot with a 35mm lens with a diverse group of professionals framed at the center of the frame, engaged in a lively discussion around a conference table, with laptops and paperwork scattered across the surface.
+                RIGHT - A diverse group of professionals framed engaged in a lively discussion around a conference table, with laptops and paperwork scattered across the surface. A close up shot with a 35mm lens with the focus at the center of the frame.
 
                 Here is the topic:
                 Topic: "{description}"
