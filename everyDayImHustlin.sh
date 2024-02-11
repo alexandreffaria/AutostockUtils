@@ -20,4 +20,4 @@ echo "Starting pinocchio with: ${files[index]}"
 index=$((index % ${#files[@]}))
 echo "$index" > dailyIndexFile
 # # Execute pinocchio.py with the next file
-python3 "/home/meulindux/Desktop/AutostockUtils/pinocchio.py" "${files[index]}"
+python3 "/home/meulindux/Desktop/AutostockUtils/Utils/pinocchio.py" "${files[index]}"
