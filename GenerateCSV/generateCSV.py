@@ -1,60 +1,12 @@
-import os, csv, argparse, subprocess
-from dotenv import load_dotenv
-from openai import OpenAI
+import os, csv, argparse
+from gptApi import *
 
-load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
-OpenAI.api_key = api_key
-
-client = OpenAI()
-
-gptModel = "gpt-3.5-turbo-1106"
-# gptmodel = "gpt-4"
 prompts_folder_path = "Prompts"
 prompts_extension = ".txt"
 
-categorias = {
-    1: "Animals",
-    2: "Buildings and Architecture",
-    3: "Business",
-    4: "Drinks",
-    5: "Environment",
-    6: "Feelings, Emotions, and Mental States",
-    7: "Food",
-    8: "Graphic Resources",
-    9: "Hobbies and Leisure",
-    10: "Industry",
-    11: "Landscapes",
-    12: "Lifestyle",
-    13: "People",
-    14: "Plants and Flowers",
-    15: "Religion and Culture",
-    16: "Science",
-    17: "Social Issues",
-    18: "Sports",
-    19: "Technology",
-    20: "Transportation",
-    21: "Travel",
-}
-
-
-def get_prompts_file_path(category):
-    # Check if the category is valid
-    if category not in categorias:
-        raise ValueError(f"Invalid category: {category}")
-
-    category_name = categorias[category]
-    prompts_file_path = os.path.join(prompts_folder_path)
-
-    if not os.path.exists(prompts_file_path):
-        raise FileNotFoundError(f"Prompts file not found for category {category_name}")
-
-    return prompts_file_path
-
-
 def find_prompt_for_filename(filename_base, prompts_folder_path):
     # Loop over the directory tree
-    for root, dirs, files in os.walk(prompts_folder_path):
+    for root, _, files in os.walk(prompts_folder_path):
         # Loop over files in the current directory
         for filename in files:
             if filename.endswith(".txt"):
@@ -72,44 +24,6 @@ def find_prompt_for_filename(filename_base, prompts_folder_path):
                         print("FOUND")
                         return prompt.strip()
     print("NOT FOUND")
-
-
-def getGPTResponse(model, content):
-    gptPrompt = [
-        {
-            "role": "system",
-            "content": "You are an award-winning director of photography specialized in stock photography.",
-        },
-        {"role": "user", "content": content},
-    ]
-
-    response = client.chat.completions.create(
-        model=model,
-        messages=gptPrompt,
-        temperature=1,
-        max_tokens=256,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0,
-    )
-
-    return response.choices[0].message.content.strip()
-
-
-def translate_title(title):
-    gptTitle = getGPTResponse(
-        gptModel,
-        f"I'm going to give you a title in English and you should translate it to Portuguese, the title should not be longer than 200 letters! \n\n {title} \n just give me the translation with no other information in your response. Don't use any pontualtion like (',.-!)",
-    )
-    return gptTitle
-
-
-def getKeywords(title):
-    gptKeywords = getGPTResponse(
-        gptModel,
-        f"Me dê 30 palavras chaves que sejam relacionadas ao seguinte título de uma imagem: \n{title}\nOrganize as palavras chave por ordem de relevância, e nunca utilize palavras genéricas como 'imagem', ou 'cena'.\nTodas as palavras chave devem ser separadas por vírgulas\nJust give me the keywords in portuguese with no other information in your response.\nHere is an example:",
-    )
-    return gptKeywords.replace('"', "")
 
 
 def create_csv(folder_path, category, prompts_file_path):
@@ -153,7 +67,7 @@ def create_csv(folder_path, category, prompts_file_path):
                 )
                 # Prompt for title, keywords, and category for each unique filename
 
-                gptTitle = translate_title(fullPrompt)
+                gptTitle = createTitle(fullPrompt)
                 gptTitle = gptTitle.replace(",", "").replace(".", "").replace("'", "")
 
                 gptKeywords = getKeywords(gptTitle)
@@ -195,7 +109,7 @@ def create_csv(folder_path, category, prompts_file_path):
 if __name__ == "__main__":
     # Set up command-line argument parsing
     parser = argparse.ArgumentParser(
-        description="Create a CSV file with filenames from a specified folder."
+        description="Create a CSV file with filenames from a specified folder. python generateCSV.py /path of images/ --category {1..21}"
     )
     parser.add_argument(
         "folder_path", type=str, help="Path to the folder containing files."
