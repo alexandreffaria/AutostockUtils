@@ -2,7 +2,6 @@ import os
 import sys
 import imageio
 import shutil
-from concurrent.futures import ThreadPoolExecutor
 from PyQt5.QtWidgets import (
     QApplication,
     QGraphicsView,
@@ -15,7 +14,7 @@ from PyQt5.QtCore import Qt
 
 class ImageViewer(QGraphicsView):
     def __init__(self, folder_path, files):
-        super(ImageViewer, self).__init__()
+        super().__init__()
 
         self.folder_path = folder_path
         self.files = files
@@ -33,16 +32,14 @@ class ImageViewer(QGraphicsView):
     def keyPressEvent(self, event):
         key = event.key()
 
-        if key == Qt.Key_Enter:
+        if key in (Qt.Key_Enter, Qt.Key_Right, Qt.Key_L, Qt.Key_H):
             self.next_image()
+        elif key == Qt.Key_Left:
+            self.previous_image()
         elif key == Qt.Key_X:
             self.delete_image()
         elif key == Qt.Key_Q:
             sys.exit()
-        elif key == Qt.Key_Right or key == Qt.Key_L or key == Qt.Key_H:
-            self.next_image()
-        elif key == Qt.Key_Left or key == Qt.Key_H:
-            self.previous_image()
         elif key == Qt.Key_W:
             self.move_image_to_folder("watermark")
         elif key == Qt.Key_B:
@@ -56,9 +53,7 @@ class ImageViewer(QGraphicsView):
         source_path = os.path.join(self.folder_path, file_name)
         target_folder_path = os.path.join(self.folder_path, target_folder)
 
-        # Create the target folder if it doesn't exist
-        if not os.path.exists(target_folder_path):
-            os.makedirs(target_folder_path)
+        os.makedirs(target_folder_path, exist_ok=True)
 
         target_path = os.path.join(target_folder_path, file_name)
 
@@ -74,23 +69,26 @@ class ImageViewer(QGraphicsView):
         self.preload_images()
 
     def next_image(self):
-        self.current_index += 1
-        if self.current_index < len(self.files):
-            self.load_image()
-            self.preload_images()
+        self.current_index = (self.current_index + 1) % len(self.files)
+        self.load_image()
+        self.preload_images()
 
     def previous_image(self):
-        self.current_index -= 1
-        if self.current_index >= 0:
-            self.load_image()
+        self.current_index = (self.current_index - 1) % len(self.files)
+        self.load_image()
 
     def delete_image(self):
+        if not self.files:
+            return
+
         file_path = os.path.join(self.folder_path, self.files[self.current_index])
         os.remove(file_path)
         print(f"{self.files[self.current_index]} deleted.")
         del self.files[self.current_index]  # Remove the deleted file from the list
+
         if self.current_index >= len(self.files):
             self.current_index = len(self.files) - 1
+
         self.load_image()
         self.preload_images()
 
@@ -120,7 +118,9 @@ class ImageViewer(QGraphicsView):
         )
 
         # Set window title with current file index
-        self.setWindowTitle(f"{file_name} - {self.current_index + 1}/{len(self.files)}")
+        self.setWindowTitle(
+            f"{file_name} - {self.current_index + 1}/{len(self.files)}"
+        )
         # Get the size of the viewport
         view_size = self.viewport().size()
 
