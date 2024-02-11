@@ -1,0 +1,834 @@
+find: ‘Prompts’: No such file or directory
+Starting pinocchio with: 
+/home/meulindux/Desktop/AutostockUtils/everyDayImHustlin.sh: line 18: index % 0: division by 0 (error token is "0")
+python3: can't open file '/home/meulindux/pinocchio.py': [Errno 2] No such file or directory
+find: ‘Prompts’: No such file or directory
+Starting pinocchio with: 
+/home/meulindux/Desktop/AutostockUtils/everyDayImHustlin.sh: line 18: index % 0: division by 0 (error token is "0")
+python3: can't open file '/home/meulindux/pinocchio.py': [Errno 2] No such file or directory
+Starting pinocchio with: /home/meulindux/Desktop/AutostockUtils/Prompts/5-Environment.txt
+python3: can't open file '/home/meulindux/pinocchio.py': [Errno 2] No such file or directory
+Starting pinocchio with: /home/meulindux/Desktop/AutostockUtils/Prompts/6-Feelings, Emotions, and Mental States.txt
+Traceback (most recent call last):
+  File "/home/meulindux/Desktop/AutostockUtils/pinocchio.py", line 1, in <module>
+    import pyautogui as pyau
+  File "/home/meulindux/.local/lib/python3.9/site-packages/pyautogui/__init__.py", line 246, in <module>
+    import mouseinfo
+  File "/home/meulindux/.local/lib/python3.9/site-packages/mouseinfo/__init__.py", line 223, in <module>
+    _display = Display(os.environ['DISPLAY'])
+  File "/usr/lib/python3.9/os.py", line 679, in __getitem__
+    raise KeyError(key) from None
+KeyError: 'DISPLAY'
+Starting pinocchio with: /home/meulindux/Desktop/AutostockUtils/Prompts/7-Food.txt
+Traceback (most recent call last):
+  File "/home/meulindux/Desktop/AutostockUtils/pinocchio.py", line 73, in <module>
+    sendPrompt(getPrompt())
+  File "/home/meulindux/Desktop/AutostockUtils/pinocchio.py", line 57, in getPrompt
+    prompt = promptList[int(randomPrompt)]
+IndexError: list index out of range
+------------Wed  7 Feb 19:23:01 -03 2024-----------
+Starting pinocchio with: /home/meulindux/Desktop/AutostockUtils/Prompts/8-Graphic Resources.txt
+Terminated
+------------Wed  7 Feb 19:25:01 -03 2024-----------
+Starting pinocchio with: /home/meulindux/Desktop/AutostockUtils/Prompts/9-Hobbies and Leisure.txt
+Terminated
+------------Wed  7 Feb 19:31:01 -03 2024-----------
+Starting pinocchio with: /home/meulindux/Desktop/AutostockUtils/Prompts/15-Religion and Culture.txt
+Terminated
+------------Thu  8 Feb 08:01:01 -03 2024-----------
+Starting pinocchio with: /home/meulindux/Desktop/AutostockUtils/Prompts/11-Landscapes.txt
+Selected prompt: A close up shot with a 50mm lens capturing a young woman enjoying a cup of coffee at a cozy cafe with soft natural light streaming in through the window and a book open on the table in front of her
+
+Selected prompt: A close up shot with a 50mm lens capturing a serene young woman practicing yoga on a secluded beach at sunset with the ocean stretching into the distance in the background
+
+Selected prompt: A closeup shot with a 50mm lens capturing a young woman sitting in a cozy cafe enjoying a hot cup of coffee while looking out the window at the urban cityscape
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman sitting on a cozy window seat softly lit by natural light surrounded by plants books and a warm cup of tea
+
+Selected prompt: A close up shot with a 50mm lens of a young woman reading a book in a cozy armchair by a window with soft natural light streaming in and creating warm tones on the scene
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman smiling while holding a cup of coffee with soft natural light illuminating her face and warm tones in the background
+
+Selected prompt: A close up shot with a 50mm lens of a young woman enjoying a cup of coffee on a cozy balcony with soft natural light and a cityscape in the background
+
+Selected prompt: A medium shot with a 50mm lens showing a young woman practicing yoga on a peaceful grassy meadow at sunset Soft natural light and warm tones envelop the scene
+
+Selected prompt: A close up shot with a 50mm lens capturing a young couple sitting on a picnic blanket in a park surrounded by greenery and dappled sunlight laughing and toasting wine glasses
+
+Selected prompt: A medium shot with a 50mm lens showing a young woman walking through a vibrant farmers’ market surrounded by stalls of fresh produce and colorful flowers
+
+Selected prompt: A close up shot with a 50mm lens of a young woman enjoying a cup of coffee at a cozy café with soft natural light streaming in from the window creating a warm and inviting atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman smiling while sitting in a cozy coffee shop holding a hot beverage with a blurred background of other patrons and warm natural light filtering through the window
+
+Selected prompt: A close up shot with a 50mm lens of a young woman enjoying a cup of coffee at a cozy café with soft natural light streaming in from the window showcasing the steam rising from the cup against a blurred background of rustic decor and potted plants
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman sitting in a cozy coffee shop surrounded by books and sipping on a latte with soft natural light streaming in through the window
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman reading a book in a cozy armchair by the window with soft natural light illuminating the scene
+
+Selected prompt: A close up shot with a 50mm lens of a young woman sitting on a cozy couch holding a cup of coffee with a soft focus on the window showing a sunny day outside
+
+Selected prompt: A close up shot with a 50mm lens capturing a man and a woman enjoying a picnic in a sunny park with a checkered blanket spread out on the green grass and a wicker picnic basket in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a stylish young woman walking through a vibrant city street with colorful buildings and storefronts in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a stylish woman sitting in a cozy coffee shop holding a mug of coffee with steam rising with soft natural light streaming in from the window behind her
+
+Selected prompt: A medium shot with a 50mm lens capturing a young woman working on her laptop in a cozy cafe with soft natural light streaming in through the windows creating a warm and inviting atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman sitting on a cozy couch by a large window reading a book with soft natural light streaming in
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman smiling and enjoying a cup of coffee in a cozy cafe setting with soft natural light streaming in from the window creating a warm and inviting atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman sitting on a cozy window seat surrounded by plants reading a book and sipping tea
+
+Selected prompt: A close up shot with a 50mm lens of a young woman sitting in a cozy coffee shop holding a steaming cup of coffee with a soft natural light filtering through the window
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman comfortably reading a book in a cozy window seat with soft natural light streaming in and a warm color palette
+
+Selected prompt: A closeup shot with a 50mm lens capturing a smiling young woman in a cozy sweater sitting by a window with soft natural light enjoying a cup of tea and looking out at a picturesque snowy landscape
+
+Selected prompt: A medium shot with a 50mm lens of a young woman reading a book on a cozy couch by a large window with soft natural light illuminating the scene
+
+Selected prompt: A close up shot with a 50mm lens of a young woman sitting in a cozy cafe smiling as she sips on a cup of coffee with soft natural light filtering in through the window creating warm tones
+
+Selected prompt: A medium shot with a 50mm lens of a woman enjoying a peaceful morning by a window holding a cup of coffee and looking out at a garden
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman sitting on a cozy sofa reading a book with soft natural light coming in from a nearby window
+
+Selected prompt: A close up shot with a 50mm lens capturing a stylish young woman in a coffee shop sipping on a cappuccino and reading a book with soft natural light filtering through the window
+
+Selected prompt: A closeup shot with a 50mm lens capturing a woman in her late 20s sitting on a cozy sofa by a fireplace reading a book with a warm cup of coffee in hand The background shows a rustic living room with warm tones and soft natural light
+
+Selected prompt: A closeup shot with a 50mm lens capturing a cheerful young woman in a cozy sweater sipping coffee while sitting on a window seat with soft morning light streaming in
+
+Selected prompt: A close up shot with a 50mm lens of a young woman sitting on a cozy couch holding a cup of coffee with a soft focus on the window showing a sunny day outside
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman sitting on a window seat gazing out at the city skyline with a contemplative expression The soft natural light creates a warm and dreamy atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman sitting on a cozy couch smiling as she reads a book with soft natural light streaming in through the window creating a warm and inviting atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a stylish young woman walking through a bustling city street with a background of tall buildings and soft natural light creating warm tones
+
+Selected prompt: A close up shot with a 50mm lens of a young woman in casual clothing laughing while holding a cup of coffee in a cozy cafe setting with soft natural light filtering through the window
+
+Selected prompt: A close up shot with a 50mm lens of a young woman doing yoga on a bright sunlit balcony surrounded by potted plants and greenery
+
+Selected prompt: A close up shot with a 50mm lens capturing a young couple sitting on a picnic blanket in a park surrounded by greenery and dappled sunlight laughing and toasting wine glasses
+
+Selected prompt: A medium shot with a 50mm lens capturing a happy family relaxing together in a cozy living room surrounded by warm natural light and soft neutral tones
+
+Selected prompt: A close up shot with a 50mm lens of a young woman reading a book in a cozy sunlit corner of a modern living room surrounded by houseplants and soft furnishings
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman enjoying a cup of coffee at a cozy café surrounded by warm inviting decor and soft natural light
+Terminated
+------------Fri  9 Feb 08:01:01 -03 2024-----------
+Starting pinocchio with: /home/meulindux/Desktop/AutostockUtils/Prompts/12-Lifestyle.txt
+Selected prompt: A close up shot with a 50mm lens focusing on a young woman smiling and walking through a vibrant urban street with blurred buildings and city life in the background
+
+Selected prompt: A closeup shot with a 50mm lens capturing a diverse group of friends laughing and toasting with wine glasses at an outdoor garden party
+
+Selected prompt: A close up shot with a 50mm lens of a happy family having a picnic in a lush green park with a blanket spread out and a wicker basket filled with food in the foreground and a beautiful landscape in the background
+
+Selected prompt: A close up shot with a 50mm lens featuring a young couple standing in a lush green field embracing each other with the sun setting in the background
+
+Selected prompt: A close up shot with a 50mm lens of a young woman sitting at a cafe smiling and drinking a cup of coffee with soft natural light coming from the window
+
+Selected prompt: A close up shot with a 50mm lens of a young woman sitting in a cozy cafe smiling and looking at her laptop screen as she sips on a cup of coffee
+
+Selected prompt: A close up shot with a 50mm lens capturing a group of friends laughing and toasting wine glasses in a cozy indoor setting
+
+Selected prompt: A close up shot with a 50mm lens of a joyful family enjoying a picnic in a lush green park with a soft golden sunlight streaming through the trees in the background
+
+Selected prompt: A close up shot with a 50mm lens of a young woman enjoying a quiet moment in a cozy cafe with a cup of coffee and a book on the table in front of her
+
+Selected prompt: A close up shot with a 50mm lens of a young woman reading a book in a cozy cafe with soft natural light streaming in from the windows and warm tones enhancing the atmosphere
+
+Selected prompt: A close up shot with a 50mm lens of a diverse group of friends toasting and laughing at a picnic with a beautiful park as the background
+
+Selected prompt: A close up shot with a 50mm lens of a man and a woman sitting at a cozy cafe laughing and enjoying a cup of coffee together
+
+Selected prompt: A close up shot with a 50mm lens capturing a smiling young woman in a coffee shop holding a steaming mug of coffee with soft natural light coming through the window in the background
+
+Selected prompt: A close up shot with a 50mm lens of a young woman in a cozy sweater reading a book by a window with soft natural light streaming in
+
+Selected prompt: A close up shot with a 50mm lens capturing an affectionate couple embracing in a beautiful field of sunflowers
+
+Selected prompt: A close up shot with a 50mm lens of a young woman with a thoughtful expression looking into the distance with soft natural light illuminating her face
+
+Selected prompt: A close up shot with a 50mm lens capturing a diverse group of friends enjoying a picnic in a park with colorful blankets spread out on the green grass and a variety of delicious food and drinks laid out in the foreground
+
+Selected prompt: A close up shot with a 50mm lens of a young couple sitting on a bench in a park smiling and holding hands The background shows lush greenery and a clear blue sky
+
+Selected prompt: A close up shot with a 50mm lens capturing the joyful expressions of a diverse group of friends enjoying a picnic in a sunlit park with a spread of food and drinks in the foreground and lush green trees in the background
+
+Selected prompt: A close up shot with a 50mm lens of a happy family having a picnic in the park with a checkered blanket spread out on the grass surrounded by trees and dappled sunlight filtering through the leaves
+
+Selected prompt: A close up shot with a 50mm lens on a family of four happily sitting together on a picnic blanket in a beautiful park surrounded by trees and sunshine
+
+Selected prompt: A close up shot with a 50mm lens of a young woman sitting on a park bench smiling as she reads a book with soft natural light filtering through the trees in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a diverse group of friends laughing and enjoying a picnic in a lush green park
+
+Selected prompt: A medium shot with a 50mm lens of a diverse group of friends sitting around a picnic table in a park laughing and enjoying a summer day
+
+Selected prompt: A close up shot with a 50mm lens capturing a happy family walking along a beach at sunset with soft natural light casting warm tones on the sand and waves
+
+Selected prompt: A close up shot with a 50mm lens of a laughing couple walking hand in hand through a sundrenched field of wildflowers
+
+Selected prompt: A close up shot with a 50mm lens capturing a group of friends sitting around a bonfire on the beach with the ocean and sunset in the background
+
+Selected prompt: A close up shot with a 50mm lens of a laughing couple walking hand in hand through a sundrenched field of wildflowers
+
+Selected prompt: Two young friends sitting on a bench by the lake having a conversation and laughing
+
+Selected prompt: A close up shot with a 50mm lens capturing a pair of friends sitting on a park bench laughing and enjoying each others company on a bright sunny day
+
+Selected prompt: A close up shot with a 50mm lens of a young woman laughing while holding a bunch of colorful balloons in an outdoor park
+
+Selected prompt: A close up shot with a 50mm lens capturing a young couple walking hand in hand through a sunlit park with trees and greenery in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a group of friends laughing and enjoying a picnic in a sunny park with a mix of colorful blankets and food spread out in the foreground and trees and other people in the background
+
+Selected prompt: A wide shot of a diverse group of friends enjoying a picnic in a grassy park with vibrant colors and soft natural light
+
+Selected prompt: A close up shot with a 50mm lens capturing a group of friends sitting around a bonfire on the beach with the ocean and sunset in the background
+
+Selected prompt: A close up shot with a 50mm lens of a young woman smiling at the camera while standing in a field of sunflowers
+
+Selected prompt: A close up shot with a 50mm lens of a woman holding a bouquet of colorful wildflowers in a sunlit field with soft natural light creating warm tones in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a smiling young woman in a field of sunflowers with soft natural light showcasing the vibrant yellow flowers in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a happy young couple walking along a sandy beach at sunset with the ocean in the background and warm golden light illuminating the scene
+
+Selected prompt: A close up shot with a 50mm lens capturing a young couple embracing in a meadow filled with wildflowers with soft natural light illuminating the scene
+
+Selected prompt: A close up shot with a 50mm lens showing a young woman sitting on a bench in a city park smiling while holding a cup of coffee The background features green trees and people walking
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman with a genuine smile surrounded by a field of vibrant sunflowers in soft natural light
+
+Selected prompt: A medium shot with a 50mm lens of a diverse group of friends sitting around a picnic table in a park laughing and enjoying a summer day
+
+Selected prompt: A close up shot with a 50mm lens of a confident young woman in a business suit standing against a city skyline with a determined expression on her face
+
+Selected prompt: A close up shot with a 50mm lens capturing an affectionate couple walking hand in hand through a beautiful park with the lush greenery in the background and warm natural light casting a soft glow over the scene
+
+Selected prompt: A close up shot with a 50mm lens capturing a smiling young woman walking through a sunlit city park surrounded by vibrant green trees and colorful flowers
+
+Selected prompt: A close up shot with a 50mm lens capturing a middleaged couple sitting on a bench holding hands and watching the sunset over the ocean
+
+Selected prompt: A close up shot with a 50mm lens capturing a diverse group of friends having a picnic in a city park with a focus on their joyful expressions as they enjoy food and drinks
+Terminated
+------------Sat 10 Feb 08:01:01 -03 2024-----------
+Starting pinocchio with: /home/meulindux/Desktop/AutostockUtils/Prompts/13-People.txt
+Selected prompt: A close up shot with a macro lens capturing a vibrant red rose in full bloom with soft natural light illuminating the delicate petals and green leaves
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant red tulip in full bloom with soft natural light illuminating the delicate petals
+
+Selected prompt: A closeup shot with a 50mm lens capturing a vibrant assortment of flowers in a garden with soft natural light and warm tones
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of mixed flowers including roses daisies and lilies arranged in a glass vase on a wooden tabletop
+
+Selected prompt: A closeup shot with a 50mm lens capturing a beautiful blooming sunflower in a lush garden with soft natural light filtering through the leaves
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant red rose in full bloom with soft natural light filtering through the leaves in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant green succulent plant in a white ceramic pot set against a blurred background of a modern sunlit living space
+
+Selected prompt: A close up shot with a macro lens capturing the delicate details of a blooming pink rose in a soft natural light setting
+
+Selected prompt: An aerial wide shot with a telephoto lens capturing a lush field of sunflowers basking in the warm sunlight against a clear blue sky
+
+Selected prompt: A close up shot with a 50mm lens capturing a lush green succulent garden growing in a vintage terracotta pot set against a blurred background of a sunlit garden
+
+Selected prompt: A close up shot of a 50mm lens capturing a blooming sunflower in a field with a blurred background of green foliage and blue sky
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant pink peony in full bloom with soft natural light casting delicate shadows on the petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted flowers against a soft blurred background
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant sunflower in full bloom with soft natural light illuminating the petals against a blurred background of green foliage
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful bouquet of vibrant sunflowers daisies and roses in a rustic vase on a wooden table Natural light streaming in from the window creating soft warm tones
+
+Selected prompt: A close up shot of a sunlit field of wildflowers with a soft focus in the background to create a dreamy ethereal atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a bouquet of colorful wildflowers in a rustic vase on a wooden table with soft natural light streaming in from a nearby window
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman watering a variety of potted plants in a sunlit greenhouse with vibrant green foliage and colorful blooms in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers in a rustic sunlit setting
+
+Selected prompt: A wide shot with a telephoto lens capturing a field of colorful wildflowers in soft natural light with a shallow depth of field creating a blurred background of rolling hills
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautifully arranged bouquet of fresh sunflowers in a rustic vase with soft natural light streaming in from a nearby window creating a warm and inviting atmosphere
+
+Selected prompt: A close up shot of a vibrant red rose in a soft natural light with dew drops glistening on the petals framed with a 50mm lens at the center of the frame
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant red rose in full bloom with soft natural light accentuating the delicate petals
+
+Selected prompt: A closeup shot with a 50mm lens capturing a beautiful assortment of colorful wildflowers in a sundrenched meadow with soft natural light creating a warm and inviting atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a lush green succulent plant in a white ceramic pot with soft natural light filtering through a nearby window accentuating the vibrant leaves and textures
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of assorted wildflowers set against a soft blurred natural background showcasing a mix of delicate pink purple and yellow blooms with lush green foliage
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers arranged in a rustic vase on a wooden table with soft natural light streaming in from a nearby window
+
+Selected prompt: A close up shot with a macro lens showcasing a vibrant red rose in full bloom delicately unfurling its petals against a soft blurred green background
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful bouquet of vibrant sunflowers standing tall in a rustic ceramic vase on a wooden table with soft natural light filtering through the window creating a warm and inviting atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing the delicate details of a vibrant pink peony in full bloom with soft natural light enhancing the petal texture and warm tones creating a soothing atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted flowers in a rustic ceramic vase set against a soft blurred background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant red rose in full bloom with soft natural light highlighting its delicate petals
+
+Selected prompt: A close up shot of a vibrant red rose in soft natural light with a shallow depth of field and a blurred green garden background captured with a macro lens
+
+Selected prompt: An overhead shot taken with a wide angle lens capturing a variety of potted plants and flowers arranged on a wooden table with soft natural light pouring in from a nearby window
+
+Selected prompt: A close up shot with a macro lens of a vibrant bouquet of mixed flowers with soft natural light streaming through a window in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman holding a small potted succulent with soft natural light illuminating the plant and warm tones in the background
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of assorted flowers against a soft focus background capturing the beauty and detail of each petal and blossom
+
+Selected prompt: A 50mm closeup shot of a vibrant pink peony in full bloom with soft natural light casting a warm glow on the delicate petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman watering a variety of potted plants in a sunlit greenhouse with vibrant green foliage and colorful blooms in the background
+
+Selected prompt: An overhead shot with a wide angle lens of a lush garden filled with colorful blooming flowers and various green plants with soft natural light casting gentle shadows across the scene
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman watering a variety of lush green plants in ceramic pots on a sunny windowsill
+
+Selected prompt: A close up shot with a 50mm lens capturing a delicate white daisy in soft natural light with a blurred bokeh background of green foliage
+
+Selected prompt: Sure Id be happy to help! Just to clarify are you looking for verbal descriptions of stock images focused on the topic of "Plants and Flowers"?
+
+Selected prompt: A close up shot with a macro lens of a vibrant red tulip standing against a soft blurred background of green leaves and bokeh lights
+
+Selected prompt: A close up shot of a sunlit field of wildflowers with a soft focus in the background to create a dreamy ethereal atmosphere
+
+Selected prompt: An overhead shot with a wide angle lens capturing a variety of potted plants arranged on a wooden garden shelf with soft natural light streaming through a nearby window
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers displayed in a rustic clay pot with soft natural light illuminating the arrangement
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant sunflower in full bloom with the golden center filling the frame and soft natural light illuminating the petals
+
+Selected prompt: A close up shot with a 50mm macro lens capturing a vibrant red rose in full bloom with soft natural light illuminating the delicate petals and lush green foliage in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman watering a lush green houseplant with soft natural light filtering through a nearby window and highlighting the vivid green leaves
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant collection of potted succulents and cacti displayed on a sunny windowsill with soft natural light casting gentle shadows on the textured leaves
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers displayed in a rustic clay pot with soft natural light illuminating the arrangement
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant sunflower in full bloom with the golden center filling the frame and soft natural light illuminating the petals
+
+Selected prompt: A close up shot with a 50mm macro lens capturing a vibrant red rose in full bloom with soft natural light illuminating the delicate petals and green leaves
+
+Selected prompt: A close up shot with a 50mm lens focused on a beautiful bouquet of colorful wildflowers in a rustic vase placed on a wooden table with soft natural light streaming in from a nearby window
+
+Selected prompt: A close up shot with a 50mm lens focusing on a blooming red rose in a garden with soft natural light highlighting the delicate petals and lush green foliage in the background
+
+Selected prompt: An overhead shot of a variety of potted succulents on a rustic wooden table with soft natural light streaming in from the window
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman watering a variety of potted plants on a sunny windowsill with lush green foliage in the background
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant green succulent plant with pointed leaves against a softfocus background of other succulents and cacti with natural light casting soft shadows
+
+Selected prompt: A close up shot using a macro lens capturing a vibrant red rose in full bloom with soft natural light illuminating its delicate petals and green foliage in the background
+
+Selected prompt: A close up shot with a macro lens of a vibrant bouquet of mixed flowers with soft natural light streaming through a window in the background
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant blooming sunflower in a field with soft natural light and a blurred background
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of assorted flowers in a rustic vase with soft natural light streaming through a window in the background
+
+Selected prompt: A close up shot with a 50mm macro lens capturing a vibrant bouquet of assorted wildflowers in a rustic wooden vase on a sunlit window sill
+
+Selected prompt: A close up shot with a macro lens of a vibrant green succulent plant with soft natural light casting delicate shadows on its variegated leaves
+
+Selected prompt: An overhead shot of a variety of potted succulents and cacti on a rustic wooden table with soft natural light coming from a nearby window
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful assortment of vibrant blooming flowers in a botanical garden with soft natural light illuminating the delicate petals and lush green foliage
+
+Selected prompt: A medium shot with a 50mm lens focused on a lush green houseplant sitting on a windowsill with soft natural light shining through the leaves
+
+Selected prompt: A close up shot with a 50mm lens of a woman gently watering a variety of vibrant potted plants on a sunlit balcony with the cityscape in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing the delicate details of a vibrant sunflower against a soft blurred background of green foliage
+
+Selected prompt: A wide shot with a 50mm lens capturing a field of blooming sunflowers under the soft golden light of the setting sun
+
+Selected prompt: A close up shot with a 50mm lens capturing a lush green field of wildflowers with the focal point on a vibrant red poppy in the foreground and a soft blurred background of colorful blooms
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of assorted wildflowers with soft natural light gently highlighting the delicate petals and foliage
+
+Selected prompt: A close up shot of a vibrant assortment of wildflowers in a meadow with a shallow depth of field using a 50mm lens to capture their delicate details in the soft natural light of the late afternoon
+
+Selected prompt: A closeup shot using a macro lens capturing a vibrant red tulip against a softfocused background of green foliage and other colorful blooms in a botanical garden
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman watering a variety of potted plants on a windowsill with soft natural light casting warm tones on the greenery
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful bouquet of assorted wildflowers in a rustic vase on a wooden table with soft natural light filtering through a nearby window creating a warm and inviting atmosphere
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant green succulent plant with soft natural light illuminating the intricate details of its leaves
+
+Selected prompt: A medium shot with a 50mm lens capturing a person watering a variety of potted plants on a sunny windowsill
+
+Selected prompt: An overhead shot with a wide angle lens capturing a variety of potted plants arranged on a wooden garden shelf with soft natural light streaming through a nearby window
+
+Selected prompt: A 50mm closeup shot of a vibrant pink peony in full bloom with soft natural light casting a warm glow on the delicate petals
+
+Selected prompt: A close up shot with a 50mm lens focusing on a vibrant green fern with delicate fronds set against a soft focus background of lush foliage and dappled sunlight
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant red rose in soft natural light with dew drops glistening on its petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant green succulent plant in a white ceramic pot set against a blurred background of a modern sunlit living space
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman watering a variety of potted plants on a sunny windowsill with soft natural light creating a warm and inviting atmosphere
+
+Selected prompt: A mid range shot capturing a variety of colorful flowers in a garden with soft natural light illuminating the scene
+
+Selected prompt: A medium shot with a 50mm lens capturing a person watering a variety of potted plants on a sunny windowsill
+
+Selected prompt: A close up shot with a macro lens capturing a beautiful red rose in full bloom with soft natural light illuminating the petals and leaves against a blurred background
+
+Selected prompt: A close up shot with a macro lens capturing a woman watering a variety of green plants on a sunny windowsill with soft natural light illuminating the scene
+
+Selected prompt: An overhead shot with a wide angle lens capturing a variety of potted plants and flowers arranged on a sunny windowsill
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant red rose in full bloom with soft natural light highlighting the delicate petals and green foliage in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of sunflowers in a rustic mason jar on a sunlit windowsill
+
+Selected prompt: A close up shot using a macro lens of a vibrant red tulip blooming in a garden with soft natural light illuminating the delicate petals
+
+Selected prompt: A close up shot with a macro lens of a vibrant red tulip standing against a soft blurred background of green leaves and bokeh lights
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant green succulent plant in a modern ceramic pot centered in the frame with soft natural light illuminating the leaves
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of mixed flowers featuring a variety of colors and textures with soft natural light casting a warm welcoming glow
+
+Eating some bytes...
+Eating some bytes...
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Nom nom nom nom nom nom
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers in a rustic sunlit setting
+
+Selected prompt: A close up shot with a 50mm lens focused on a vibrant green succulent plant against a soft blurred background of leaves and flowers
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted flowers in a rustic vase set against a soft blurred background
+
+Selected prompt: A close up shot with a macro lens of a vibrant red rose in full bloom with soft natural light highlighting the delicate petals and a blurred green garden as the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of wildflowers in a rustic vase set against a sunlit farmhouse kitchen backdrop
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman tending to a vibrant assortment of potted plants on a sunlit windowsill with a soft focus on the background of a cozy kitchen
+
+Selected prompt: A close up shot with a 50mm macro lens capturing a vibrant red rose in full bloom with soft natural light illuminating its delicate petals against a blurred green garden background
+
+Selected prompt: A close up shot with a macro lens capturing the delicate details of a vibrant red rose in full bloom with soft natural light illuminating the petals and a blurred background of lush green foliage
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of assorted flowers with soft natural light casting a warm glow on the blooms
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant array of pink and white cherry blossom flowers in full bloom against a soft blurred background of green foliage
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman watering a variety of potted plants on a sunny windowsill Vibrant green leaves and colorful flowers fill the background creating a cozy and inviting atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of mixed flowers in a rustic vase on a wooden table with soft natural light filtering through a nearby window creating a warm and inviting mood
+
+Selected prompt: A medium shot with a 50mm lens focused on a lush green houseplant sitting on a windowsill with soft natural light shining through the leaves
+
+Selected prompt: A close up shot with a 50mm lens capturing a colorful array of wildflowers in a sunlit meadow with soft natural light highlighting the delicate details of the petals and leaves
+
+Selected prompt: A close up shot with a 50mm lens focusing on a vibrant green succulent plant capturing the intricate details of its leaves and the soft natural light highlighting its unique texture
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman holding a bouquet of vibrant sunflowers against a soft blurry background
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant arrangement of succulents and cacti in various terracotta pots with soft natural light casting delicate shadows
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant green succulent plant with soft natural light casting gentle shadows on its textured leaves
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant green succulent plant in a terracotta pot with soft natural light casting gentle shadows on the textured leaves
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant sunflower in full bloom with the golden center filling the frame and soft natural light illuminating the petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers with soft natural lighting and a shallow depth of field showcasing the delicate details of each bloom
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted flowers in a floral shop with soft natural light filtering through the window creating a warm and inviting ambiance
+
+Selected prompt: An overhead shot with a wideangle lens capturing a variety of potted plants and flowers arranged on a rustic wooden table Soft natural light illuminates the composition creating warm tones and emphasizing the vibrant colors of the foliage and blooms
+
+Selected prompt: A close up shot with a 50mm lens focused on a blooming sunflower in a field of green foliage with soft natural light and warm tones
+
+Selected prompt: A close up shot with a 50mm lens capturing the delicate details of a vibrant pink flower in full bloom with soft natural light illuminating the petals against a blurred background of lush green foliage
+
+Selected prompt: A closeup shot with a 50mm lens focused on a beautiful bouquet of vibrant sunflowers in a rustic vase set against a soft blurred background of a sunlit garden
+
+Selected prompt: A close up shot with a 50mm lens capturing a delicate pink cherry blossom branch in soft natural light with a blurred background of more blossoms in a garden
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant green succulent plant with soft natural light illuminating the delicate details of its leaves
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman watering a variety of potted plants on a sunny windowsill with soft natural light casting warm tones on the green foliage
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman watering a vibrant green houseplant on a sunny windowsill with soft natural light streaming in from the background
+
+Selected prompt: An overhead shot with a wide angle lens capturing a lush green garden with vibrant flowers in the foreground set against a blurred background of tall trees and blue sky
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant red rose in full bloom with soft natural light highlighting the delicate petals and green foliage in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of sunflowers in a rustic vase set against a soft blurred background of a sunlit garden
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful array of colorful tulips in a garden with soft natural light illuminating the petals and a blurred background of green foliage
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant green succulent plant against a soft blurred background of other plants
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman happily holding a bouquet of colorful wildflowers against a soft blurred background of a sunny meadow
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of assorted wildflowers set against a soft blurred natural background showcasing a mix of delicate pink purple and yellow blooms with lush green foliage
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant green succulent plant with soft natural light filtering through a nearby window highlighting the intricate details of the plants leaves
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant red rose with soft natural light illuminating the petals against a blurred green background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant array of succulents and cacti in a terracotta pot with soft natural light illuminating the textures and colors
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers with a shallow depth of field to create a dreamy soft focus background
+
+Selected prompt: A close up shot with a macro lens capturing the delicate details of a vibrant red rose in full bloom with soft natural light illuminating the petals and a blurred green garden background
+
+Selected prompt: A close up shot with a 50mm lens capturing a blooming sunflower in a field with vibrant yellow petals and a clear blue sky in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful sunflower in a field with the vibrant yellow petals and dark brown center filling the frame
+
+Selected prompt: A close up shot with a 50mm lens focused on a vibrant bouquet of assorted wildflowers against a soft blurred natural background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted flowers in a vintage glass vase on a wooden table with soft natural light filtering through a nearby window
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant sunflower in full bloom with the golden center filling the frame and soft natural light illuminating the petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant green succulent plant on a modern wooden desk with soft natural light illuminating the leaves
+
+Selected prompt: A close up shot of a vibrant red rose in a soft natural light with dew drops glistening on the petals framed with a 50mm lens at the center of the frame
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant purple orchid in full bloom with soft natural light casting a gentle glow on the delicate petals
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant red rose in full bloom with soft natural light illuminating the delicate petals
+
+Selected prompt: A close up shot with a 50mm lens of a lush green succulent garden with soft natural light filtering through the foliage
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers in a rustic vase set against a blurred background of soft natural light
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant red rose in full bloom with soft natural light highlighting its delicate petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a white daisy in full bloom nestled in a lush green meadow with soft natural light filtering through the leaves
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant red hibiscus flower in full bloom with soft natural light illuminating the delicate petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers displayed in a rustic clay pot with soft natural light illuminating the arrangement
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted flowers in a rustic vase placed on a wooden table with soft natural light shining through a nearby window
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of assorted flowers in a rustic ceramic vase placed on a wooden table with soft natural light streaming in from a nearby window
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant array of succulents and cacti arranged on a sunlit windowsill
+
+Selected prompt: A close up shot with a macro lens capturing the delicate details of a vibrant red rose in full bloom with soft natural light illuminating the petals and a blurred green garden background
+
+Selected prompt: A close up shot with a 50mm lens capturing bright red tulips in a garden with soft natural light and a blurred background creating a dreamy atmosphere
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant pink peony in full bloom with soft natural light illuminating the delicate petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers with a shallow depth of field to create a dreamy soft focus background
+
+Selected prompt: A close up shot with a macro lens capturing a beautiful arrangement of vibrant flowers against a soft blurred background
+
+Selected prompt: A medium shot with a 50mm lens a variety of potted plants arranged on a sunny windowsill with soft natural light illuminating the vibrant green leaves and colorful blossoms
+
+Selected prompt: A close up shot with a 50mm macro lens focusing on the delicate petals of a pink peony in soft natural light with blurred green foliage in the background
+
+Selected prompt: A close up shot with a macro lens of a vibrant green succulent plant focused on the intricate patterns of its leaves with soft natural light filtering through a nearby window
+
+Selected prompt: A close up shot with a 50mm macro lens capturing the delicate details of a vibrant sunflower with soft natural light illuminating the petals against a blurred background of green foliage
+
+Selected prompt: A close up shot with a 50mm lens capturing a lush green fern with soft natural light filtering through the leaves creating a serene and tranquil atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing the intricate details of a vibrant red rose in full bloom with soft natural light illuminating the delicate petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers in a rustic sunlit setting
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers in a rustic ceramic vase on a sunlit windowsill
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful blooming sunflower standing tall in a field of vibrant greenery with soft natural light illuminating the scene
+
+Selected prompt: A close up shot using a macro lens focused on a vibrant pink peony flower in full bloom with soft natural light and a blurred background of green foliage
+
+Selected prompt: A close up shot with a 50mm macro lens of a vibrant red tulip in a garden with soft natural light illuminating the flower against a blurred green background
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful bouquet of assorted wildflowers in a mason jar with soft natural light illuminating the delicate petals and foliage
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful blooming sunflower standing tall in a field of vibrant greenery with soft natural light illuminating the scene
+
+Selected prompt: A medium shot of a blooming sunflower in a field captured with a 50mm lens with the flower positioned at the lower third of the frame and soft natural light illuminating the scene
+
+Selected prompt: A close up shot with a macro lens of a vibrant green succulent plant with soft natural light casting delicate shadows on its variegated leaves
+
+Selected prompt: A close up shot of a succulent plant with vibrant green leaves and delicate pink flowers captured with a macro lens to showcase fine details and textures The focal point should be on the center of the plant with soft natural light illuminating the scene
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman tending to a lush indoor garden with a variety of potted plants and flowers arranged on wooden shelving behind her
+
+Selected prompt: A close up shot with a macro lens capturing the delicate details of a blooming sunflower with the bright yellow petals in focus and a soft natural background
+
+Selected prompt: A close up shot with a 50mm lens capturing a colorful bouquet of various flowers in a glass vase set against a softfocused background of a window letting in natural light
+
+Selected prompt: A close up shot of a vibrant red rose in soft natural light with a shallow depth of field and a blurred green garden background captured with a macro lens
+
+Selected prompt: A close up shot with a 50mm macro lens capturing a vibrant red rose in full bloom with soft natural light illuminating the delicate petals and rich green foliage in the background
+
+Selected prompt: A close up shot with a 50mm lens focused on a blooming sunflower in a field of green foliage with soft natural light and warm tones
+
+Selected prompt: A close up shot with a 50mm lens of a woman gently watering a variety of vibrant potted plants on a sunlit balcony with the cityscape in the background
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant orange marigold flower against a soft blurred background of green foliage
+
+Selected prompt: A close up shot with a 50mm lens capturing a colorful bouquet of various flowers in a glass vase set against a softfocused background of a window letting in natural light
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of assorted flowers against a soft focus background capturing the beauty and detail of each petal and blossom
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful bouquet of vibrant sunflowers daisies and roses in a rustic vase on a wooden table Natural light streaming in from the window creating soft warm tones
+
+Selected prompt: A close up shot with a macro lens focusing on the delicate details of a vibrant sunflower against a soft blurred background of lush green foliage
+
+Selected prompt: A wide shot with a 50mm lens of a beautiful garden filled with colorful flowers in the foreground a wooden bench in the middle ground and a small pond with water lilies in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers in a rustic wicker basket set against a softfocused sunlit garden background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant green succulent in a white ceramic pot with soft natural light streaming from the left side of the frame
+
+Selected prompt: A close up shot of a succulent plant with droplets of water on the leaves using a macro lens to capture intricate details and textures with soft natural light emphasizing the vibrant green color
+
+Selected prompt: A close up shot with a macro lens capturing the delicate details of a vibrant pink peony in full bloom against a soft blurred background of green leaves and other flowers
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful bouquet of vibrant sunflowers in the foreground with soft focus on a lush green garden in the background
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant red rose in full bloom with soft natural light and a blurred background of green foliage
+
+Selected prompt: A closeup shot of a blooming pink peony in a soft natural light with a blurred background creating a dreamy effect ideal for a springthemed banner or website header
+
+Selected prompt: A close up shot with a 50mm lens capturing a young woman tending to a vibrant array of potted plants on a sunny windowsill with soft natural light illuminating the scene
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of assorted flowers with soft natural light casting a warm glow on the blooms
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant pink peony in full bloom with soft natural light casting delicate shadows on the petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant assortment of wildflowers in a meadow with soft natural light illuminating the blooms
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman tending to a colorful assortment of potted plants on a sunny windowsill
+
+Selected prompt: A close up shot of a variety of colorful wildflowers in a field with a soft focus background and warm golden hour lighting
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman tending to a variety of potted plants on a sunlit windowsill with the vibrant greenery and colorful blooms in focus against a soft neutral background
+
+Selected prompt: A medium shot taken with a 50mm lens of a woman watering a variety of potted plants on a sunny windowsill the focus is on the womans face and the colorful blooms
+
+Selected prompt: A close up shot with a 50mm macro lens capturing a single delicate white lily blooming in a lush green garden with soft natural light filtering through the leaves
+
+Selected prompt: An overhead shot with a wide angle lens capturing a variety of potted plants arranged on a wooden garden shelf with soft natural light streaming through a nearby window
+
+Selected prompt: A close up shot with a 50mm lens of a young woman watering a variety of potted plants on a sunny windowsill with soft natural light pouring in from the background
+
+Selected prompt: A close up shot with a 50mm lens focused on a vibrant red rose in a garden with soft natural light illuminating the petals and lush green foliage in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of sunflowers against a soft blurred background
+
+Selected prompt: A medium shot taken with a 50mm lens of a woman watering a variety of potted plants on a sunny windowsill the focus is on the womans face and the colorful blooms
+
+Selected prompt: An overhead shot with a wide lens capturing a vibrant array of potted plants and flowers on a sunny patio with soft natural light and warm tones
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of assorted flowers in a rustic ceramic vase placed on a wooden table with soft natural light streaming in from a nearby window
+
+Selected prompt: A close up shot with a 50mm lens of a young woman watering a variety of potted plants on a sunny windowsill with soft natural light pouring in from the background
+
+Selected prompt: A close up shot of a lush green fern plant captured with a macro lens to emphasize the intricate details of the delicate fronds The plant fills the frame with soft natural light illuminating its rich green color
+
+Selected prompt: An overhead shot of a variety of potted succulents and cacti on a rustic wooden table with soft natural light coming from a nearby window
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant green succulent plant with dew drops on its leaves against a blurred background of earthy tones
+
+Selected prompt: A close up shot using a macro lens capturing a vibrant red rose in full bloom with soft natural light illuminating its delicate petals and green foliage in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful arrangement of succulent plants in colorful ceramic pots with soft natural light filtering through a window in the background
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant green succulent plant with its delicate leaves in sharp focus against a soft blurred background
+
+Selected prompt: A close up shot with a 50mm macro lens capturing a vibrant pink peony in full bloom with soft natural light illuminating the delicate petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman watering a vibrant potted plant on a sunny windowsill with soft natural light streaming in from the background
+
+Selected prompt: A close up shot of a vibrant red rose in full bloom captured with a macro lens to showcase delicate details of the petals and stamen The background is softly blurred emphasizing the flower as the focal point
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful sunflower in a field with the vibrant yellow petals and dark brown center filling the frame
+
+Selected prompt: A close up shot with a 50mm lens capturing a variety of colorful wildflowers in a lush meadow with soft natural light shining through the leaves in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant green succulent plant on a windowsill with soft natural light filtering through the leaves
+
+Selected prompt: A close up shot with a 50mm lens capturing a diverse selection of lush green potted plants against a white brick wall with soft natural light illuminating the foliage
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman tending to a vibrant garden with colorful flowers in the foreground and lush greenery in the background
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant bouquet of colorful flowers focusing on the intricate details of the petals in soft natural light
+
+Selected prompt: A close up shot with a 50mm lens of a woman gently watering a variety of vibrant potted plants on a sunlit balcony with the cityscape in the background
+
+Selected prompt: A close up shot of a woman holding a small potted succulent plant with soft natural light coming from the window and a blurred background of other potted plants on a wooden shelf
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful array of colorful wildflowers in a sunlit meadow with soft natural light and a shallow depth of field to create a dreamy effect
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers in a vintage glass jar on a rustic wooden table with soft natural light streaming in from a nearby window
+
+Selected prompt: A close up shot with a 50mm lens of a woman happily tending to various potted plants on a sunny windowsill with lush greenery and colorful blooms in the background
+
+Selected prompt: A closeup shot with a macro lens capturing a vibrant array of wildflowers in a lush field with soft natural light filtering through the foliage
+
+Selected prompt: A close up shot with a 50mm lens of a woman watering a vibrant green houseplant with soft natural light filtering through a nearby window creating a warm and inviting atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful arrangement of colorful spring flowers in bloom with soft natural light streaming in from a nearby window creating a warm and inviting atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted flowers with soft natural light streaming through a window creating a warm and inviting atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers displayed in a rustic clay pot with soft natural light illuminating the arrangement
+
+Selected prompt: A close up shot with a 50mm lens capturing the vibrant colors and delicate details of a blooming pink peony in a soft natural light setting
+
+Selected prompt: A close up shot with a macro lens capturing the delicate details of pink cherry blossom flowers against a soft blurred background of a tranquil garden
+
+Selected prompt: A medium shot with a 50mm lens of a woman happily watering a variety of potted plants on a sunny balcony with colorful flowers in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted flowers in a rustic ceramic vase set against a soft blurred background
+
+Selected prompt: Close up shot of a delicate pink rose with soft natural light captured with a macro lens to highlight the intricate details of the petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a beautiful arrangement of colorful spring flowers in bloom with soft natural light streaming in from a nearby window creating a warm and inviting atmosphere
+
+Selected prompt: A close up shot with a 50mm lens capturing a colorful array of wildflowers in a sunlit meadow with soft natural light highlighting the delicate details of the petals and leaves
+
+Selected prompt: A close up shot with a macro lens capturing the delicate details of a blooming sunflower with the bright yellow petals in focus and a soft natural background
+
+Selected prompt: A close up shot with a macro lens capturing the delicate details of pink cherry blossom flowers against a soft blurred background of a tranquil garden
+
+Selected prompt: A close up shot of a vibrant green succulent plant with soft natural light casting gentle shadows on its textured leaves
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers displayed in a rustic clay pot with soft natural light illuminating the arrangement
+
+Selected prompt: A wide shot with a 50mm lens capturing a field of blooming sunflowers under the soft golden light of the setting sun
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman watering a variety of potted plants on a sunny windowsill with lush green foliage in the background
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of assorted flowers in a rustic vase with soft natural light streaming through a window in the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman tending to a potted plant on a sunny windowsill with soft natural light and warm tones
+
+Selected prompt: A close up shot with a 50mm lens capturing a woman in a greenhouse holding a potted plant and smiling surrounded by a variety of colorful flowers and green foliage
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant red rose in full bloom with soft natural light filtering through the leaves in the background
+
+Selected prompt: A close up shot of a beautiful bouquet of flowers with soft natural light captured with a macro lens to highlight the delicate details and vibrant colors
+
+Selected prompt: A close up shot with a 50mm lens of a vibrant bouquet of assorted flowers arranged in a rustic ceramic vase standing on a wooden table against a blurred background of a sunlit garden
+
+Selected prompt: A close up shot with a 50mm macro lens capturing the intricate details of a vibrant green succulent plant with soft natural light illuminating the delicate patterns of the leaves
+
+Selected prompt: A close up shot of a lush green fern with fronds unfurling captured with a macro lens and soft natural light illuminating the delicate details
+
+Selected prompt: A close up shot with a macro lens of a vibrant red rose in full bloom with soft natural light highlighting the delicate petals and a blurred green garden as the background
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant green succulent plant in a terracotta pot with soft natural light casting gentle shadows on the textured leaves
+
+Selected prompt: A close up shot with a 50mm lens capturing a delicate pink rose in full bloom with soft natural light casting gentle shadows on the petals
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant bouquet of assorted wildflowers in a rustic ceramic vase placed on a weathered wooden table against a blurred natural background
+
+Selected prompt: A medium close up shot with a 50mm lens of a woman in a garden holding a bouquet of vibrant wildflowers with soft natural light illuminating her face and the flowers
+
+Selected prompt: A close up shot with a macro lens capturing a vibrant red rose in full bloom with soft natural light illuminating the delicate petals
+
+Selected prompt: A close up shot with a macro lens capturing a woman watering a variety of green plants on a sunny windowsill with soft natural light illuminating the scene
+
+Selected prompt: A close up shot with a 50mm lens focused on a vibrant bouquet of sunflowers against a soft bokehfilled background
+
+Selected prompt: A close up shot with a 50mm lens of a woman holding a small potted plant with soft natural light illuminating her in a cozy living room background
+
+Selected prompt: A close up shot of a vibrant green succulent plant with soft natural light casting delicate shadows on its textured leaves
+
+Selected prompt: A close up shot of a variety of colorful wildflowers in a meadow with soft natural light and a shallow depth of field shot with a macro lens
+
+Selected prompt: A close up shot of a beautiful sunflower in a field the vibrant yellow petals in sharp focus against a blurred background of green leaves shot with a 50mm lens to capture the details of the flower
+
+Selected prompt: A close up shot with a 50mm lens capturing a vibrant green succulent plant with soft natural light filtering through a nearby window highlighting the intricate details of the plants leaves
+
+Taking a nap....
