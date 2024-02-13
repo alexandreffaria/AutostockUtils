@@ -39,16 +39,10 @@ def sftp_upload_folder(local_folder, remote_folder, hostname, port, username, pa
 
 
 def run_generate_csv_script(local_folder, category):
-    # Get the directory of the current script
-    current_script_dir = os.path.dirname(os.path.abspath(__file__))
-
-    # Construct the full path to the generateCSVwithFileNames.py script
-    generate_csv_script_path = os.path.join(
-        current_script_dir, "generateCSVwithFileNames.py"
-    )
+    generateCSVPath = "../GenerateCSV/generateCSV.py"
     flagCategory = f"--category {category}"
     # Run the generateCSVwithFileNames.py script
-    subprocess.run(["python", generate_csv_script_path, local_folder, flagCategory])
+    subprocess.run(["python", generateCSVPath, local_folder, flagCategory])
 
 
 if __name__ == "__main__":
