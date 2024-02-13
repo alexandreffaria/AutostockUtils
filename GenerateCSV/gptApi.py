@@ -36,7 +36,7 @@ def getGPTResponse(content):
 def getKeywords(title):
     gptKeywords = getGPTResponse(
 f"""
-Me dê 50 palavras chaves que sejam relacionadas a esse título. Separadas por virgulas e ordenadas por ordem de relevância:
+Me dê 40 palavras chaves que sejam relacionadas a esse título. Separadas por virgulas e ordenadas por ordem de relevância:
 {title}
 """
 )
