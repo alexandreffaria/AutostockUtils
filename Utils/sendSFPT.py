@@ -38,11 +38,11 @@ def sftp_upload_folder(local_folder, remote_folder, hostname, port, username, pa
     transport.close()
 
 
-def run_generate_csv_script(local_folder, category):
-    generateCSVPath = "../GenerateCSV/generateCSV.py"
+def run_generate_csv_script(category):
+    generateCSVPath = "/home/meulindux/AutostockUtils/GenerateCSV/generateCSV.py"
     flagCategory = f"--category {category}"
     # Run the generateCSVwithFileNames.py script
-    subprocess.run(["python", generateCSVPath, local_folder, flagCategory])
+    subprocess.run(["python", generateCSVPath, flagCategory])
 
 
 if __name__ == "__main__":
@@ -72,4 +72,4 @@ if __name__ == "__main__":
     )
 
     # Run the second script
-    run_generate_csv_script(args.local_folder, args.category)
+    run_generate_csv_script(args.category)
