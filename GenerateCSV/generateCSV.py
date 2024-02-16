@@ -4,6 +4,7 @@ from gptApi import *
 prompts_folder_path = "Prompts"
 prompts_extension = ".txt"
 
+
 def find_prompt_for_filename(filename_base, prompts_folder_path):
     # Loop over the directory tree
     for root, _, files in os.walk(prompts_folder_path):

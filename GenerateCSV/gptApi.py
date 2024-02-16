@@ -2,13 +2,14 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import os
 
-env_file_path = '/home/meulindux/AutostockUtils/.env'
+env_file_path = "/home/meulindux/AutostockUtils/.env"
 gptModel = "gpt-3.5-turbo-1106"
 
 load_dotenv(env_file_path)
 OpenAI.api_key = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI()
+
 
 def getGPTResponse(content):
     gptPrompt = [
@@ -32,19 +33,25 @@ def getGPTResponse(content):
     return response.choices[0].message.content.strip()
 
 
-
 def getKeywords(title):
     gptKeywords = getGPTResponse(
-f"""
-Me dê 40 palavras chaves que sejam relacionadas a esse título. Separadas por virgulas e ordenadas por ordem de relevância:
+        f"""
+Me dê 40 palavras-chave que sejam relacionadas a esse título. Separadas por virgulas e ordenadas por ordem de relevância. Aqui está um exemplo:
+Título:
+Faces Diversas: Emoções e Determinação em uma Comunidade Inclusiva
+Palavras-chave:
+emoções, determinação, comunidade inclusiva, diversidade, inclusão, aceitação, igualdade, respeito, empoderamento, diferenças, interação social, coletividade, pertencimento, autoestima, autoaceitação, tolerância, solidariedade, expressão emocional, apoio mútuo, convivência harmoniosa, inclusão social, diálogo aberto, compreensão, diversidade cultural, empatia, apoio emocional, autoconfiança, superação, desenvolvimento pessoal, integração, reconhecimento, celebração, pluralidade, bem-estar emocional, autoconhecimento, cidadania, identidade, amor próprio, comunicação eficaz, colaboração, união.
+
+Título:
 {title}
 """
-)
+    )
     return gptKeywords.replace('"', "").replace(".", "")
+
 
 def createTitle(title):
     gptTitle = getGPTResponse(
-f"""
+        f"""
 I'm going to give you a description of an image in English and you should create a title summarizing the description, try to use every important point of the description, 
 Here is an example:
 
@@ -59,5 +66,5 @@ Uma jovem moça aproveitando um momento aconchegante perto de uma lareira lendo 
 Here is the title:
 {title}
 """,
-)
+    )
     return gptTitle.replace('"', "")
