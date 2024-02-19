@@ -10,8 +10,8 @@ def load_credentials():
     load_dotenv()
 
     # Get SFTP username
-    username = os.getenv("SFTP_USERNAME")
-    password = os.getenv("SFTP_PASSWORD")
+    username = os.getenv("SFTP_USERNAME_adobe")
+    password = os.getenv("SFTP_PASSWORD_adobe")
 
     return username, password
 
