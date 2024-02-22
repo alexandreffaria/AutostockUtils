@@ -64,7 +64,7 @@ if __name__ == "__main__":
     if args.platform == 'a':
         hostname = "sftp.contributor.adobestock.com"
     elif args.platform == 'v':
-        hostname = "sftp.vecteezy.com"
+        hostname = "content-ftp.eezy.com"
     port = 22
 
     # Upload files from local folder to remote folder
