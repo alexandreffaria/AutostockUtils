@@ -2,16 +2,21 @@ import os
 from dotenv import load_dotenv
 import paramiko
 import argparse
-import subprocess
 
 
-def load_credentials():
+def load_credentials(platform):
     # Load environment variables from .env file
     load_dotenv()
 
-    # Get SFTP username
-    username = os.getenv("SFTP_USERNAME_adobe")
-    password = os.getenv("SFTP_PASSWORD_adobe")
+    # Get SFTP username and password based on platform
+    if platform == 'a':  # Adobe
+        username = os.getenv("SFTP_USERNAME_adobe")
+        password = os.getenv("SFTP_PASSWORD_adobe")
+    elif platform == 'v':  # Vecteezy
+        username = os.getenv("SFTP_USERNAME_vecteezy")
+        password = os.getenv("SFTP_PASSWORD_vecteezy")
+    else:
+        raise ValueError("Invalid platform. Use 'a' for Adobe or 'v' for Vecteezy.")
 
     return username, password
 
@@ -38,38 +43,28 @@ def sftp_upload_folder(local_folder, remote_folder, hostname, port, username, pa
     transport.close()
 
 
-def run_generate_csv_script(local_folder, category):
-    # Get the directory of the current script
-    current_script_dir = os.path.dirname(os.path.abspath(__file__))
-
-    # Construct the full path to the generateCSVwithFileNames.py script
-    generate_csv_script_path = os.path.join(
-        current_script_dir, "generateCSVwithFileNames.py"
-    )
-    flagCategory = f"--category {category}"
-    # Run the generateCSVwithFileNames.py script
-    subprocess.run(["python", generate_csv_script_path, local_folder, flagCategory])
-
 
 if __name__ == "__main__":
     # Set up command-line arguments
     parser = argparse.ArgumentParser(
         description="Upload files to a remote server via SFTP"
     )
-    parser.add_argument(
-        "local_folder", help="Path to the local folder containing files to upload"
-    )
-    parser.add_argument("--category", help="Category to generate csv later.")
+
+    parser.add_argument("-p", "--platform", help="Platform to connect (a for Adobe, v for Vecteezy)")
+    parser.add_argument("local_folder", help="Path to the local folder containing files to upload")
 
     # Parse command-line arguments
     args = parser.parse_args()
 
     # Load SFTP username from .env file
-    username, password = load_credentials()
+    username, password = load_credentials(args.platform)
 
     # Example usage
     remote_folder_path = "/"
-    hostname = "sftp.contributor.adobestock.com"
+    if args.platform == 'a':
+        hostname = "sftp.contributor.adobestock.com"
+    elif args.platform == 'v':
+        hostname = "sftp.vecteezy.com"
     port = 22
 
     # Upload files from local folder to remote folder
@@ -77,5 +72,4 @@ if __name__ == "__main__":
         args.local_folder, remote_folder_path, hostname, port, username, password
     )
 
-    # Run the second script
-    run_generate_csv_script(args.category)
+   
