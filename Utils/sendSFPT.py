@@ -9,10 +9,10 @@ def load_credentials(platform):
     load_dotenv()
 
     # Get SFTP username and password based on platform
-    if platform == 'a':  # Adobe
+    if platform == "a":  # Adobe
         username = os.getenv("SFTP_USERNAME_adobe")
         password = os.getenv("SFTP_PASSWORD_adobe")
-    elif platform == 'v':  # Vecteezy
+    elif platform == "v":  # Vecteezy
         username = os.getenv("SFTP_USERNAME_vecteezy")
         password = os.getenv("SFTP_PASSWORD_vecteezy")
     else:
@@ -43,15 +43,18 @@ def sftp_upload_folder(local_folder, remote_folder, hostname, port, username, pa
     transport.close()
 
 
-
 if __name__ == "__main__":
     # Set up command-line arguments
     parser = argparse.ArgumentParser(
         description="Upload files to a remote server via SFTP"
     )
 
-    parser.add_argument("-p", "--platform", help="Platform to connect (a for Adobe, v for Vecteezy)")
-    parser.add_argument("local_folder", help="Path to the local folder containing files to upload")
+    parser.add_argument(
+        "-p", "--platform", help="Platform to connect (a for Adobe, v for Vecteezy)"
+    )
+    parser.add_argument(
+        "local_folder", help="Path to the local folder containing files to upload"
+    )
 
     # Parse command-line arguments
     args = parser.parse_args()
@@ -60,10 +63,12 @@ if __name__ == "__main__":
     username, password = load_credentials(args.platform)
 
     # Example usage
-    remote_folder_path = "/"
-    if args.platform == 'a':
+
+    if args.platform == "a":
+        remote_folder_path = "/"
         hostname = "sftp.contributor.adobestock.com"
-    elif args.platform == 'v':
+    elif args.platform == "v":
+        remote_folder_path = "/cm-prod-ftp-bucket/alexandreffaria61364/"
         hostname = "content-ftp.eezy.com"
     port = 22
 
@@ -71,5 +76,3 @@ if __name__ == "__main__":
     sftp_upload_folder(
         args.local_folder, remote_folder_path, hostname, port, username, password
     )
-
-   
