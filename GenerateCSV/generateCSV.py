@@ -1,30 +1,23 @@
 import os, csv, argparse
 from gptApi import *
+from categorias import categorias
 
 prompts_folder_path = "Prompts"
 prompts_extension = ".txt"
 
 
-def find_prompt_for_filename(filename_base, prompts_folder_path):
-    # Loop over the directory tree
-    for root, _, files in os.walk(prompts_folder_path):
-        # Loop over files in the current directory
-        for filename in files:
-            if filename.endswith(".txt"):
-                prompts_file_path = os.path.join(root, filename)
+def get_prompts_file_name(category):
+    category_name = categorias[category]
+    return f"{category}-{category_name}.txt"
 
-                # Read prompts from the file
-                with open(prompts_file_path, "r") as prompts_file:
-                    prompts = prompts_file.read().split("\n")
 
-                # Search for the prompt containing the unique part of the filename
-                for prompt in prompts:
-                    if filename_base in prompt.replace(",", "").replace(
-                        ".", ""
-                    ).replace("'", ""):
-                        print("FOUND")
-                        return prompt.strip()
-    print("NOT FOUND")
+def find_prompt_for_filename(filename_base, prompts_file_path):
+    with open(prompts_file_path, "r") as prompts_file:
+        prompts = prompts_file.readlines()
+    for prompt in prompts:
+        if filename_base in prompt:
+            return prompt.strip()
+    return None
 
 
 def create_csv(folder_path, category, prompts_file_path):
@@ -68,8 +61,20 @@ def create_csv(folder_path, category, prompts_file_path):
                 )
                 # Prompt for title, keywords, and category for each unique filename
 
-                gptTitle = createTitle(fullPrompt, "pt")
-                gptTitle = gptTitle.replace(",", "").replace(".", "").replace("'", "")
+                gptTitle = (
+                    createTitle(fullPrompt, "pt")
+                    .replace("_", "")
+                    .replace(".", "")
+                    .replace(":", "")
+                    .replace(",", "")
+                    .replace("-", "")
+                )
+                gptTitle = (
+                    gptTitle.replace(",", "")
+                    .replace(".", "")
+                    .replace("'", "")
+                    .replace("-", "")
+                )
 
                 gptKeywords = getKeywords(gptTitle, "pt")
 
@@ -120,8 +125,8 @@ if __name__ == "__main__":
     # Parse the command-line arguments
     args = parser.parse_args()
 
-    # Get the prompts file path based on the provided category
-    prompts_file_path = "promptGeneratorOutput/"
+    prompts_file_name = get_prompts_file_name(args.category)
+    prompts_file_path = os.path.join(prompts_folder_path, prompts_file_name)
 
     # Call the function to create the CSV file
     create_csv(args.folder_path, args.category, prompts_file_path)
