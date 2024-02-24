@@ -34,7 +34,7 @@ def getGPTResponse(content):
 
 
 def getKeywords(title, language):
-    if language = "pt":
+    if language == "pt":
         gptKeywords = getGPTResponse(
         f"""
 Me dê 40 palavras-chave que sejam relacionadas a esse título. Separadas por virgulas e ordenadas por ordem de relevância. Aqui está um exemplo:
@@ -65,7 +65,7 @@ Título:
         return gptKeywords.replace('"', "").replace(".", "")
 
 def createTitle(title, language):
-    if language = "pt":   
+    if language == "pt":   
         gptTitle = getGPTResponse(
             f"""
 I'm going to give you a description of an image in English and you should create a title summarizing the description, try to use every important point of the description, 
