@@ -68,10 +68,10 @@ def create_csv(folder_path, category, prompts_file_path):
                 )
                 # Prompt for title, keywords, and category for each unique filename
 
-                gptTitle = createTitle(fullPrompt)
+                gptTitle = createTitle(fullPrompt, "pt")
                 gptTitle = gptTitle.replace(",", "").replace(".", "").replace("'", "")
 
-                gptKeywords = getKeywords(gptTitle)
+                gptKeywords = getKeywords(gptTitle, "pt")
 
                 # Remove leading and trailing whitespaces
                 gptTitle = gptTitle.strip()
