@@ -60,8 +60,9 @@ Keywords:
 Young woman, Cozy moment, Book, Blanket, Soft, Natural light, Embrace, Fireplace, Relaxation, Peaceful, Tranquil, Serene, Comfort, Reading, Contentment, Warmth, Leisure, Enjoyment, Atmosphere, Relaxing, Serenity, Quiet, Home, Coziness, Happiness, Content, Beauty, Calm, Serenity, Joy, Indoors, Female, Lifestyle, Reading by the fireplace, Comfortable, Warm blanket, Quietude, Illumination, Pleasant, Firelight, Relax, Relaxed
 Título:
 {title}
-***The keywords should be comma separated***
 ***The keywords should be ordered by relevancy***
+***The keywords should be comma separated***
+ONLY AWNSER WITH COMMA SEPARATED KEYWORDS AND NOTHING ELSE!
 """
         )
         return gptKeywords.replace('"', "").replace(".", "")
@@ -105,7 +106,7 @@ Young Woman Embraces Cozy Moment with Book and Blanket, Bathed in Soft Natural L
 
 
 Here is the title:
-{title}
+{prompt}
 """
         )
         return gptTitle.replace('"', "")
