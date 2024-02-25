@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import paramiko
 import argparse
+from tqdm import tqdm
 
 
 def load_credentials(platform):
@@ -29,14 +30,20 @@ def sftp_upload_folder(local_folder, remote_folder, hostname, port, username, pa
     # Create an SFTP client
     sftp = paramiko.SFTPClient.from_transport(transport)
 
-    # Iterate through all files in the local folder
-    for local_file_name in os.listdir(local_folder):
-        local_file_path = os.path.join(local_folder, local_file_name)
-        remote_file_path = os.path.join(remote_folder, local_file_name)
+    # Get total number of files for progress bar
+    num_files = len(os.listdir(local_folder))
 
-        # Upload each file
-        sftp.put(local_file_path, remote_file_path)
-        print("Uploaded:", local_file_name)
+    # Use tqdm for progress bar
+    with tqdm(total=num_files, desc="Uploading", unit="file") as pbar:
+        # Iterate through all files in the local folder
+        for local_file_name in os.listdir(local_folder):
+            local_file_path = os.path.join(local_folder, local_file_name)
+            remote_file_path = os.path.join(remote_folder, local_file_name)
+
+            # Upload each file
+            sftp.put(local_file_path, remote_file_path)
+            pbar.update(1)  # Update progress bar
+            pbar.set_postfix(file=local_file_name)
 
     # Close the connections
     sftp.close()
