@@ -31,7 +31,7 @@ def clean_text(text):
 
 def create_csv(folder_path, category, prompts_file_path):
     parent_folder_name = os.path.basename(
-        os.path.normpath(os.path.join(folder_path, ".."))
+        os.path.normpath(os.path.join(folder_path, "../.."))
     )
 
     # Get a list of all files in the specified folder
@@ -41,7 +41,7 @@ def create_csv(folder_path, category, prompts_file_path):
         if os.path.isfile(os.path.join(folder_path, f))
     ]
 
-    csv_file_name = f"{parent_folder_name}_output.csv"
+    csv_file_name = f"{parent_folder_name}_vect_output.csv"
 
     # Create a CSV file and write the header
     with open(csv_file_name, "w", newline="") as csvfile:
@@ -58,21 +58,25 @@ def create_csv(folder_path, category, prompts_file_path):
         for file in tqdm(files, desc="Processing files", unit="file"):
             # Process each unique filename
             filename_base = os.path.splitext(file)[0]  # Remove file extension
+            filename_base_prompt = (
+                file[8:63].rsplit("_", 1)[0].replace("_", " ")
+                if "_" in file[63:]
+                else file[63:]
+            )
 
             if filename_base not in filename_info:
                 # Increment the counter for unique filenames
                 current_file_count += 1
                 fullPrompt = find_prompt_for_filename(
-                    filename_base.strip(), prompts_file_path
+                    filename_base_prompt.strip(), prompts_file_path
                 )
 
                 # Prompt for title, keywords, and category for each unique filename
                 gptTitle = createTitle(fullPrompt, "en")
-                gptKeywords = getKeywords(gptTitle, "en")
+                gptKeywords = getKeywords(fullPrompt, "en").replace("-", "")
 
                 # Clean title and keywords
                 gptTitle = clean_text(gptTitle)
-                gptKeywords = clean_text(gptKeywords)
 
                 # Store title, keywords, and category for the unique filename
                 filename_info[filename_base] = {
