@@ -53,12 +53,12 @@ Título:
     else:
         gptKeywords = getGPTResponse(
             f"""
-Give me 40 keywords related to this title. Here is an example:
-Title:
-Young Woman Embraces Cozy Moment with Book and Blanket, Bathed in Soft Natural Light
+Give me 40 keywords related to this description. Here is an example:
+Description:
+A close up shot with a 50mm lens capturing a young woman enjoying a cozy moment by the fireplace with a book in hand and a warm blanket draped around her shoulders Soft natural light illuminates the scene creating a tranquil and peaceful atmosphere
 Keywords:
 Young woman, Cozy moment, Book, Blanket, Soft, Natural light, Embrace, Fireplace, Relaxation, Peaceful, Tranquil, Serene, Comfort, Reading, Contentment, Warmth, Leisure, Enjoyment, Atmosphere, Relaxing, Serenity, Quiet, Home, Coziness, Happiness, Content, Beauty, Calm, Serenity, Joy, Indoors, Female, Lifestyle, Reading by the fireplace, Comfortable, Warm blanket, Quietude, Illumination, Pleasant, Firelight, Relax, Relaxed
-Título:
+Description:
 {title}
 ***The keywords should be ordered by relevancy***
 ***The keywords should be comma separated***
