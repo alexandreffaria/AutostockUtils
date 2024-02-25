@@ -34,9 +34,11 @@ def getGPTResponse(content):
 
 
 def getKeywords(title, language):
+    if title == "":
+        return ""
     if language == "pt":
         gptKeywords = getGPTResponse(
-        f"""
+            f"""
 Me dê 40 palavras-chave que sejam relacionadas a esse título. Separadas por virgulas e ordenadas por ordem de relevância. Aqui está um exemplo:
 Título:
 Faces Diversas: Emoções e Determinação em uma Comunidade Inclusiva
@@ -50,7 +52,7 @@ Título:
         return gptKeywords.replace('"', "").replace(".", "")
     else:
         gptKeywords = getGPTResponse(
-        f"""
+            f"""
 Give me 40 keywords related to this title. Here is an example:
 Title:
 Young Woman Embraces Cozy Moment with Book and Blanket, Bathed in Soft Natural Light
@@ -64,8 +66,12 @@ Título:
         )
         return gptKeywords.replace('"', "").replace(".", "")
 
-def createTitle(title, language):
-    if language == "pt":   
+
+def createTitle(prompt, language):
+    if not prompt:
+        return ""
+    if language == "pt":
+        print(prompt)
         gptTitle = getGPTResponse(
             f"""
 I'm going to give you a description of an image in English and you should create a title summarizing the description, try to use every important point of the description, 
@@ -80,9 +86,9 @@ Uma jovem moça aproveitando um momento aconchegante perto de uma lareira lendo 
 ***the title should be in Brazilian Portuguese***
 
 Here is the title:
-{title}
+{prompt}
 """
-)
+        )
         return gptTitle.replace('"', "")
     else:
         gptTitle = getGPTResponse(
@@ -101,7 +107,5 @@ Young Woman Embraces Cozy Moment with Book and Blanket, Bathed in Soft Natural L
 Here is the title:
 {title}
 """
-)
+        )
         return gptTitle.replace('"', "")
-
-    
