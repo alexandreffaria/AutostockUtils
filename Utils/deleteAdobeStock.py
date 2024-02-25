@@ -7,27 +7,25 @@ if len(sys.argv) != 2:
     sys.exit(1)
 
 
-def deleteWholePage(nPages):
+def deleteWholePage(nPages, pc):
+    if pc == "medusa":
+        selectAll = (1165, 1355)
+        deleteIcon = (1871, 1421)
+        confirmDelete = (999, 1484)
+    if pc == "oldboi":
+        selectAll = (1197, 316)
+        deleteIcon = (1781, 328)
+        confirmDelete = (914, 661)
     for _ in range(nPages):
-        pyau.moveTo(1150, 1425)
+        pyau.moveTo(selectAll)
         pyau.click()
         time.sleep(1)
-        pyau.moveTo(1870, 1485)
+        pyau.moveTo(deleteIcon)
         pyau.click()
-        pyau.moveTo(944, 1479)
+        pyau.moveTo(confirmDelete)
         time.sleep(1)
         pyau.click()
         time.sleep(15)
 
 
-deleteWholePage(int(sys.argv[1]))
-
-# while True:
-
-#     # Get the current mouse position
-#     x, y = pyau.position()
-
-#     # Print the coordinates
-#     print("Mouse X coordinate:", x)
-#     print("Mouse Y coordinate:", y)
-#     time.sleep(0.5)
+deleteWholePage(int(sys.argv[1]), sys.argv[2])
