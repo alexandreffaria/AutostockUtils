@@ -14,9 +14,7 @@ def get_prompts_file_name(category):
 def find_prompt_for_filename(filename_base, prompts_file_path):
     with open(prompts_file_path, "r") as prompts_file:
         prompts = prompts_file.readlines()
-        print(filename_base)
     for prompt in prompts:
-        print(prompt)
         if filename_base in prompt:
             print(f"FOUND: {filename_base}")
             return prompt.strip()
