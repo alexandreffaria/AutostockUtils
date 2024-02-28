@@ -74,9 +74,10 @@ def create_csv(folder_path, category, prompts_file_path):
                 # Prompt for title, keywords, and category for each unique filename
                 gptTitle = createTitle(fullPrompt, "en")
                 gptKeywords = getKeywords(fullPrompt, "en").replace("-", "")
-
+                gptKeywords = "ai generated," + gptKeywords
                 # Clean title and keywords
                 gptTitle = clean_text(gptTitle)
+                gptTitle = "AI generated " + gptTitle
 
                 # Store title, keywords, and category for the unique filename
                 filename_info[filename_base] = {
