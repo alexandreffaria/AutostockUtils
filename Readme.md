@@ -1,21 +1,4 @@
-# step 1
+[realesgran](https://github.com/xinntao/Real-ESRGAN-ncnn-vulkan/releases/tag/v0.2.0)
 
-run sendSFPT.py
+realesrgan-ncnn-vulkan.exe -i input.jpg -o output.png -n realesrgan-x4plus
 
-# step 2
-
-Let MoneyMachine do it's thing
-
-# step 3
-
-Profit.
-
-## to dos
-
-[ ] Intruduce upscayl to get cli pipe line
-
-[ ] Cron something to check for new folders and upload them
-[ ] Multiple prompts.txt? One topic per day? How to avoid duplicates
-[ ] Logging
-[ ] Restartability, via logs?
-[ ] Singularity
