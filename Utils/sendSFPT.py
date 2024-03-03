@@ -1,24 +1,23 @@
 import os
 from dotenv import load_dotenv
 import paramiko
-import argparse
 from tqdm import tqdm
+import tkinter as tk
+from tkinter import filedialog
+
+def getFolder():
+    root = tk.Tk()
+    root.withdraw()
+
+    folderPath = filedialog.askdirectory()
+
+    return folderPath
 
 
-def load_credentials(platform):
-    # Load environment variables from .env file
+def load_credentials():
     load_dotenv()
-
-    # Get SFTP username and password based on platform
-    if platform == "a":  # Adobe
-        username = os.getenv("SFTP_USERNAME_adobe")
-        password = os.getenv("SFTP_PASSWORD_adobe")
-    elif platform == "v":  # Vecteezy
-        username = os.getenv("SFTP_USERNAME_vecteezy")
-        password = os.getenv("SFTP_PASSWORD_vecteezy")
-    else:
-        raise ValueError("Invalid platform. Use 'a' for Adobe or 'v' for Vecteezy.")
-
+    username = os.getenv("SFTP_USERNAME_adobe")
+    password = os.getenv("SFTP_PASSWORD_adobe")
     return username, password
 
 
@@ -51,35 +50,15 @@ def sftp_upload_folder(local_folder, remote_folder, hostname, port, username, pa
 
 
 if __name__ == "__main__":
-    # Set up command-line arguments
-    parser = argparse.ArgumentParser(
-        description="Upload files to a remote server via SFTP"
-    )
-
-    parser.add_argument(
-        "-p", "--platform", help="Platform to connect (a for Adobe, v for Vecteezy)"
-    )
-    parser.add_argument(
-        "local_folder", help="Path to the local folder containing files to upload"
-    )
-
-    # Parse command-line arguments
-    args = parser.parse_args()
-
     # Load SFTP username from .env file
-    username, password = load_credentials(args.platform)
-
-    # Example usage
-
-    if args.platform == "a":
-        remote_folder_path = "/"
-        hostname = "sftp.contributor.adobestock.com"
-    elif args.platform == "v":
-        remote_folder_path = "/cm-prod-ftp-bucket/alexandreffaria61364/"
-        hostname = "content-ftp.eezy.com"
+    username, password = load_credentials()
+   
+    remote_folder_path = "/"
+    hostname = "sftp.contributor.adobestock.com"
     port = 22
 
+    imageFolder = getFolder()
     # Upload files from local folder to remote folder
     sftp_upload_folder(
-        args.local_folder, remote_folder_path, hostname, port, username, password
+        imageFolder, remote_folder_path, hostname, port, username, password
     )
