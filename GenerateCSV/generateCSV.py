@@ -1,6 +1,5 @@
 import os
 import csv
-import argparse
 import tkinter as tk
 from tkinter import filedialog
 from gptApi import *
@@ -9,15 +8,18 @@ from categorias import categorias
 prompts_folder_path = "Prompts"
 prompts_extension = ".txt"
 
+
 def getFolder():
     root = tk.Tk()
     root.withdraw()
     folderPath = filedialog.askdirectory()
     return folderPath
 
+
 def get_prompts_file_name(category):
     category_name = categorias[category]
     return f"{category}-{category_name}.txt"
+
 
 def find_prompt_for_filename(filename_base, prompts_file_path):
     with open(prompts_file_path, "r") as prompts_file:
@@ -27,6 +29,7 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
             print(f"FOUND: {filename_base}")
             return prompt.strip()
     return None
+
 
 def create_csv(folder_path, category, prompts_file_path):
     parent_folder_name = os.path.basename(
@@ -119,13 +122,16 @@ def create_csv(folder_path, category, prompts_file_path):
     print(f"CSV file created successfully: {os.path.abspath(csv_file_name)}")
     print(f"Processing complete. {len(set(files))} unique files processed.")
 
+
 def main():
     root = tk.Tk()
     root.title("Select Category and Folder")
 
     def process():
         selected_category = category_var.get()
-        category_key = selected_category.split('-')[0]  # Extracting the category key (number)
+        category_key = selected_category.split("-")[
+            0
+        ]  # Extracting the category key (number)
         category = int(category_key)
         folder_path = folder_var.get()
         prompts_file_name = get_prompts_file_name(category)
@@ -144,9 +150,11 @@ def main():
     folder_label = tk.Label(root, text="Select Folder:")
     folder_label.grid(row=1, column=0, padx=10, pady=5)
     folder_var = tk.StringVar(root)
-    folder_entry = tk.Entry(root, textvariable=folder_var, state='disabled')
+    folder_entry = tk.Entry(root, textvariable=folder_var, state="disabled")
     folder_entry.grid(row=1, column=1, padx=10, pady=5)
-    folder_button = tk.Button(root, text="Browse", command=lambda: folder_var.set(getFolder()))
+    folder_button = tk.Button(
+        root, text="Browse", command=lambda: folder_var.set(getFolder())
+    )
     folder_button.grid(row=1, column=2, padx=10, pady=5)
 
     # Process Button
@@ -154,6 +162,7 @@ def main():
     process_button.grid(row=2, column=0, columnspan=3, padx=10, pady=5)
 
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()
