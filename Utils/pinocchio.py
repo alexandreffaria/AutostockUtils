@@ -1,4 +1,5 @@
 import pyautogui as pyau
+import pyperclip
 import time
 import sys
 import random
@@ -29,8 +30,8 @@ def sendPrompt(prompt):
 
     pyau.click()
     time.sleep(random.uniform(3,10))
-
-    pyau.typewrite("/imagine")
+    pyperclip.copy("/imagine")
+    pyau.hotkey('ctrl', 'v')
     time.sleep(random.uniform(3,10))
 
     pyau.press("enter")
