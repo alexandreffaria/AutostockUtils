@@ -11,6 +11,13 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import Qt
 
+# Dark mode stylesheet
+dark_stylesheet = """
+    QGraphicsView {
+        background-color: #2b2b2b;
+        color: #f0f0f0;
+    }
+"""
 
 class ImageViewer(QGraphicsView):
     def __init__(self, folder_path, files):
@@ -136,6 +143,7 @@ if __name__ == "__main__":
     ]
 
     app = QApplication(sys.argv)
+    app.setStyleSheet(dark_stylesheet)  # Apply dark mode stylesheet
     viewer = ImageViewer(folder_path, files)
 
     # Start in fullscreen mode
