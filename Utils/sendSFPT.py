@@ -5,11 +5,12 @@ from tqdm import tqdm
 import tkinter as tk
 from tkinter import filedialog
 
+
 def getFolder():
     root = tk.Tk()
     root.withdraw()
 
-    folderPath = filedialog.askdirectory()
+    folderPath = filedialog.askdirectory(initialdir="/mnt/a/Projetos/Autostock/")
 
     return folderPath
 
@@ -52,7 +53,7 @@ def sftp_upload_folder(local_folder, remote_folder, hostname, port, username, pa
 if __name__ == "__main__":
     # Load SFTP username from .env file
     username, password = load_credentials()
-   
+
     remote_folder_path = "/"
     hostname = "sftp.contributor.adobestock.com"
     port = 22

@@ -1,4 +1,5 @@
 import os
+import sys
 import csv
 import tkinter as tk
 from tkinter import filedialog
@@ -12,7 +13,7 @@ prompts_extension = ".txt"
 def getFolder():
     root = tk.Tk()
     root.withdraw()
-    folderPath = filedialog.askdirectory()
+    folderPath = filedialog.askdirectory(initialdir="/mnt/a/Projetos/Autostock/")
     return folderPath
 
 
@@ -138,30 +139,34 @@ def main():
         prompts_file_path = os.path.join(prompts_folder_path, prompts_file_name)
         create_csv(folder_path, category, prompts_file_path)
 
-    # Category Selection
-    category_label = tk.Label(root, text="Select a Category:")
-    category_label.grid(row=0, column=0, padx=10, pady=5)
-    category_var = tk.StringVar(root)
-    category_options = [f"{key}-{value}" for key, value in categorias.items()]
-    category_dropdown = tk.OptionMenu(root, category_var, *category_options)
-    category_dropdown.grid(row=0, column=1, padx=10, pady=5)
+    try:
+        # Category Selection
+        category_label = tk.Label(root, text="Select a Category:")
+        category_label.grid(row=0, column=0, padx=10, pady=5)
+        category_var = tk.StringVar(root)
+        category_options = [f"{key}-{value}" for key, value in categorias.items()]
+        category_dropdown = tk.OptionMenu(root, category_var, *category_options)
+        category_dropdown.grid(row=0, column=1, padx=10, pady=5)
 
-    # Folder Selection
-    folder_label = tk.Label(root, text="Select Folder:")
-    folder_label.grid(row=1, column=0, padx=10, pady=5)
-    folder_var = tk.StringVar(root)
-    folder_entry = tk.Entry(root, textvariable=folder_var, state="disabled")
-    folder_entry.grid(row=1, column=1, padx=10, pady=5)
-    folder_button = tk.Button(
-        root, text="Browse", command=lambda: folder_var.set(getFolder())
-    )
-    folder_button.grid(row=1, column=2, padx=10, pady=5)
+        # Folder Selection
+        folder_label = tk.Label(root, text="Select Folder:")
+        folder_label.grid(row=1, column=0, padx=10, pady=5)
+        folder_var = tk.StringVar(root)
+        folder_entry = tk.Entry(root, textvariable=folder_var, state="disabled")
+        folder_entry.grid(row=1, column=1, padx=10, pady=5)
+        folder_button = tk.Button(
+            root, text="Browse", command=lambda: folder_var.set(getFolder())
+        )
+        folder_button.grid(row=1, column=2, padx=10, pady=5)
 
-    # Process Button
-    process_button = tk.Button(root, text="Process", command=process)
-    process_button.grid(row=2, column=0, columnspan=3, padx=10, pady=5)
+        # Process Button
+        process_button = tk.Button(root, text="Process", command=process)
+        process_button.grid(row=2, column=0, columnspan=3, padx=10, pady=5)
 
-    root.mainloop()
+        root.mainloop()
+        sys.exit()
+    except KeyboardInterrupt:
+        root.destroy()  # Explicitly destroy the Tkinter root window
 
 
 if __name__ == "__main__":
