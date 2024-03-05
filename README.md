@@ -7,13 +7,12 @@ Of course you could always sell stock images on the internet. But now Adobe Stoc
 
 ## how we do?
 
-* Schedule everyDayImHustlin.sh to run everyday at 8:00
-it makes midjourney images until 21:00, pinocchio.py has to sleep, and eat for that matter, he takes a lunch break.
+* Schedule __everyDayImHustlin.sh__ to run everyday at 8:00, it makes midjourney images until 21:00. __pinocchio.py__ has to sleep, and eat for that matter, he takes a lunch break.
 * Download your images from midjourney websitio
-* qc.py the images to delete the insanity
+* __qc.py__ the images to delete and fix the insanity
 * upscale them using upscayl (native implementation coming soon!)
-* sendSFTP.py to send them to adobe. (put your info into a .env)
-* generateCSV.py to create the metadata
+* __sendSFTP.py__ to send them to Adobe. (put your info into a .env)
+* __generateCSV.py__ to create the metadata
 * Profit! 💰
 
 
