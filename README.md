@@ -23,5 +23,20 @@ Of course you could always sell stock images on the internet. But now Adobe Stoc
 * __Utils/getMouseCoordinates.py__ - Grabs mouse coordinates to help setup macros.
 * __Utils/pinocchio.py__ - Sends the prompts to midjourney during the day and pretends to be a real boi. (midjourney doesn't like robots.)
 
+## 🤝 Contributing
+
+Just clone and install the libs:
+- tkinter
+- openai
+- dotenv
+- pyautogui
+- pyperclip
+- argparse
+- paramiko
+- tqdm
+- keyboard (gerMouseCoordinates.py)
+
+
+
 ---
 https://github.com/Sanster/IOPaint/releases/tag/iopaint-1.0.0b2
