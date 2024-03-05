@@ -15,6 +15,13 @@ Of course you could always sell stock images on the internet. But now Adobe Stoc
 * __generateCSV.py__ to create the metadata
 * Profit! 💰
 
+### Other qualities of life: 🕊
+
+* __Utils/Autostock.atn__ - Photoshop action to generate content aware fill on letter box images.
+* __Utils/promptGenerator.py__ - Generates an specified amount of prompts base on the strategy
+* __Utils/generatePromptsForAllCategories.sh__ - Loops the promptGenerator on all categories.
+* __Utils/getMouseCoordinates.py__ - Grabs mouse coordinates to help setup macros.
+* __Utils/pinocchio.py__ - Sends the prompts to midjourney during the day and pretends to be a real boi. (midjourney doesn't like robots.)
 
 ---
 https://github.com/Sanster/IOPaint/releases/tag/iopaint-1.0.0b2
