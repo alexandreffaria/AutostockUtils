@@ -1,9 +1,9 @@
 # AutoStock Utils 🤖
 ## what it do?
-This badboi makes images(midjourney) and the csv metadata(gpt), so you can sell images forever. Of course robotos are not very smart yet, so you gonna have to do some qc. But that's basically it.
+This badboi makes images(midjourney) and the CSV metadata(gpt), so you can sell images forever. Of course, robotos are not very smart yet, so you gonna have to do some qc. But that's basically it.
 
 ## why it do?
-Of course you could always sell stock images on the internet. But now Adobe Stock is accepting AI generated images, and you can be the most prolific stock photographer in the planet. 
+Of course, you could always sell stock images on the internet. But now Adobe Stock is accepting AI-generated images, and you can be the most prolific stock photographer on the planet. 
 
 ## how we do?
 
@@ -17,13 +17,13 @@ Of course you could always sell stock images on the internet. But now Adobe Stoc
 
 ### Other qualities of life: 🕊
 
-* __Utils/Autostock.atn__ - Photoshop action to generate content aware fill on letter box images.
-* __Utils/promptGenerator.py__ - Generates an specified amount of prompts base on the strategy
+* __Utils/Autostock.atn__ - Photoshop action to generate content-aware fill on letter box images.
+* __Utils/promptGenerator.py__ - Generates a specified amount of prompts based on the strategy
 * __Utils/generatePromptsForAllCategories.sh__ - Loops the promptGenerator on all categories.
-* __Utils/getMouseCoordinates.py__ - Grabs mouse coordinates to help setup macros.
+* __Utils/getMouseCoordinates.py__ - Grabs mouse coordinates to help set up macros.
 * __Utils/pinocchio.py__ - Sends the prompts to midjourney during the day and pretends to be a real boi. (midjourney doesn't like robots.)
 
-## 🤝 Contributing
+### 🤝 Contributing
 
 Just clone and install the libs:
 - tkinter
@@ -36,6 +36,11 @@ Just clone and install the libs:
 - tqdm
 - keyboard (gerMouseCoordinates.py)
 
+### To-do's
+- [ ] Integrate upscaling 
+- [ ] Integrate inpainting
+- [ ] GUI
+- [ ] Connect everything together
 
 
 ---
