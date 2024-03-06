@@ -10,6 +10,7 @@ Of course, you could always sell stock images on the internet. But now Adobe Sto
 * Schedule __everyDayImHustlin.sh__ to run everyday at 8:00, it makes midjourney images until 21:00. __pinocchio.py__ has to sleep, and eat for that matter, he takes a lunch break.
 * Download your images from midjourney websitio
 * __qc.py__ the images to delete and fix the insanity
+* Fix images that come up with letterbox in photoshop with __Utils/Autostock.atn__
 * upscale them using upscayl (native implementation coming soon!)
 * __sendSFTP.py__ to send them to Adobe. (put your info into a .env)
 * __generateCSV.py__ to create the metadata
