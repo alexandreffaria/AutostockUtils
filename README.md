@@ -34,7 +34,7 @@ Just clone and install the libs:
 - argparse
 - paramiko
 - tqdm
-- keyboard (gerMouseCoordinates.py)
+- keyboard (getMouseCoordinates.py)
 
 ### To-do's
 - [ ] Integrate upscaling 
