@@ -40,7 +40,7 @@ def sendPrompt(prompt):
     pyau.typewrite(prompt.strip())
     time.sleep(random.uniform(3,10))
     pyau.typewrite(" shot by hasselblad X1D, editorial photography  ")
-    pyau.typewrite("--ar 16:9 --style raw")
+    pyau.typewrite("--ar 2:1 --style raw")
 
     pyau.press("enter")
 
