@@ -9,12 +9,16 @@ if len(sys.argv) != 2:
     print("Usage: python3 pinocchio.py <prompt list.txt>")
     sys.exit(1)
 
+params = "--ar 2:1 --style raw"
+
 def isLunchBreak():
     current_time = datetime.now().time()
     randomMinute = int(random.uniform(1,10))
     lunch_start = datetime.strptime(f"12:0{randomMinute}", "%H:%M").time()
     randomMinute = int(random.uniform(1,10))
     lunch_end = datetime.strptime(f"13:0{randomMinute}", "%H:%M").time()
+    global params
+    params = "--ar 1:2 --style raw"
     return lunch_start <= current_time <= lunch_end
 
 def isNapTime():
@@ -26,6 +30,7 @@ def isNapTime():
     return current_time < awake_start or current_time > awake_end
 
 def sendPrompt(prompt):
+    global params
     pyau.moveTo(550,720)
 
     pyau.click()
@@ -40,7 +45,7 @@ def sendPrompt(prompt):
     pyau.typewrite(prompt.strip())
     time.sleep(random.uniform(3,10))
     pyau.typewrite(" shot by hasselblad X1D, editorial photography  ")
-    pyau.typewrite("--ar 2:1 --style raw")
+    pyau.typewrite(params)
 
     pyau.press("enter")
 
