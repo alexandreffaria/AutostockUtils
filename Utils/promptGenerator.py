@@ -59,8 +59,8 @@ def getGPTResponse(model, content):
         temperature=1,
         max_tokens=256,
         top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0,
+        frequency_penalty=1,
+        presence_penalty=1,
     )
 
     return response.choices[0].message.content.strip().replace("'", "").replace(",", "").replace(".", "").replace("-", "").replace("(", "").replace(")", "")
