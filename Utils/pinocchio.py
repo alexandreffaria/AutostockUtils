@@ -9,7 +9,7 @@ if len(sys.argv) != 2:
     print("Usage: python3 pinocchio.py <prompt list.txt>")
     sys.exit(1)
 
-params = "--ar 2:1 --style raw"
+params = "--ar 2:1 --chaos 25 "
 
 def isLunchBreak():
     current_time = datetime.now().time()
@@ -18,7 +18,7 @@ def isLunchBreak():
     randomMinute = int(random.uniform(1,10))
     lunch_end = datetime.strptime(f"13:0{randomMinute}", "%H:%M").time()
     global params
-    params = "--ar 1:2 --style raw"
+    params = "--ar 1:2 --chaos 25"
     return lunch_start <= current_time <= lunch_end
 
 def isNapTime():
