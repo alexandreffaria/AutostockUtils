@@ -79,7 +79,7 @@ People of different ethnicities joining hands
 Homeless person holding a sign on a city street
 Protesters holding signs in a crowded city street
 People of diverse backgrounds holding hands
-A person holding a sign with the word Equality
+A person holding a sign with the word "Equality"
 Group of diverse people standing together with their arms linked
 People holding hands in a circle
 People from diverse backgrounds holding hands
@@ -156,7 +156,7 @@ People of diverse ethnicities holding hands
 Group of diverse people holding hands in a circle
 People of different ethnicities holding hands
 People from diverse cultural backgrounds standing together
-Homeless person sitting on a city sidewalk
+"Homeless person sitting on a city sidewalk"
 Protesters holding signs and chanting slogans
 People from diverse backgrounds holding hands
 People from diverse backgrounds holding hands
@@ -187,7 +187,7 @@ A person holding a protest sign
 Group of diverse people standing together supporting each other
 Group of diverse people holding hands in unity
 People of different ethnicities and generations gathered around a table with diverse food
-People from different cultural backgrounds holding hands
+"People from different cultural backgrounds holding hands"
 People from diverse backgrounds embracing each other
 People from diverse backgrounds engaging in meaningful conversation
 People of diverse ethnicities and cultures holding hands
@@ -243,7 +243,7 @@ Illustration of a diverse group of people holding hands in unity
 People from diverse backgrounds holding hands
 People of diverse backgrounds standing together
 People from diverse backgrounds holding hands in unity
-Hands holding a globe connected by network lines
+"Hands holding a globe connected by network lines"
 Group of diverse hands holding each other in unity
 Protestors holding signs at a demonstration
 People of diverse backgrounds joining hands in unity
@@ -352,7 +352,7 @@ People from diverse backgrounds holding hands
 Protest signs with diverse people rallying
 A group of diverse people holding hands in unity
 Group of diverse people holding hands in front of a globe
-A person holding a sign with the words Equality for All
+A person holding a sign with the words "Equality for All"
 Group of diverse people holding hands in unity
 Group of diverse people holding hands in a circle
 Diverse group of people holding hands
@@ -463,9 +463,9 @@ Group of diverse people holding hands in unity
 Protestors holding signs in a city street
 Homeless person sitting on the sidewalk with a cardboard sign
 A diverse group of people holding hands in unity
-People of diverse backgrounds standing together in unity
+"People of diverse backgrounds standing together in unity"
 Homeless person sitting on a street bench
-Homeless person sitting on concrete sidewalk with cardboard sign
+"Homeless person sitting on concrete sidewalk with cardboard sign"
 Group of diverse people holding hands in unity
 People of different ethnicities holding hands
 People of diverse backgrounds holding hands
