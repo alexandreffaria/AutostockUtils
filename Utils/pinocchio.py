@@ -16,11 +16,7 @@ def isLunchBreak():
     lunch_start = datetime.strptime(f"12:0{randomMinute}", "%H:%M").time()
     randomMinute = int(random.uniform(1,10))
     lunch_end = datetime.strptime(f"13:0{randomMinute}", "%H:%M").time()
-    if lunch_start <= current_time <= lunch_end:
-        params = " --ar 1:2 --chaos 25 "
-    else:
-        params = " --ar 2:1 --chaos 25 "
-    return lunch_start <= current_time <= lunch_end, params
+    return lunch_start <= current_time <= lunch_end
 
 def isNapTime():
     current_time = datetime.now().time()
@@ -71,13 +67,15 @@ time.sleep(10)
 
 while True:        
     current_time = datetime.now().time()
-    
-    lunch, params = isLunchBreak()
-    if not isNapTime() and not lunch:
+    midday = datetime.strptime(f"12:00", "%H:%M").time()
+    if current_time < midday:
+        params = " --ar 2:1 --chaos 25 "
+    else:
+        params = " --ar 1:2 --chaos 25 "
+ 
+    if not isNapTime() and isLunchBreak():
 #        time.sleep(random.uniform(3 * random.uniform(40,60), 7 * random.uniform(40,60)))
-
         sendPrompt(getPrompt(), params)
-        
         
     else:
         if isLunchBreak():
