@@ -68,8 +68,6 @@ time.sleep(10)
 while True:        
     current_time = datetime.now().time()
     midday = datetime.strptime(f"12:00", "%H:%M").time()
-    print(current_time)
-    print(current_time < midday)
     if current_time < midday:
         params = " --ar 2:1 --chaos 25 "
     else:
