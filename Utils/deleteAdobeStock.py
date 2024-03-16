@@ -2,16 +2,16 @@ import pyautogui as pyau
 import time
 import sys
 
-if len(sys.argv) != 2:
-    print("Usage: python3 pinocchio.py <number of pages to delete>")
+if len(sys.argv) != 3:
+    print("Usage: python3 deleteAdobeStock.py <number of pages to delete> <name of the pc>")
     sys.exit(1)
 
 
 def deleteWholePage(nPages, pc):
     if pc == "medusa":
-        selectAll = (1165, 1355)
-        deleteIcon = (1871, 1421)
-        confirmDelete = (999, 1484)
+        selectAll = (1206, 1427)
+        deleteIcon = (1877, 1490)
+        confirmDelete = (980, 1482)
     if pc == "oldboi":
         selectAll = (1197, 316)
         deleteIcon = (1781, 328)
@@ -25,7 +25,7 @@ def deleteWholePage(nPages, pc):
         pyau.moveTo(confirmDelete)
         time.sleep(1)
         pyau.click()
-        time.sleep(15)
+        time.sleep(7)
 
 
 deleteWholePage(int(sys.argv[1]), sys.argv[2])
