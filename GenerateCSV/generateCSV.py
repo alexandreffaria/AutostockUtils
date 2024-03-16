@@ -33,10 +33,7 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
                 print(f"FOUND: {substring}")
                 return prompt.strip()
 
-
     return None
-
-
 
 def create_csv(folder_path, category, prompts_file_path):
     parent_folder_name = os.path.basename(

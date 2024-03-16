@@ -114,8 +114,6 @@ def getFolder():
     folderPath = filedialog.askdirectory(initialdir="/mnt/a/Projetos/Autostock/")
     return folderPath
 
-
-
 def main():
     root = tk.Tk()
     root.title("Select Category and Folder")
