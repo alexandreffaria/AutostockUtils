@@ -78,21 +78,8 @@ I'm going to give you a brief description of an image, and you should generate a
         gptTitle = getGPTResponse(gptPrompt)
         return gptTitle.replace('"', "")
     else:
-        gptTitle = getGPTResponse(
-            f"""
-I'm going to give you a description of an image  and you should create a title summarizing the description, try to use every important point of the description, 
-Here is an example:
-
-INPUT:
-A close up shot with a 50mm lens capturing a young woman enjoying a cozy moment by the fireplace with a book in hand and a warm blanket draped around her shoulders Soft natural light illuminates the scene creating a tranquil and peaceful atmosphere
-OUTPUT:
-Young Woman Embraces Cozy Moment with Book and Blanket, Bathed in Soft Natural Light
-
-***the title should have 20 words maximum! ***
-
-
-Here is the title:
-{prompt}
+        gptPrompt = f"""
+I'm going to give you a brief description of an image, and you should generate a descriptive title for it, don't be creative: {prompt}
 """
-        )
+        gptTitle = getGPTResponse(gptPrompt)
         return gptTitle.replace('"', "")
