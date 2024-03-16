@@ -72,24 +72,10 @@ def createTitle(prompt, language):
     if not prompt:
         return ""
     if language == "pt":
-        print(prompt)
-        gptTitle = getGPTResponse(
-            f"""
-I'm going to give you a description of an image in English and you should create a title summarizing the description, try to use every important point of the description, 
-Here is an example:
-
-INPUT:
-A close up shot with a 50mm lens capturing a young woman enjoying a cozy moment by the fireplace with a book in hand and a warm blanket draped around her shoulders Soft natural light illuminates the scene creating a tranquil and peaceful atmosphere
-OUTPUT:
-Uma jovem moça aproveitando um momento aconchegante perto de uma lareira lendo um livro em atmosfera tranquila com um cobertor quente nos ombros
-
-***the title should have 20 words maximum! ***
-***the title should be in Brazilian Portuguese***
-
-Here is the title:
-{prompt}
+        gptPrompt = f"""
+I'm going to give you a brief description of an image, and you should generate a descriptive title for it in Brazillian Portuguese, don't be creative: {prompt}
 """
-        )
+        gptTitle = getGPTResponse(gptPrompt)
         return gptTitle.replace('"', "")
     else:
         gptTitle = getGPTResponse(
