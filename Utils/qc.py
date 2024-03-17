@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import (
     QGraphicsView,
     QGraphicsScene,
     QGraphicsPixmapItem,
+    QFileDialog,
 )
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import Qt
@@ -126,13 +127,12 @@ class ImageViewer(QGraphicsView):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python script.py <folder_path>")
-        sys.exit(1)
 
-    folder_path = sys.argv[1]
+    app = QApplication(sys.argv)
+    app.setStyleSheet(dark_stylesheet)  # Apply dark mode stylesheet
+    folder_path = QFileDialog.getExistingDirectory(None, "Select the image folder", "/mnt/a")
 
-    if not os.path.exists(folder_path):
+    if not folder_path:
         print(f"The specified folder '{folder_path}' does not exist.")
         sys.exit(1)
 
@@ -142,8 +142,6 @@ if __name__ == "__main__":
         if os.path.isfile(os.path.join(folder_path, f))
     ]
 
-    app = QApplication(sys.argv)
-    app.setStyleSheet(dark_stylesheet)  # Apply dark mode stylesheet
     viewer = ImageViewer(folder_path, files)
 
     # Start in fullscreen mode
