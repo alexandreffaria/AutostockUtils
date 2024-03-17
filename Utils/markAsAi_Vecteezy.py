@@ -10,7 +10,13 @@ if len(sys.argv) != 3:
 
 def deleteWholePage(nPages, pc):
     if pc == "medusa":
-        pass
+        selectAll = (1233,1366)
+        AiGenerated = (1593,1822)
+        selectSoftware = (1592,1868)
+        midJourney = (1563,1951)
+        submitFor = (1583,2101)
+        submit = (656,1777)
+        accept =  (909,1874)
     if pc == "oldboi":
         selectAll = (1188, 321)
         AiGenerated = (1571, 779)
