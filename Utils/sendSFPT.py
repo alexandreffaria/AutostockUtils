@@ -59,6 +59,7 @@ if __name__ == "__main__":
     port = 22
 
     imageFolder = getFolder()
+    print(imageFolder)
     # Upload files from local folder to remote folder
     sftp_upload_folder(
         imageFolder, remote_folder_path, hostname, port, username, password
