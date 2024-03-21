@@ -4,3 +4,4 @@ discordClicker/venv/
 /venv/
 dailyIndexFile
 *.pyc
+*.csv
