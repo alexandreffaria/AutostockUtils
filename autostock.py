@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
 from subprocess import Popen, PIPE
+from GenerateCSV.categorias import categorias
 
 # Function to run a shell command and report progress in GUI
 def run_command(command, progress_text):
@@ -71,6 +72,25 @@ folder_entry = tk.Entry(root, textvariable=folder_var, width=50)
 folder_entry.pack(pady=5)
 folder_button = tk.Button(root, text="Select Folder", command=select_folder, bg="#004080", fg="#ffffff")
 folder_button.pack(pady=5)
+
+# Checkbox for Adobe
+adobe_var = tk.IntVar()
+adobe_checkbox = tk.Checkbutton(root, text="Adobe", variable=adobe_var, bg="#2b2b2b", fg="#ffffff")
+adobe_checkbox.pack(pady=5)
+
+# Checkbox for Vecteezy
+vecteezy_var = tk.IntVar()
+vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var, bg="#2b2b2b", fg="#ffffff")
+vecteezy_checkbox.pack(pady=5)
+
+# Category selection
+category_var = tk.StringVar()
+category_var.set("Select Category")
+category_label = tk.Label(root, text="Select Category:", bg="#2b2b2b", fg="#ffffff")
+category_label.pack(pady=5)
+category_optionmenu = tk.OptionMenu(root, category_var, *categorias.values())
+category_optionmenu.config(bg="#004080", fg="#ffffff")
+category_optionmenu.pack(pady=5)
 
 # Progress text
 progress_text = tk.Text(root, height=15, width=60, bg="#2b2b2b", fg="#ffffff")
