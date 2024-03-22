@@ -23,27 +23,29 @@ def process_workflow():
         messagebox.showerror("Error", "Please select a folder first.")
         return
 
-    command = f"python Utils/qc.py {folder_path}"
+    command = f"python Utils/qc.py \"{folder_path}\""  # Enclose folder path in quotes
     run_command(command, progress_text)
 
-    command = f"python Utils/upscale.py"
-    run_command(command, progress_text)
+    # Check if folder exists to avoid running upscale.py without a valid path
+    if os.path.exists(folder_path):
+        command = f"python Utils/upscale.py \"{folder_path}\""  # Enclose folder path in quotes
+        run_command(command, progress_text)
 
     png_folder = os.path.join(folder_path, "upscayl_png_realesrgan-x4plus_4x")
     if os.path.exists(png_folder):
-        command = f"python convertToJPG.py {png_folder}"
+        command = f"python convertToJPG.py \"{png_folder}\""  # Enclose folder path in quotes
         run_command(command, progress_text)
 
-    command = f"python Utils/sendSFPT.py -v"
+    command = f"python Utils/sendSFPT.py -v \"{folder_path}\""  # Enclose folder path in quotes
     run_command(command, progress_text)
 
-    command = f"python Utils/sendSFPT.py -a"
+    command = f"python Utils/sendSFPT.py -a \"{folder_path}\""  # Enclose folder path in quotes
     run_command(command, progress_text)
 
-    command = f"python generateCSV/generateCSV.py -a {folder_path}"
+    command = f"python generateCSV/generateCSV.py -a \"{folder_path}\""  # Enclose folder path in quotes
     run_command(command, progress_text)
 
-    command = f"python generateCSV/generateCSV.py -v {folder_path}"
+    command = f"python generateCSV/generateCSV.py -v \"{folder_path}\""  # Enclose folder path in quotes
     run_command(command, progress_text)
 
 # Function to select a folder
@@ -56,8 +58,8 @@ def select_folder():
 
 # Main window
 root = tk.Tk()
-root.title("Workflow GUI")
-root.geometry("600x400")
+root.title("Autostock Utils")
+root.geometry("600x600")
 root.configure(bg="#2b2b2b")
 
 # Folder selection
