@@ -23,29 +23,30 @@ def process_workflow():
         messagebox.showerror("Error", "Please select a folder first.")
         return
 
-    command = f"python Utils/qc.py \"{folder_path}\""  # Enclose folder path in quotes
+    command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
     run_command(command, progress_text)
 
     # Check if folder exists to avoid running upscale.py without a valid path
     if os.path.exists(folder_path):
-        command = f"python Utils/upscale.py \"{folder_path}\""  # Enclose folder path in quotes
+        command = f"python Utils/upscale.py {folder_path}"  # Enclose folder path in quotes
         run_command(command, progress_text)
 
-    png_folder = os.path.join(folder_path, "upscayl_png_realesrgan-x4plus_4x")
+    png_folder = folder_path + "/realesrgan/"
+
     if os.path.exists(png_folder):
-        command = f"python convertToJPG.py \"{png_folder}\""  # Enclose folder path in quotes
+        command = f"python Utils/convertToJPG.py {png_folder}"  # Enclose folder path in quotes
         run_command(command, progress_text)
 
-    command = f"python Utils/sendSFPT.py -v \"{folder_path}\""  # Enclose folder path in quotes
+    command = f"python Utils/sendSFPT.py -v {folder_path}"  # Enclose folder path in quotes
     run_command(command, progress_text)
 
-    command = f"python Utils/sendSFPT.py -a \"{folder_path}\""  # Enclose folder path in quotes
+    command = f"python Utils/sendSFPT.py -a {folder_path}"  # Enclose folder path in quotes
     run_command(command, progress_text)
 
-    command = f"python generateCSV/generateCSV.py -a \"{folder_path}\""  # Enclose folder path in quotes
+    command = f"python generateCSV/generateCSV.py -a {folder_path}"  # Enclose folder path in quotes
     run_command(command, progress_text)
 
-    command = f"python generateCSV/generateCSV.py -v \"{folder_path}\""  # Enclose folder path in quotes
+    command = f"python generateCSV/generateCSV.py -v {folder_path}"  # Enclose folder path in quotes
     run_command(command, progress_text)
 
 # Function to select a folder
