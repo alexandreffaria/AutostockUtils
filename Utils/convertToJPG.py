@@ -36,7 +36,7 @@ def convert_images(input_folder):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python convert_images.py <input_folder>")
+        print("Usage: python convertToJPG.py <input_folder>")
         sys.exit(1)
 
     input_folder = sys.argv[1]
@@ -44,5 +44,4 @@ if __name__ == "__main__":
     if not os.path.exists(input_folder):
         print(f"Error: Input folder '{input_folder}' not found.")
         sys.exit(1)
-
     convert_images(input_folder)
