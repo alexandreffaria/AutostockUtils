@@ -5,3 +5,4 @@ discordClicker/venv/
 dailyIndexFile
 *.pyc
 *.csv
+last_directory.txt
