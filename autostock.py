@@ -1,55 +1,80 @@
+import os
 import tkinter as tk
-from tkinter import ttk
-import subprocess
+from tkinter import filedialog
+from tkinter import messagebox
+from subprocess import Popen, PIPE
 
-def invoke_script(script_path):
-    try:
-        subprocess.run(['python', script_path], check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"An error occurred while executing {script_path}: {e}")
+# Function to run a shell command and report progress in GUI
+def run_command(command, progress_text):
+    process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
+    while True:
+        output = process.stdout.readline().decode().strip()
+        if output == '' and process.poll() is not None:
+            break
+        if output:
+            progress_text.insert(tk.END, output + '\n')
+            progress_text.see(tk.END)
+            progress_text.update_idletasks()
 
+# Function to execute the workflow
+def process_workflow():
+    folder_path = folder_var.get()
+    if not folder_path:
+        messagebox.showerror("Error", "Please select a folder first.")
+        return
 
+    command = f"python Utils/qc.py {folder_path}"
+    run_command(command, progress_text)
+
+    command = f"python Utils/upscale.py"
+    run_command(command, progress_text)
+
+    png_folder = os.path.join(folder_path, "upscayl_png_realesrgan-x4plus_4x")
+    if os.path.exists(png_folder):
+        command = f"python convertToJPG.py {png_folder}"
+        run_command(command, progress_text)
+
+    command = f"python Utils/sendSFPT.py -v"
+    run_command(command, progress_text)
+
+    command = f"python Utils/sendSFPT.py -a"
+    run_command(command, progress_text)
+
+    command = f"python generateCSV/generateCSV.py -a {folder_path}"
+    run_command(command, progress_text)
+
+    command = f"python generateCSV/generateCSV.py -v {folder_path}"
+    run_command(command, progress_text)
+
+# Function to select a folder
+def select_folder():
+    folder_selected = filedialog.askdirectory()
+    if folder_selected:
+        folder_var.set(folder_selected)
+        root.configure(bg="#2b2b2b")
+        progress_text.config(bg="#2b2b2b", fg="#ffffff")
+
+# Main window
 root = tk.Tk()
-root.title("Autostock Utils")
-root.geometry("500x500")
-style = ttk.Style(root)
+root.title("Workflow GUI")
+root.geometry("600x400")
+root.configure(bg="#2b2b2b")
 
-# Check if the 'alt' theme (a decent candidate for dark mode) is available
-if 'alt' in style.theme_names():
-    style.theme_use('alt')
-else:
-    # If 'alt' theme is not available, set the background of widgets manually
-    style.configure('.', background='black')
-    style.configure('TButton', background='gray20', foreground='white')
-    style.configure('TCheckbutton', background='gray20', foreground='white')
+# Folder selection
+folder_var = tk.StringVar()
+folder_label = tk.Label(root, text="Selected Folder:", bg="#2b2b2b", fg="#ffffff")
+folder_label.pack(pady=5)
+folder_entry = tk.Entry(root, textvariable=folder_var, width=50)
+folder_entry.pack(pady=5)
+folder_button = tk.Button(root, text="Select Folder", command=select_folder, bg="#004080", fg="#ffffff")
+folder_button.pack(pady=5)
 
-# Update the root window's background color if needed
-root.configure(bg='gray20')
+# Progress text
+progress_text = tk.Text(root, height=15, width=60, bg="#2b2b2b", fg="#ffffff")
+progress_text.pack(pady=10)
 
-# Utils/qc.py invocation
-btn_qc = ttk.Button(root, text="Controle de qualidade", command=lambda: invoke_script('Utils/qc.py'))
-btn_qc.pack(pady=5)
-
-# Upscale realesrgan invocation
-btn_upscale = ttk.Button(root, text="Upscale imagem", command=lambda: invoke_script('Utils/upscale.py'))
-btn_upscale.pack(pady=5)
-
-# SFTP Sending
-btn_send_sftp = ttk.Button(root, text="Enviar imagens", command=lambda: invoke_script('Utils/sendSFTP.py'))
-btn_send_sftp.pack(pady=5)
-
-# Option selection for SFTP
-option_adobe = tk.BooleanVar()
-chk_adobe = tk.Checkbutton(root, text="Adobe", var=option_adobe)
-chk_adobe.pack()
-
-option_vecteezy = tk.BooleanVar()
-chk_vecteezy = tk.Checkbutton(root, text="Vecteezy", var=option_vecteezy)
-chk_vecteezy.pack()
-
-# CSV Generation
-btn_generate_csv = ttk.Button(root, text="Generate CSV", command=lambda: invoke_script('generateCSV.py'))
-btn_generate_csv.pack(pady=5)
-
+# Process button
+process_button = tk.Button(root, text="Process", command=process_workflow, bg="#004080", fg="#ffffff")
+process_button.pack(pady=5)
 
 root.mainloop()
