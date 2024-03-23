@@ -43,11 +43,13 @@ def process_workflow():
         run_command(command, progress_text)
 
     if selected_adobe:
-        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" " 
+        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a" 
+        print(command)
         run_command(command, progress_text)
-    # if selected_vecteezy:
-    #     command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
-    #     run_command(command, progress_text)
+    if selected_vecteezy:
+        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
+        print(command)
+        run_command(command, progress_text)
 
 # Function to select a folder
 def select_folder():
