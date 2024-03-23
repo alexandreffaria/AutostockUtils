@@ -5,14 +5,20 @@ from tkinter import messagebox
 from subprocess import Popen, PIPE
 from GenerateCSV.categorias import categorias
 
-# Function to run a shell command and report progress in GUI
+# Function to run a shell command# Function to run a shell command
 def run_command(command):
-    process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
-    while True:
-        output = process.stdout.readline().decode().strip()
-        if output == '' and process.poll() is not None:
-            break
-       
+    process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE, universal_newlines=True)
+    stdout, stderr = process.communicate()
+    
+    if process.returncode != 0:
+        print(f"Error: Command '{command}' failed with return code {process.returncode}")
+        if stdout:
+            print("stdout:")
+            print(stdout)
+        if stderr:
+            print("stderr:")
+            print(stderr)
+
 
 # Function to execute the workflow
 def process_workflow():
