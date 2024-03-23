@@ -113,7 +113,7 @@ vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var,
 vecteezy_checkbox.pack(pady=5)
 
 # Process button
-process_button = tk.Button(root, text="🚀", command=process_workflow, bg="#004080", fg="#ffffff", width=16, height=3, font=("Arial", 20))
+process_button = tk.Button(root, text="🚀", command=process_workflow, bg="#004080", fg="#ffffff", width=15, height=3, font=("Arial", 20))
 process_button.pack(pady=50)
 
 root.mainloop()
