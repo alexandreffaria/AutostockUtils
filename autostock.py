@@ -65,27 +65,26 @@ def select_folder():
 # Main window
 root = tk.Tk()
 root.title("Autostock Utils")
-root.geometry("600x600")
+root.geometry("600x400")
 root.configure(bg="#2b2b2b")
 # Center the window title
 root.wm_title(" " * 75 + "Autostock Utils")
-root.wm_attributes("-topmost", 1)
 
 root.wm_iconbitmap('meulindo.ico')
 
 # Folder selection
 folder_var = tk.StringVar()
-folder_label = tk.Label(root, text="Selected Folder:", bg="#2b2b2b", fg="#ffffff")
+folder_label = tk.Label(root, text="Cade as fota?", bg="#2b2b2b", fg="#ffffff")
 folder_label.pack(pady=5)
 folder_entry = tk.Entry(root, textvariable=folder_var, width=50, bg="#4d4d4d", fg="#ffffff")  # Adjust background and foreground colors
 folder_entry.pack(pady=5)
-folder_button = tk.Button(root, text="Select Folder", command=select_folder, bg="#004080", fg="#ffffff")
+folder_button = tk.Button(root, text="Pasta das fota", command=select_folder, bg="#004080", fg="#ffffff")
 folder_button.pack(pady=5)
 
 # Category selection
 category_var = tk.StringVar()
-category_var.set("Select Category")
-category_label = tk.Label(root, text="Select Category:", bg="#2b2b2b", fg="#ffffff")
+category_var.set("Categoria")
+category_label = tk.Label(root, text="Qual é a categoria?", bg="#2b2b2b", fg="#ffffff")
 category_label.pack(pady=5)
 
 category_menu = tk.Menu(root, bg="#4d4d4d", fg="#ffffff")  # Configure the background and foreground colors for the dropdown menu
@@ -107,7 +106,7 @@ vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var,
 vecteezy_checkbox.pack(pady=5)
 
 # Process button
-process_button = tk.Button(root, text="Process", command=process_workflow, bg="#004080", fg="#ffffff")
-process_button.pack(pady=5)
+process_button = tk.Button(root, text="BORAAA", command=process_workflow, bg="#004080", fg="#ffffff", width=16, height=3)
+process_button.pack(pady=50)
 
 root.mainloop()
