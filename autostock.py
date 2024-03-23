@@ -4,6 +4,25 @@ from tkinter import filedialog
 from tkinter import messagebox
 from subprocess import Popen, PIPE
 from GenerateCSV.categorias import categorias
+from dotenv import load_dotenv
+
+load_dotenv() # Config
+
+def create_or_edit_env():
+    env_file = filedialog.askopenfilename(initialdir=os.getcwd(), title="Select .env file",
+                                          filetypes=(("Env files", "*.env"), ("All files", "*.*")))
+    if env_file:
+        os.system(f'notepad.exe {env_file}')
+
+def set_env_key():
+    key = tk.simpledialog.askstring("Set Environment Variable", "Enter the key:")
+    if key:
+        value = tk.simpledialog.askstring("Set Environment Variable", f"Enter the value for {key}:")
+        if value:
+            set_key(env_file_path, key, value)
+            messagebox.showinfo("Success", f"Environment variable {key} set successfully.")
+        else:
+            messagebox.showerror("Error", "Value cannot be empty.")
 
 # Function to run a shell command# Function to run a shell command
 def run_command(command):
@@ -78,6 +97,23 @@ root.wm_title(" " * 75 + "Autostock Utils")
 
 root.wm_iconbitmap('meulindo.ico')
 
+# Menu bar
+menubar = tk.Menu(root)
+
+# File menu
+file_menu = tk.Menu(menubar, tearoff=0)
+file_menu.add_command(label="Create or Edit .env", command=create_or_edit_env)
+file_menu.add_separator()
+file_menu.add_command(label="Exit", command=root.quit)
+menubar.add_cascade(label="File", menu=file_menu)
+
+# Environment menu
+env_menu = tk.Menu(menubar, tearoff=0)
+env_menu.add_command(label="Set Environment Variable", command=set_env_key)
+menubar.add_cascade(label="Environment", menu=env_menu)
+
+root.config(menu=menubar)
+
 # Folder selection
 folder_var = tk.StringVar()
 folder_label = tk.Label(root, text="Cade as fota?", bg="#2b2b2b", fg="#ffffff")
@@ -112,7 +148,7 @@ vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var,
 vecteezy_checkbox.pack(pady=5)
 
 # Process button
-process_button = tk.Button(root, text="BORAAA", command=process_workflow, bg="#004080", fg="#ffffff", width=16, height=3)
+process_button = tk.Button(root, text="🚀", command=process_workflow, bg="#004080", fg="#ffffff", width=16, height=3, font=("Arial", 20))
 process_button.pack(pady=50)
 
 root.mainloop()
