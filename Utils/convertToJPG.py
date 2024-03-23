@@ -1,24 +1,6 @@
 import os
 from PIL import Image
-from tqdm import tqdm
 import sys
-from PyQt5.QtWidgets import (
-    QApplication,
-    QGraphicsView,
-    QGraphicsScene,
-    QGraphicsPixmapItem,
-    QFileDialog,
-)
-from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtCore import Qt
-
-# Dark mode stylesheet
-dark_stylesheet = """
-    QGraphicsView {
-        background-color: #2b2b2b;
-        color: #f0f0f0;
-    }
-"""
 
 def convert_images(input_folder):
     # Create a folder to store the converted images
@@ -32,8 +14,8 @@ def convert_images(input_folder):
         if os.path.isfile(os.path.join(input_folder, f))
     ]
 
-    # Convert each image to JPEG format with a progress bar
-    for file in tqdm(files, desc="Converting images", unit="image"):
+    # Convert each image to JPEG format
+    for file in files:
         try:
             image_path = os.path.join(input_folder, file)
             image = Image.open(image_path)
@@ -45,9 +27,10 @@ def convert_images(input_folder):
             image.convert("RGB").save(output_path, "JPEG")
 
         except Exception as e:
-            print(f"Error processing {file}: {str(e)}")
+            pass  # Do nothing on error
 
-    print("Conversion completed.")
+    # Optionally, you can print a message after conversion completed
+    # print("Conversion completed.")
 
 
 if __name__ == "__main__":
@@ -57,7 +40,7 @@ if __name__ == "__main__":
 
     input_folder = sys.argv[1]
 
-    if not os.path.exists(folder_path):
-        print(f"Error: Input folder '{folder_path}' not found.")
+    if not os.path.exists(input_folder):
+        print(f"Error: Input folder '{input_folder}' not found.")
         sys.exit(1)
     convert_images(input_folder)
