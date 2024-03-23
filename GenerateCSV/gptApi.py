@@ -45,6 +45,7 @@ Faces Diversas: Emoções e Determinação em uma Comunidade Inclusiva
 OUTPUT:
 emoções, determinação, comunidade inclusiva, diversidade, inclusão, aceitação, igualdade, respeito, empoderamento, diferenças, interação social, coletividade, pertencimento, autoestima, autoaceitação, tolerância, solidariedade, expressão emocional, apoio mútuo, convivência harmoniosa, inclusão social, diálogo aberto, compreensão, diversidade cultural, empatia, apoio emocional, autoconfiança, superação, desenvolvimento pessoal, integração, reconhecimento, celebração, pluralidade, bem-estar emocional, autoconhecimento, cidadania, identidade, amor próprio, comunicação eficaz, colaboração, união.
 
+DON'T ADD ANYTHING TO YOUR ANSWER THAT ISN'T A KEYWORD
 Título:
 {title}
 """
