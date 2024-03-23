@@ -2,6 +2,7 @@ import os
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import messagebox
+from tkinter.font import Font
 from subprocess import Popen, PIPE
 from GenerateCSV.categorias import categorias
 
@@ -71,27 +72,27 @@ def select_folder():
 # Main window
 root = tk.Tk()
 root.title("Autostock Utils")
-root.geometry("600x400")
+root.geometry("300x500")
 root.configure(bg="#2b2b2b")
 # Center the window title
-root.wm_title(" " * 75 + "Autostock Utils")
+root.wm_title("Autostock Utils")
 
 root.wm_iconbitmap('meulindo.ico')
 
+bold_font = Font(family="Arial", size=12, weight="bold")
+
 # Folder selection
 folder_var = tk.StringVar()
-folder_label = tk.Label(root, text="Cade as fota?", bg="#2b2b2b", fg="#ffffff")
-folder_label.pack(pady=5)
-folder_entry = tk.Entry(root, textvariable=folder_var, width=50, bg="#4d4d4d", fg="#ffffff")  # Adjust background and foreground colors
+folder_label = tk.Label(root, text="Deixa eu fazer procê ❤️", bg="#2b2b2b", fg="#ffffff", font=bold_font)
+folder_label.pack(pady=5, padx=20)
+folder_entry = tk.Entry(root, textvariable=folder_var, width=16, bg="#4d4d4d", fg="#ffffff", font=("Arial", 20))  # Adjust background and foreground colors
 folder_entry.pack(pady=5)
-folder_button = tk.Button(root, text="Pasta das fota", command=select_folder, bg="#004080", fg="#ffffff")
-folder_button.pack(pady=5)
+folder_button = tk.Button(root, text="🔎", command=select_folder, bg="#004080", fg="#ffffff", font=("Arial", 20))
+folder_button.pack(pady=20)
 
 # Category selection
 category_var = tk.StringVar()
 category_var.set("Categoria")
-category_label = tk.Label(root, text="Qual é a categoria?", bg="#2b2b2b", fg="#ffffff")
-category_label.pack(pady=5)
 
 category_menu = tk.Menu(root, bg="#4d4d4d", fg="#ffffff")  # Configure the background and foreground colors for the dropdown menu
 root.config(menu=category_menu)
@@ -99,7 +100,7 @@ root.config(menu=category_menu)
 category_optionmenu = tk.OptionMenu(root, category_var, *categorias.values())
 category_optionmenu["menu"].config(bg="#4d4d4d", fg="#ffffff")  # Configure the background and foreground colors for the dropdown menu
 category_optionmenu.config(bg="#4d4d4d", fg="#ffffff")  # Adjust background and foreground colors
-category_optionmenu.pack(pady=5)
+category_optionmenu.pack(pady=25)
 
 # Checkbox for Adobe
 adobe_var = tk.BooleanVar(value=True)  # Set Adobe checkbox initially checked
