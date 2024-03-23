@@ -23,6 +23,11 @@ def process_workflow():
     if not folder_path:
         messagebox.showerror("Error", "Please select a folder first.")
         return
+    
+    selected_category = category_var.get()  # Retrieve the selected category
+    selected_adobe = adobe_var.get()  # Retrieve the state of the Adobe checkbox
+    selected_vecteezy = vecteezy_var.get()  # Retrieve the state of the Vecteezy checkbox
+
 
     command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
     run_command(command, progress_text)
@@ -38,17 +43,18 @@ def process_workflow():
         command = f"python Utils/convertToJPG.py {png_folder}"  # Enclose folder path in quotes
         run_command(command, progress_text)
 
-    command = f"python Utils/sendSFPT.py -v {folder_path}"  # Enclose folder path in quotes
+    # command = f"python Utils/sendSFPT.py -v {folder_path}"  # Enclose folder path in quotes
+    # run_command(command, progress_text)
+
+    # command = f"python Utils/sendSFPT.py -a {folder_path}"  # Enclose folder path in quotes
+    # run_command(command, progress_text)
+
+    command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\"" 
+    print(command)
     run_command(command, progress_text)
 
-    command = f"python Utils/sendSFPT.py -a {folder_path}"  # Enclose folder path in quotes
-    run_command(command, progress_text)
-
-    command = f"python generateCSV/generateCSV.py -a {folder_path}"  # Enclose folder path in quotes
-    run_command(command, progress_text)
-
-    command = f"python generateCSV/generateCSV.py -v {folder_path}"  # Enclose folder path in quotes
-    run_command(command, progress_text)
+    # command = f"python generateCSV/generateCSV.py -v {folder_path}/realesrgan/jpg"  # Enclose folder path in quotes
+    # run_command(command, progress_text)
 
 # Function to select a folder
 def select_folder():
