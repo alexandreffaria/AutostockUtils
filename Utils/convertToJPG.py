@@ -51,12 +51,13 @@ def convert_images(input_folder):
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    app.setStyleSheet(dark_stylesheet)  # Apply dark mode stylesheet
-    folder_path = QFileDialog.getExistingDirectory(None, "Select the image folder", "/mnt/a")
+    if len(sys.argv) != 2:
+        print("Usage: python convertToJPG.py <input_folder>")
+        sys.exit(1)
+
+    input_folder = sys.argv[1]
 
     if not os.path.exists(folder_path):
         print(f"Error: Input folder '{folder_path}' not found.")
         sys.exit(1)
-
-    convert_images(folder_path)
+    convert_images(input_folder)

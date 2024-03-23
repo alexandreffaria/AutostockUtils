@@ -2,25 +2,19 @@ import os
 import sys
 import imageio
 import shutil
-from PyQt5.QtWidgets import (
-    QApplication,
-    QGraphicsView,
-    QGraphicsScene,
-    QGraphicsPixmapItem,
-    QFileDialog,
-)
-from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtCore import Qt
+import tkinter as tk
+from tkinter import filedialog
+from PIL import Image, ImageTk
 
 # Dark mode stylesheet
 dark_stylesheet = """
-    QGraphicsView {
+    .viewer {
         background-color: #2b2b2b;
         color: #f0f0f0;
     }
 """
 
-class ImageViewer(QGraphicsView):
+class ImageViewer(tk.Tk):
     def __init__(self, folder_path, files):
         super().__init__()
 
@@ -28,26 +22,26 @@ class ImageViewer(QGraphicsView):
         self.files = files
         self.current_index = 0
 
-        self.scene = QGraphicsScene(self)
-        self.setScene(self.scene)
+        self.title("Image Viewer")
+        self.geometry("800x600")
+        self.configure(background="#2b2b2b")
+
+        # Set window icon
+        icon_path = os.path.join(sys.path[0], '..', 'meulindo.ico')  # Assuming icon.ico is one directory up
+        self.iconbitmap(icon_path)
+
+
+        self.viewer = tk.Label(self, bg="#2b2b2b")
+        self.viewer.pack(expand=True, fill="both")
 
         self.load_image()
 
-    def keyPressEvent(self, event):
-        key = event.key()
-
-        if key in (Qt.Key_Enter, Qt.Key_Right, Qt.Key_L, Qt.Key_H):
-            self.next_image()
-        elif key == Qt.Key_Left:
-            self.previous_image()
-        elif key == Qt.Key_X:
-            self.delete_image()
-        elif key == Qt.Key_Q:
-            sys.exit()
-        elif key == Qt.Key_W:
-            self.move_image_to_folder("watermark")
-        elif key == Qt.Key_B:
-            self.move_image_to_folder("letterbox")
+        self.bind("<Right>", lambda event: self.next_image())
+        self.bind("<Left>", lambda event: self.previous_image())
+        self.bind("<Key-x>", lambda event: self.delete_image())
+        self.bind("<Key-q>", lambda event: sys.exit())
+        self.bind("<Key-w>", lambda event: self.move_image_to_folder("watermark"))
+        self.bind("<Key-b>", lambda event: self.move_image_to_folder("letterbox"))
 
     def move_image_to_folder(self, target_folder):
         if not self.files:
@@ -100,39 +94,25 @@ class ImageViewer(QGraphicsView):
         file_name = self.files[self.current_index]
         file_path = os.path.join(self.folder_path, file_name)
 
-        # Load image using imageio with FreeImage (GPU acceleration)
-        with imageio.get_reader(file_path) as reader:
-            img = reader.get_data(0)  # Read the first frame
+        # Load image using PIL
+        image = Image.open(file_path)
+        image.thumbnail((800, 600))
 
-        height, width, channels = img.shape
-
-        # Convert the image to a single QPixmap for display
-        image = QPixmap.fromImage(
-            QImage(img.data, width, height, width * channels, QImage.Format_RGB888)
-        )
+        photo = ImageTk.PhotoImage(image)
+        self.viewer.configure(image=photo)
+        self.viewer.image = photo
 
         # Set window title with current file index
-        self.setWindowTitle(f"{file_name} - {self.current_index + 1}/{len(self.files)}")
-        # Get the size of the viewport
-        view_size = self.viewport().size()
-
-        # Scale the image to fit the viewport
-        scaled_image = image.scaled(
-            view_size, Qt.KeepAspectRatio, Qt.SmoothTransformation
-        )
-
-        item = QGraphicsPixmapItem(scaled_image)
-        self.scene.clear()
-        self.scene.addItem(item)
+        self.title(f"{file_name} - {self.current_index + 1}/{len(self.files)}")
 
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python3 qc.py /path/to/images")
+        sys.exit(1)
 
-    app = QApplication(sys.argv)
-    app.setStyleSheet(dark_stylesheet)  # Apply dark mode stylesheet
-    folder_path = QFileDialog.getExistingDirectory(None, "Select the image folder", "/mnt/a")
-
-    if not folder_path:
+    folder_path = sys.argv[1]
+    if not os.path.isdir(folder_path):
         print(f"The specified folder '{folder_path}' does not exist.")
         sys.exit(1)
 
@@ -144,8 +124,4 @@ if __name__ == "__main__":
 
     viewer = ImageViewer(folder_path, files)
 
-    # Start in fullscreen mode
-    viewer.showMaximized()
-
-    viewer.show()
-    sys.exit(app.exec_())
+    viewer.mainloop()
