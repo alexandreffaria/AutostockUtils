@@ -1,10 +1,8 @@
 .env
-/openai/output_results
-discordClicker/venv/
 /venv/
-dailyIndexFile
 *.pyc
 *.csv
 last_directory.txt
 build/
 *.spec
+autoEnv

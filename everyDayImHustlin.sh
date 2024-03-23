@@ -2,9 +2,9 @@
 
 # Specify the folder path
 folder="/home/meulindux/AutostockUtils/Prompts"
-files=()
-
+touch /home/meulindux/AutostockUtils/hey
 export DISPLAY=:0
+exec > >(tee -a log) 2>&1
 
 # Loop through each file in the folder, sorted numerically
 while IFS= read -r -d '' file; do

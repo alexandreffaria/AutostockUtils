@@ -59,8 +59,8 @@ def getGPTResponse(model, content):
         temperature=1,
         max_tokens=256,
         top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0,
+        frequency_penalty=1,
+        presence_penalty=1,
     )
 
     return response.choices[0].message.content.strip().replace("'", "").replace(",", "").replace(".", "").replace("-", "").replace("(", "").replace(")", "")
@@ -77,20 +77,16 @@ def main(category, strategy, amount, description):
         for i in range(amount):
                 vivid_description = ""
                 vivid_description_request = f'''
-                I want you to describe images for me for a topic that I'm going to give you, those images should give descriptions commonly found in stock image photography. 
-                Here are a few rules I want you to follow:
-                - If there is people in your description, you should always make sure to include "close up shot" in your description. You only have to to this if there are people in your description
-                - You should avoid describing scenes that focus on human hands, like people toasting, high fiving, holding hands. The only exception is *shaking hands*
-                - Every description should be focused and of one scene at a time.
-                - You should be brief but you should describe the whole frame of the image, like the background, the foreground, what is in focus and everything you think is important to be in the image.
-                - Your description should be like a director of photography planning, in the way that you should describe the type of lens (macro, telephoto, etc) what is the framing (close, medium or wide shot), at what position the point of focus should be (center frame, bottom third, golden ratio, etc) , soft natural light, warm tones, etc.
-                Here is an example of the first rule:
-                WRONG - A diverse group of professionals engaged in a lively discussion around a conference table, with laptops and paperwork scattered across the surface.
-                RIGHT - A diverse group of professionals framed engaged in a lively discussion around a conference table, with laptops and paperwork scattered across the surface. A close up shot with a 35mm lens with the focus at the center of the frame.
-
+                I want you to create a prompt for me for a topic that I'm going to give you. That prompt will than be used to create images, that are going to be selled in a big stock images website. 
+                FOLLOW THIS RULE:
+                The Midjourney Bot works best with simple, short sentences that describe what you want to see. 
+                Avoid long lists of requests and instructions. 
+                Instead of: Show me a picture of lots of blooming California poppies, make them bright, vibrant orange, and draw them in an illustrated style with colored pencils 
+                Do: Bright orange California poppies drawn with colored pencils
                 Here is the topic:
                 Topic: "{description}"
                 ***ONLY GIVE ONE DESCRIPTION AT THE TIME WITH NO INFORMATION OTHER THAN THE DESCRIPTION ITSELF***
+                your anwser should look like this: Fruit smoothie with colorful striped straws
                 '''
                 while not vivid_description.strip() or "sorry" in vivid_description.lower() or "cannot" in vivid_description.lower():
                     vivid_description = getGPTResponse(gptModel, vivid_description_request)

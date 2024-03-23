@@ -2,7 +2,23 @@ import os
 from PIL import Image
 from tqdm import tqdm
 import sys
+from PyQt5.QtWidgets import (
+    QApplication,
+    QGraphicsView,
+    QGraphicsScene,
+    QGraphicsPixmapItem,
+    QFileDialog,
+)
+from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtCore import Qt
 
+# Dark mode stylesheet
+dark_stylesheet = """
+    QGraphicsView {
+        background-color: #2b2b2b;
+        color: #f0f0f0;
+    }
+"""
 
 def convert_images(input_folder):
     # Create a folder to store the converted images
@@ -41,7 +57,7 @@ if __name__ == "__main__":
 
     input_folder = sys.argv[1]
 
-    if not os.path.exists(input_folder):
-        print(f"Error: Input folder '{input_folder}' not found.")
+    if not os.path.exists(folder_path):
+        print(f"Error: Input folder '{folder_path}' not found.")
         sys.exit(1)
     convert_images(input_folder)
