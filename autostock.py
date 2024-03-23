@@ -6,16 +6,13 @@ from subprocess import Popen, PIPE
 from GenerateCSV.categorias import categorias
 
 # Function to run a shell command and report progress in GUI
-def run_command(command, progress_text):
+def run_command(command):
     process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE)
     while True:
         output = process.stdout.readline().decode().strip()
         if output == '' and process.poll() is not None:
             break
-        if output:
-            progress_text.insert(tk.END, output + '\n')
-            progress_text.see(tk.END)
-            progress_text.update_idletasks()
+       
 
 # Function to execute the workflow
 def process_workflow():
@@ -29,41 +26,42 @@ def process_workflow():
     selected_vecteezy = vecteezy_var.get() 
 
     command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
-    run_command(command, progress_text)
+    print(command)
+    run_command(command)
 
     # Check if folder exists to avoid running upscale.py without a valid path
     if os.path.exists(folder_path):
         command = f"python Utils/upscale.py {folder_path}"  # Enclose folder path in quotes
-        run_command(command, progress_text)
+        run_command(command)
 
     png_folder = folder_path + "/realesrgan/"
 
     if os.path.exists(png_folder):
         command = f"python Utils/convertToJPG.py {png_folder}"  # Enclose folder path in quotes
-        run_command(command, progress_text)
+        run_command(command)
 
     if selected_adobe:
         command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a" 
-        run_command(command, progress_text)
+        run_command(command)
 
     if selected_vecteezy:
         command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
-        run_command(command, progress_text)
+        run_command(command)
 
     if selected_adobe:
         command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/ -p a" 
-        run_command(command, progress_text)
+        run_command(command)
 
     if selected_vecteezy:
         command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/jpgs/ -p v" 
-        run_command(command, progress_text)
+        run_command(command)
 
 def select_folder():
     folder_selected = filedialog.askdirectory()
     if folder_selected:
         folder_var.set(folder_selected)
         root.configure(bg="#2b2b2b")
-        progress_text.config(bg="#2b2b2b", fg="#ffffff")
+        
 
 # Main window
 root = tk.Tk()
@@ -103,10 +101,6 @@ category_label.pack(pady=5)
 category_optionmenu = tk.OptionMenu(root, category_var, *categorias.values())
 category_optionmenu.config(bg="#004080", fg="#ffffff")
 category_optionmenu.pack(pady=5)
-
-# Progress text
-progress_text = tk.Text(root, height=15, width=60, bg="#2b2b2b", fg="#ffffff")
-progress_text.pack(pady=10)
 
 # Process button
 process_button = tk.Button(root, text="Process", command=process_workflow, bg="#004080", fg="#ffffff")
