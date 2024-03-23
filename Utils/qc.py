@@ -96,7 +96,13 @@ class ImageViewer(tk.Tk):
 
         # Load image using PIL
         image = Image.open(file_path)
-        image.thumbnail((800, 600))
+        
+        # Get screen width and height
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        
+        # Resize image to fit screen size
+        image.thumbnail((screen_width, screen_height))
 
         photo = ImageTk.PhotoImage(image)
         self.viewer.configure(image=photo)
@@ -104,6 +110,7 @@ class ImageViewer(tk.Tk):
 
         # Set window title with current file index
         self.title(f"{file_name} - {self.current_index + 1}/{len(self.files)}")
+
 
 
 if __name__ == "__main__":
