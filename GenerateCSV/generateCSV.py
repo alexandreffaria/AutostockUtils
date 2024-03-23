@@ -1,8 +1,7 @@
 import os
 import sys
 import csv
-import tkinter as tk
-from tkinter import filedialog
+import argparse
 from gptApi import *
 from categorias import categorias
 
@@ -10,20 +9,8 @@ prompts_folder_path = "Prompts"
 prompts_extension = ".txt"
 
 
-def getFolder():
-    root = tk.Tk()
-    root.withdraw()
-    folderPath = filedialog.askdirectory(initialdir="/mnt/a/Projetos/Autostock/")
-    return folderPath
-
-
-def get_prompts_file_name(category):
-    category_name = categorias[category]
-    return f"{category}-{category_name}.txt"
-
-
 def find_prompt_for_filename(filename_base, prompts_file_path):
-    with open(prompts_file_path, "r") as prompts_file:
+    with open(prompts_file_path, "r", encoding="utf-8") as prompts_file:
         prompts = prompts_file.readlines()
 
     for i in range(len(filename_base), 0, -1):
@@ -35,7 +22,7 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
 
     return None
 
-def create_csv(folder_path, category, prompts_file_path):
+def create_csv(folder_path, output_folder, category, prompts_file_path):
     parent_folder_name = os.path.basename(
         os.path.normpath(os.path.join(folder_path, ".."))
     )
@@ -47,9 +34,10 @@ def create_csv(folder_path, category, prompts_file_path):
     ]
     
     csv_file_name = f"{parent_folder_name}_output.csv"
+    csv_file_path = os.path.join(output_folder, csv_file_name)
 
     # Create a CSV file and write the header
-    with open(csv_file_name, "w", newline="") as csvfile:
+    with open(csv_file_path, "w", newline="", encoding="utf-8") as csvfile:
         fieldnames = ["Filename", "Title", "Keywords", "Category", "Releases"]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
@@ -119,56 +107,26 @@ def create_csv(folder_path, category, prompts_file_path):
 
             print(f"{file} | written to CSV.")
 
-    print(f"CSV file created successfully: {os.path.abspath(csv_file_name)}")
+    print(f"CSV file created successfully: {os.path.abspath(csv_file_path)}")
     print(f"Processing complete. {len(set(files))} unique files processed.")
 
 
 def main():
-    root = tk.Tk()
-    root.title("Select Category and Folder")
-    def on_close():
-        root.quit()
-        root.destroy()
-        sys.exit()
+    parser = argparse.ArgumentParser(description='Process image folders and category.')
+    parser.add_argument('folder_path', type=str, help='Path to the image folder.')
+    parser.add_argument('category', type=str, help='Category as a string.')
 
-    def process():
-        selected_category = category_var.get()
-        category_key = selected_category.split("-")[0]  # Extracting the category key (number)
-        category = int(category_key)
-        folder_path = folder_var.get()
-        prompts_file_name = get_prompts_file_name(category)
-        prompts_file_path = os.path.join(prompts_folder_path, prompts_file_name)
-        create_csv(folder_path, category, prompts_file_path)
+    args = parser.parse_args()
+    folder_path = args.folder_path
+    output_folder = folder_path  # Output folder same as image folder
+    category = args.category
 
-    try:
-        # Category Selection
-        category_label = tk.Label(root, text="Select a Category:")
-        category_label.grid(row=0, column=0, padx=10, pady=5)
-        category_var = tk.StringVar(root)
-        category_options = [f"{key}-{value}" for key, value in categorias.items()]
-        category_dropdown = tk.OptionMenu(root, category_var, *category_options)
-        category_dropdown.grid(row=0, column=1, padx=10, pady=5)
-
-        # Folder Selection
-        folder_label = tk.Label(root, text="Select Folder:")
-        folder_label.grid(row=1, column=0, padx=10, pady=5)
-        folder_var = tk.StringVar(root)
-        folder_entry = tk.Entry(root, textvariable=folder_var, state="disabled")
-        folder_entry.grid(row=1, column=1, padx=10, pady=5)
-        folder_button = tk.Button(
-            root, text="Browse", command=lambda: folder_var.set(getFolder())
-        )
-        folder_button.grid(row=1, column=2, padx=10, pady=5)
-
-        # Process Button
-        process_button = tk.Button(root, text="Process", command=process)
-        process_button.grid(row=2, column=0, columnspan=3, padx=10, pady=5)
-
-        root.protocol("WM_DELETE_WINDOW", on_close)
-        root.mainloop()
-
-    except KeyboardInterrupt:
-        on_close()  # Explicitly destroy the Tkinter root window
+    category_key = next(key for key, value in categorias.items() if value == category)
+    
+    prompts_file_name = f"{category_key}-{category}.txt"
+    prompts_file_path = os.path.join(prompts_folder_path, prompts_file_name)
+    
+    create_csv(folder_path, output_folder, category, prompts_file_path)
 
 
 if __name__ == "__main__":
