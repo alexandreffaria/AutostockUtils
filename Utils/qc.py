@@ -26,6 +26,11 @@ class ImageViewer(tk.Tk):
         self.geometry("800x600")
         self.configure(background="#2b2b2b")
 
+        # Set window icon
+        icon_path = os.path.join(sys.path[0], '..', 'meulindo.ico')  # Assuming icon.ico is one directory up
+        self.iconbitmap(icon_path)
+
+
         self.viewer = tk.Label(self, bg="#2b2b2b")
         self.viewer.pack(expand=True, fill="both")
 
