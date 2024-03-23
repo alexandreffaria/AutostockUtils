@@ -42,10 +42,12 @@ def create_csv(folder_path, output_folder, category, prompts_file_path, platform
         
 
     # Get a list of all files in the specified folder
+    # Get a list of all files in the specified folder with PNG or JPG extensions
     files = [
         f for f in os.listdir(folder_path)
-        if os.path.isfile(os.path.join(folder_path, f))
+        if os.path.isfile(os.path.join(folder_path, f)) and f.lower().endswith(('.png', '.jpg'))
     ]
+
 
     # Create a CSV file and write the header
     with open(csv_file_path, "w", newline="", encoding="utf-8") as csvfile:
