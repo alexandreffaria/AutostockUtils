@@ -40,10 +40,10 @@ def process_workflow():
         run_command(command)
 
     png_folder = folder_path + "/realesrgan/"
-
-    if os.path.exists(png_folder):
-        command = f"python Utils/convertToJPG.py {png_folder}"  # Enclose folder path in quotes
-        run_command(command)
+    if selected_vecteezy:
+        if os.path.exists(png_folder):
+            command = f"python Utils/convertToJPG.py {png_folder}"  # Enclose folder path in quotes
+            run_command(command)
 
     if selected_adobe:
         command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a" 
