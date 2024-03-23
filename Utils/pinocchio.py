@@ -1,4 +1,5 @@
 import pyautogui as pyau
+import pyperclip
 import time
 import sys
 import random
@@ -7,6 +8,7 @@ from datetime import datetime
 if len(sys.argv) != 2:
     print("Usage: python3 pinocchio.py <prompt list.txt>")
     sys.exit(1)
+
 
 def isLunchBreak():
     current_time = datetime.now().time()
@@ -19,18 +21,16 @@ def isLunchBreak():
 def isNapTime():
     current_time = datetime.now().time()
     randomMinute = int(random.uniform(1,10))
-    awake_start = datetime.strptime(f"08:00", "%H:%M").time()
-    randomMinute = int(random.uniform(1,10))
     awake_end = datetime.strptime(f"21:0{randomMinute}", "%H:%M").time()
-    return current_time < awake_start or current_time > awake_end
+    return current_time > awake_end
 
-def sendPrompt(prompt):
+def sendPrompt(prompt, params):
     pyau.moveTo(550,720)
 
     pyau.click()
     time.sleep(random.uniform(3,10))
-
-    pyau.typewrite("/imagine")
+    pyperclip.copy("/imagine")
+    pyau.hotkey('ctrl', 'v')
     time.sleep(random.uniform(3,10))
 
     pyau.press("enter")
@@ -39,7 +39,7 @@ def sendPrompt(prompt):
     pyau.typewrite(prompt.strip())
     time.sleep(random.uniform(3,10))
     pyau.typewrite(" shot by hasselblad X1D, editorial photography  ")
-    pyau.typewrite("--ar 16:9 --style raw")
+    pyau.typewrite(params)
 
     pyau.press("enter")
 
@@ -62,18 +62,23 @@ promptsListPath = sys.argv[1] # Prompt list
 promptList = getPromptList(promptsListPath)
 
 
-time.sleep(5)
+time.sleep(10)
 
 
 while True:        
     current_time = datetime.now().time()
-    
+    midday = datetime.strptime(f"12:00", "%H:%M").time()
+    if current_time < midday:
+        params = " --ar 2:1 --chaos 25 "
+    else:
+        params = " --ar 1:2 --chaos 25 "
+ 
     if not isNapTime() and not isLunchBreak():
         time.sleep(random.uniform(3 * random.uniform(40,60), 7 * random.uniform(40,60)))
-        sendPrompt(getPrompt())
-        
+        sendPrompt(getPrompt(), params)
         
     else:
+        print("what")
         if isLunchBreak():
             print("Eating some bytes...")
             while isLunchBreak():
