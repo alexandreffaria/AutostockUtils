@@ -5,6 +5,8 @@ from gptApi import *
 from categorias import categorias
 import re
 
+# IMPLEMENT CLEAN TEXT FOR - ' é
+
 prompts_folder_path = "Prompts"
 prompts_extension = ".txt"
 
