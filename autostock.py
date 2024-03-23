@@ -44,14 +44,20 @@ def process_workflow():
 
     if selected_adobe:
         command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a" 
-        print(command)
-        run_command(command, progress_text)
-    if selected_vecteezy:
-        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
-        print(command)
         run_command(command, progress_text)
 
-# Function to select a folder
+    if selected_vecteezy:
+        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
+        run_command(command, progress_text)
+
+    if selected_adobe:
+        command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/ -p a" 
+        run_command(command, progress_text)
+
+    if selected_vecteezy:
+        command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/jpgs/ -p v" 
+        run_command(command, progress_text)
+
 def select_folder():
     folder_selected = filedialog.askdirectory()
     if folder_selected:
@@ -76,16 +82,13 @@ folder_button.pack(pady=5)
 
 # Checkbox for Adobe
 adobe_var = tk.BooleanVar(value=True)  # Set Adobe checkbox initially checked
-adobe_checkbox = tk.Checkbutton(root, text="Adobe", variable=adobe_var, bg="#2b2b2b", fg="#ffffff", selectcolor="#004080")
+adobe_checkbox = tk.Checkbutton(root, text="Adobe", variable=adobe_var, bg="#2b2b2b", fg="#ffffff", selectcolor="#004080",activebackground="#2b2b2b", activeforeground="#fff" )
 adobe_checkbox.pack(pady=5)
 
 # Checkbox for Vecteezy
 vecteezy_var = tk.BooleanVar(value=True)  # Set Vecteezy checkbox initially checked
-vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var, bg="#2b2b2b", fg="#ffffff", selectcolor="#004080")
+vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var, bg="#2b2b2b", fg="#ffffff", selectcolor="#004080",activebackground="#2b2b2b", activeforeground="#fff")
 vecteezy_checkbox.pack(pady=5)
-
-root.update()  # Update the GUI
-
 
 # Category selection
 category_var = tk.StringVar()
