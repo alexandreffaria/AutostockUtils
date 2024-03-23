@@ -26,7 +26,6 @@ def process_workflow():
     selected_vecteezy = vecteezy_var.get() 
 
     command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
-    print(command)
     run_command(command)
 
     # Check if folder exists to avoid running upscale.py without a valid path
@@ -78,10 +77,24 @@ root.wm_iconbitmap('meulindo.ico')
 folder_var = tk.StringVar()
 folder_label = tk.Label(root, text="Selected Folder:", bg="#2b2b2b", fg="#ffffff")
 folder_label.pack(pady=5)
-folder_entry = tk.Entry(root, textvariable=folder_var, width=50)
+folder_entry = tk.Entry(root, textvariable=folder_var, width=50, bg="#4d4d4d", fg="#ffffff")  # Adjust background and foreground colors
 folder_entry.pack(pady=5)
 folder_button = tk.Button(root, text="Select Folder", command=select_folder, bg="#004080", fg="#ffffff")
 folder_button.pack(pady=5)
+
+# Category selection
+category_var = tk.StringVar()
+category_var.set("Select Category")
+category_label = tk.Label(root, text="Select Category:", bg="#2b2b2b", fg="#ffffff")
+category_label.pack(pady=5)
+
+category_menu = tk.Menu(root, bg="#4d4d4d", fg="#ffffff")  # Configure the background and foreground colors for the dropdown menu
+root.config(menu=category_menu)
+
+category_optionmenu = tk.OptionMenu(root, category_var, *categorias.values())
+category_optionmenu["menu"].config(bg="#4d4d4d", fg="#ffffff")  # Configure the background and foreground colors for the dropdown menu
+category_optionmenu.config(bg="#4d4d4d", fg="#ffffff")  # Adjust background and foreground colors
+category_optionmenu.pack(pady=5)
 
 # Checkbox for Adobe
 adobe_var = tk.BooleanVar(value=True)  # Set Adobe checkbox initially checked
@@ -92,15 +105,6 @@ adobe_checkbox.pack(pady=5)
 vecteezy_var = tk.BooleanVar(value=True)  # Set Vecteezy checkbox initially checked
 vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var, bg="#2b2b2b", fg="#ffffff", selectcolor="#004080",activebackground="#2b2b2b", activeforeground="#fff")
 vecteezy_checkbox.pack(pady=5)
-
-# Category selection
-category_var = tk.StringVar()
-category_var.set("Select Category")
-category_label = tk.Label(root, text="Select Category:", bg="#2b2b2b", fg="#ffffff")
-category_label.pack(pady=5)
-category_optionmenu = tk.OptionMenu(root, category_var, *categorias.values())
-category_optionmenu.config(bg="#004080", fg="#ffffff")
-category_optionmenu.pack(pady=5)
 
 # Process button
 process_button = tk.Button(root, text="Process", command=process_workflow, bg="#004080", fg="#ffffff")
