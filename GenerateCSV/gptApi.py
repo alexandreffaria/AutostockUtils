@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import os
 
-env_file_path = "/home/meulindux/AutostockUtils/.env"
+env_file_path = ".env"
 gptModel = "gpt-3.5-turbo-1106"
 
 load_dotenv(env_file_path)
