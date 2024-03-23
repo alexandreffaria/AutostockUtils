@@ -38,10 +38,10 @@ Just clone and install the libs:
 - keyboard (getMouseCoordinates.py)
 
 ### To-do's
-- [ ] Integrate upscaling 
+- [x] Integrate upscaling 
 - [ ] Integrate inpainting
-- [ ] GUI
-- [ ] Connect everything together
+- [x] GUI
+- [x] Connect everything together
 
 
 ---
