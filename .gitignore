@@ -2,4 +2,7 @@
 /venv/
 *.pyc
 *.csv
+last_directory.txt
+build/
+*.spec
 autoEnv
