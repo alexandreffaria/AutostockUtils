@@ -70,6 +70,11 @@ root = tk.Tk()
 root.title("Autostock Utils")
 root.geometry("600x600")
 root.configure(bg="#2b2b2b")
+# Center the window title
+root.wm_title(" " * 75 + "Autostock Utils")
+root.wm_attributes("-topmost", 1)
+
+root.iconbitmap("meulindo.ico")
 
 # Folder selection
 folder_var = tk.StringVar()
