@@ -20,7 +20,7 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
         substring = filename_base[:i].strip()
         for prompt in prompts:
             if substring in prompt:
-                print(f"FOUND: {substring}")
+                # print(f"FOUND: {substring}")
                 return prompt.strip()
 
     return None
