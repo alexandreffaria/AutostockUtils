@@ -74,7 +74,7 @@ root.configure(bg="#2b2b2b")
 root.wm_title(" " * 75 + "Autostock Utils")
 root.wm_attributes("-topmost", 1)
 
-root.iconbitmap("meulindo.ico")
+root.wm_iconbitmap('meulindo.ico')
 
 # Folder selection
 folder_var = tk.StringVar()
