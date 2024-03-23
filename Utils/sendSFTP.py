@@ -2,8 +2,6 @@ import os
 from dotenv import load_dotenv
 import paramiko
 import argparse
-from tqdm import tqdm
-
 
 def load_credentials(platform):
     # Load environment variables from .env file
@@ -21,7 +19,6 @@ def load_credentials(platform):
 
     return username, password
 
-
 def sftp_upload_folder(local_folder, remote_folder, hostname, port, username, password):
     # Create an SSH client
     transport = paramiko.Transport((hostname, port))
@@ -30,25 +27,20 @@ def sftp_upload_folder(local_folder, remote_folder, hostname, port, username, pa
     # Create an SFTP client
     sftp = paramiko.SFTPClient.from_transport(transport)
 
-    # Get total number of files for progress bar
-    num_files = len(os.listdir(local_folder))
+    # Iterate through all files in the local folder
+    for local_file_name in os.listdir(local_folder):
+        local_file_path = os.path.join(local_folder, local_file_name)
 
-    # Use tqdm for progress bar
-    with tqdm(total=num_files, desc="Uploading", unit="file") as pbar:
-        # Iterate through all files in the local folder
-        for local_file_name in os.listdir(local_folder):
-            local_file_path = os.path.join(local_folder, local_file_name)
+        # Check if the file is PNG or JPG and is a file (not directory)
+        if local_file_name.lower().endswith(('.png', '.jpg')) and os.path.isfile(local_file_path):
             remote_file_path = os.path.join(remote_folder, local_file_name)
 
-            # Upload each file
+            # Upload the file
             sftp.put(local_file_path, remote_file_path)
-            pbar.update(1)  # Update progress bar
-            pbar.set_postfix(file=local_file_name)
 
     # Close the connections
     sftp.close()
     transport.close()
-
 
 if __name__ == "__main__":
     # Set up command-line arguments
@@ -70,13 +62,16 @@ if __name__ == "__main__":
     username, password = load_credentials(args.platform)
 
     # Example usage
-
     if args.platform == "a":
+        print("Sending to Adobe")
         remote_folder_path = "/"
         hostname = "sftp.contributor.adobestock.com"
     elif args.platform == "v":
-        remote_folder_path = "/cm-prod-ftp-bucket/alexandreffaria61364/"
+        print("Sending to Vecteezy")
+        remote_folder_path = "cm-prod-ftp-bucket/alexandreffaria61364/"
         hostname = "content-ftp.eezy.com"
+    else:
+        raise ValueError("Invalid platform. Use 'a' for Adobe or 'v' for Vecteezy.")
     port = 22
 
     # Upload files from local folder to remote folder
