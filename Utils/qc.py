@@ -1,9 +1,7 @@
 import os
 import sys
-import imageio
 import shutil
 import tkinter as tk
-from tkinter import filedialog
 from PIL import Image, ImageTk
 
 # Dark mode stylesheet
