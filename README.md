@@ -9,11 +9,14 @@ Of course, you could always sell stock images on the internet. But now Adobe Sto
 
 * Schedule __everyDayImHustlin.sh__ to run everyday at 8:00, it makes midjourney images until 21:00. __pinocchio.py__ has to sleep, and eat for that matter, he takes a lunch break.
 * Download your images from midjourney websitio
-* __qc.py__ the images to delete and fix the insanity
-* Fix images that come up with letterbox in photoshop with __Utils/Autostock.atn__
-* upscale them using upscayl (native implementation coming soon!)
-* __sendSFTP.py__ to send them to Adobe. (put your info into a .env)
-* __generateCSV.py__ to create the metadata
+* __autostock.py__
+* Quality control the images
+ - click x to delete and arrows to move between images
+* Wait for a while. The metadata will be saved on the same folder as the images.
+* Go to adobe and Vecteezy and upload the csv's.
+* Set images as AI and send them to approval.
+  - You can use __Utils/markAsAi_vecteezy.py__ to do it for you.
+    - you can use __Utils/getMouseCoordinates.py__ to set it up
 * Profit! 💰
 
 ### Other qualities of life: 🕊
@@ -27,22 +30,13 @@ Of course, you could always sell stock images on the internet. But now Adobe Sto
 ### 🤝 Contributing
 
 Just clone and install the libs:
-- tkinter
-- openai
-- dotenv
-- pyautogui
-- pyperclip
-- argparse
-- paramiko
-- tqdm
-- keyboard (getMouseCoordinates.py)
+- pip install -r requirements.txt
 
 ### To-do's
 - [x] Integrate upscaling 
-- [ ] Integrate inpainting
 - [x] GUI
 - [x] Connect everything together
-
+- [ ] Integrate inpainting
 
 ---
 https://github.com/Sanster/IOPaint/releases/tag/iopaint-1.0.0b2
