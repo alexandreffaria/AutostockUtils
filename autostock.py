@@ -1,7 +1,6 @@
 import os
 import tkinter as tk
 from tkinter import filedialog
-from tkinter import messagebox
 from tkinter.font import Font
 from subprocess import Popen, PIPE
 from GenerateCSV.categorias import categorias
