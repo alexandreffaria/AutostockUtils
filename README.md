@@ -11,7 +11,7 @@ Of course, you could always sell stock images on the internet. But now Adobe Sto
 * Download your images from midjourney websitio
 * __autostock.py__
 * Quality control the images
- - click x to delete and arrows to move between images
+  - click x to delete and arrows to move between images
 * Wait for a while. The metadata will be saved on the same folder as the images.
 * Go to adobe and Vecteezy and upload the csv's.
 * Set images as AI and send them to approval.
