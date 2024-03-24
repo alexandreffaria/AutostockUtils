@@ -20,12 +20,21 @@ def run_command(command):
             print("stderr:")
             print(stderr)
 
+def show_custom_error(message):
+    error_window = tk.Toplevel(root)
+    error_window.configure(bg="#2b2b2b")
+    error_window.title("Cadê?!")
+    error_window.wm_iconbitmap('meulindo.ico')
+    error_label = tk.Label(error_window, text=message, bg="#2b2b2b", fg="#ffffff")
+    error_label.pack(padx=20, pady=10)
+    ok_button = tk.Button(error_window, text="OK", command=error_window.destroy, bg="#004080", fg="#ffffff")
+    ok_button.pack(pady=10, padx=20)
 
 # Function to execute the workflow
 def process_workflow():
     folder_path = folder_var.get()
     if not folder_path:
-        messagebox.showerror("Error", "Please select a folder first.")
+        show_custom_error("A gente precisa de uma pasta bebê.")
         return
     
     selected_category = category_var.get()  
@@ -34,7 +43,7 @@ def process_workflow():
 
     # Check if a category has been selected
     if selected_category == "Categoria":
-        messagebox.showerror("Error", "Please select a category.")
+        show_custom_error("A gente precisa de uma categoria bebê.")
         return
 
     command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
