@@ -72,12 +72,12 @@ def process_workflow():
         command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
         run_command(command)
 
-    if selected_adobe:
-        command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/ -p a" 
-        run_command(command)
-
     if selected_vecteezy:
         command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/jpgs/ -p v" 
+        run_command(command)
+    
+    if selected_adobe:
+        command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/ -p a" 
         run_command(command)
 
 def select_folder():
