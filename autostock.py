@@ -5,6 +5,10 @@ from tkinter import messagebox
 from tkinter.font import Font
 from subprocess import Popen, PIPE
 from GenerateCSV.categorias import categorias
+import random
+
+accent_color_list = ["#800f00", "#004080", "#80005e", "#800000"]
+accent_color = random.choice(accent_color_list)
 
 # Function to run a shell command Function to run a shell command
 def run_command(command):
@@ -27,7 +31,7 @@ def show_custom_error(message):
     error_window.wm_iconbitmap('meulindo.ico')
     error_label = tk.Label(error_window, text=message, bg="#2b2b2b", fg="#ffffff")
     error_label.pack(padx=20, pady=10)
-    ok_button = tk.Button(error_window, text="Desculpe meu senhor", command=error_window.destroy, bg="#004080", fg="#ffffff")
+    ok_button = tk.Button(error_window, text="Desculpe meu senhor", command=error_window.destroy, bg=accent_color, fg="#ffffff")
     ok_button.pack(pady=10, padx=20)
 
 # Function to execute the workflow
@@ -97,11 +101,12 @@ bold_font = Font(family="Arial", size=12, weight="bold")
 
 # Folder selection
 folder_var = tk.StringVar()
-folder_label = tk.Label(root, text="Deixa eu fazer procê ❤️", bg="#2b2b2b", fg="#ffffff", font=bold_font)
+folder_label = tk.Label(root,text="Deixa eu fazer procê ❤️", bg="#2b2b2b", fg="#ffffff", font=bold_font, height=1)
 folder_label.pack(pady=5, padx=20)
+
 folder_entry = tk.Entry(root, textvariable=folder_var, width=16, bg="#4d4d4d", fg="#ffffff", font=("Arial", 20))  # Adjust background and foreground colors
 folder_entry.pack(pady=5)
-folder_button = tk.Button(root, text="🔎", command=select_folder, bg="#004080", fg="#ffffff", font=("Arial", 20))
+folder_button = tk.Button(root, text="🔎", command=select_folder, bg=accent_color, fg="#ffffff", font=("Arial", 20))
 folder_button.pack(pady=20)
 
 # Category selection
@@ -116,18 +121,20 @@ category_optionmenu["menu"].config(bg="#4d4d4d", fg="#ffffff")  # Configure the 
 category_optionmenu.config(bg="#4d4d4d", fg="#ffffff")  # Adjust background and foreground colors
 category_optionmenu.pack(pady=25)
 
+category_optionmenu.config(highlightthickness=1, highlightbackground=accent_color) 
+
 # Checkbox for Adobe
 adobe_var = tk.BooleanVar(value=True)  # Set Adobe checkbox initially checked
-adobe_checkbox = tk.Checkbutton(root, text="Adobe", variable=adobe_var, bg="#2b2b2b", fg="#ffffff", selectcolor="#004080",activebackground="#2b2b2b", activeforeground="#fff" )
+adobe_checkbox = tk.Checkbutton(root, text="Adobe", variable=adobe_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff" )
 adobe_checkbox.pack(pady=5)
 
 # Checkbox for Vecteezy
 vecteezy_var = tk.BooleanVar(value=True)  # Set Vecteezy checkbox initially checked
-vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var, bg="#2b2b2b", fg="#ffffff", selectcolor="#004080",activebackground="#2b2b2b", activeforeground="#fff")
+vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff")
 vecteezy_checkbox.pack(pady=5)
 
 # Process button
-process_button = tk.Button(root, text="🚀", command=process_workflow, bg="#004080", fg="#ffffff", width=15, height=3, font=("Arial", 20))
+process_button = tk.Button(root, text="🚀", command=process_workflow, bg=accent_color, fg="#ffffff", width=15, height=3, font=("Arial", 20))
 process_button.pack(pady=50)
 
 root.mainloop()
