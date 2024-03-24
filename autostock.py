@@ -6,7 +6,7 @@ from tkinter.font import Font
 from subprocess import Popen, PIPE
 from GenerateCSV.categorias import categorias
 
-# Function to run a shell command# Function to run a shell command
+# Function to run a shell command Function to run a shell command
 def run_command(command):
     process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE, universal_newlines=True)
     stdout, stderr = process.communicate()
@@ -27,7 +27,7 @@ def show_custom_error(message):
     error_window.wm_iconbitmap('meulindo.ico')
     error_label = tk.Label(error_window, text=message, bg="#2b2b2b", fg="#ffffff")
     error_label.pack(padx=20, pady=10)
-    ok_button = tk.Button(error_window, text="OK", command=error_window.destroy, bg="#004080", fg="#ffffff")
+    ok_button = tk.Button(error_window, text="Desculpe meu senhor", command=error_window.destroy, bg="#004080", fg="#ffffff")
     ok_button.pack(pady=10, padx=20)
 
 # Function to execute the workflow
