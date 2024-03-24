@@ -7,7 +7,12 @@ Of course, you could always sell stock images on the internet. But now Adobe Sto
 
 ## how we do?
 
+### Onetime thing
+
 * Schedule __everyDayImHustlin.sh__ to run everyday at 8:00, it makes midjourney images until 21:00. __pinocchio.py__ has to sleep, and eat for that matter, he takes a lunch break.
+
+### Everyday thing
+
 * Download your images from midjourney websitio
 * __autostock.py__
 * Quality control the images
