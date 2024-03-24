@@ -1,7 +1,6 @@
 import os
 import tkinter as tk
 from tkinter import filedialog
-from tkinter import messagebox
 from tkinter.font import Font
 from subprocess import Popen, PIPE
 from GenerateCSV.categorias import categorias
@@ -71,12 +70,12 @@ def process_workflow():
         command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
         run_command(command)
 
-    if selected_adobe:
-        command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/ -p a" 
-        run_command(command)
-
     if selected_vecteezy:
         command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/jpgs/ -p v" 
+        run_command(command)
+    
+    if selected_adobe:
+        command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/ -p a" 
         run_command(command)
 
 def select_folder():
