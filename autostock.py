@@ -41,14 +41,13 @@ def process_workflow():
         show_custom_error("A gente precisa de uma pasta bebê.")
         return
     
-    selected_category = category_var.get()  
-    selected_adobe = adobe_var.get() 
-    selected_vecteezy = vecteezy_var.get() 
-
-    # Check if a category has been selected
     if selected_category == "Categoria":
         show_custom_error("A gente precisa de uma categoria bebê.")
         return
+    
+    selected_category = category_var.get()  
+    selected_adobe = adobe_var.get() 
+    selected_vecteezy = vecteezy_var.get() 
 
     command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
     run_command(command)
