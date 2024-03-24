@@ -32,6 +32,11 @@ def process_workflow():
     selected_adobe = adobe_var.get() 
     selected_vecteezy = vecteezy_var.get() 
 
+    # Check if a category has been selected
+    if selected_category == "Categoria":
+        messagebox.showerror("Error", "Please select a category.")
+        return
+
     command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
     run_command(command)
 
