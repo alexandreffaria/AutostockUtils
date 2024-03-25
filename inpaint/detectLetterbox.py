@@ -3,6 +3,10 @@ import shutil
 import argparse
 from PIL import Image
 
+def color_distance(color1, color2):
+    # Euclidean distance between two RGB colors
+    return sum((color1[i] - color2[i]) ** 2 for i in range(3)) ** 0.5
+
 def detect_solid_color_bars(image_path, offset=5, threshold=100):
     image = Image.open(image_path)
 
@@ -59,7 +63,7 @@ def create_mask(image, output_folder, paint_radius=5):
     print(f"Mask created: {mask_path}")
 
 
-def is_near_solid_color(image, solid_color, x, y, radius):
+def is_near_solid_color(image, solid_color, x, y, radius, threshold):
     width, height = image.size
 
     # Define the region to check around the pixel
@@ -68,13 +72,12 @@ def is_near_solid_color(image, solid_color, x, y, radius):
     y_min = max(0, y - radius)
     y_max = min(height - 1, y + radius)
 
-    # Check if any pixel in the region matches the solid color
+    # Check if any pixel in the region is close enough to the solid color
     for i in range(x_min, x_max + 1):
         for j in range(y_min, y_max + 1):
-            if image.getpixel((i, j)) == solid_color:
+            if color_distance(image.getpixel((i, j)), solid_color) <= threshold:
                 return True
     return False
-
 def get_solid_color(image):
     width, height = image.size
     colors = {}
