@@ -34,7 +34,7 @@ def is_uniform_color(region, threshold):
                 return False
     return True
 
-def create_mask(image, output_folder):
+def create_mask(image, output_folder, paint_radius=5):
     width, height = image.size
 
     # Create a new blank image for the mask
@@ -48,8 +48,9 @@ def create_mask(image, output_folder):
     for x in range(width):
         for y in range(height):
             pixel_color = image.getpixel((x, y))
-            if pixel_color == solid_color:
+            if pixel_color == solid_color or is_near_solid_color(image, solid_color, x, y, paint_radius):
                 mask_pixels[x, y] = 255  # Paint white
+                print(f"Painted pixel at ({x}, {y})")
             else:
                 mask_pixels[x, y] = 0    # Paint black
 
@@ -57,6 +58,23 @@ def create_mask(image, output_folder):
     mask_path = os.path.join(output_folder, f"mask_{os.path.basename(image.filename)}")
     mask.save(mask_path)
     print(f"Mask created: {mask_path}")
+
+
+def is_near_solid_color(image, solid_color, x, y, radius):
+    width, height = image.size
+
+    # Define the region to check around the pixel
+    x_min = max(0, x - radius)
+    x_max = min(width - 1, x + radius)
+    y_min = max(0, y - radius)
+    y_max = min(height - 1, y + radius)
+
+    # Check if any pixel in the region matches the solid color
+    for i in range(x_min, x_max + 1):
+        for j in range(y_min, y_max + 1):
+            if image.getpixel((i, j)) == solid_color:
+                return True
+    return False
 
 def get_solid_color(image):
     width, height = image.size
@@ -83,6 +101,9 @@ def main(folder_path):
     os.makedirs(output_folder, exist_ok=True)
     os.makedirs(masks_folder, exist_ok=True)
 
+    # Define the paint radius
+    paint_radius = 5
+
     # List all files in the folder
     files = os.listdir(folder_path)
 
@@ -99,7 +120,7 @@ def main(folder_path):
                 print(f"Found and moved {file} to {output_folder}")
 
                 # Create the mask for the found image
-                create_mask(image, masks_folder)
+                create_mask(image, masks_folder, paint_radius)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Detect images with solid color bars.')
