@@ -69,6 +69,8 @@ def process_workflow():
     if selected_vecteezy:
         command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
         run_command(command)
+        command = f"python Utils/removeNonAplha.py {folder_path}/realesrgan/jpgs/"
+        run_command(command)
 
     if selected_vecteezy:
         command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/jpgs/ -p v" 
