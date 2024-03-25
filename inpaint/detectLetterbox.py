@@ -48,9 +48,8 @@ def create_mask(image, output_folder, paint_radius=5):
     for x in range(width):
         for y in range(height):
             pixel_color = image.getpixel((x, y))
-            if pixel_color == solid_color or is_near_solid_color(image, solid_color, x, y, paint_radius):
+            if pixel_color == solid_color:
                 mask_pixels[x, y] = 255  # Paint white
-                print(f"Painted pixel at ({x}, {y})")
             else:
                 mask_pixels[x, y] = 0    # Paint black
 
@@ -102,7 +101,7 @@ def main(folder_path):
     os.makedirs(masks_folder, exist_ok=True)
 
     # Define the paint radius
-    paint_radius = 5
+    paint_radius = 50
 
     # List all files in the folder
     files = os.listdir(folder_path)
