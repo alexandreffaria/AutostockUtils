@@ -19,7 +19,7 @@ def deleteWholePage(nPages, pc):
     for _ in range(nPages):
         pyau.moveTo(dlButton)
         pyau.click()
-        time.sleep(1)
+        time.sleep(2)
         keyboard.send("right")
        
 
