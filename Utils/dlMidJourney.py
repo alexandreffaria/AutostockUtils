@@ -16,7 +16,8 @@ def deleteWholePage(nPages, pc):
         dlButton = (1197, 316)
        
 
-    for _ in range(nPages):
+    for i in range(nPages):
+        print(f"{i} donwloaded")
         pyau.moveTo(dlButton)
         pyau.click()
         time.sleep(2)
