@@ -10,14 +10,14 @@ if len(sys.argv) != 3:
 
 def deleteWholePage(nPages, pc):
     if pc == "medusa":
-        dlButton = (1747,1308)
+        dlButton = (2818,1320)
         
     if pc == "oldboi":
         dlButton = (1197, 316)
        
 
     for i in range(nPages):
-        print(f"{i} donwloaded")
+        print(f"{i+1} downloaded")
         pyau.moveTo(dlButton)
         pyau.click()
         time.sleep(2)
