@@ -18,7 +18,6 @@ SFTP_USERNAME_adobe=
 SFTP_PASSWORD_adobe=
 SFTP_USERNAME_vecteezy=
 SFTP_PASSWORD_vecteezy=
-OPENAI_API_KEY=
 ```
 
 ### Everyday thing
