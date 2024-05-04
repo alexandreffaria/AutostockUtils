@@ -110,13 +110,11 @@ def create_csv(folder_path, output_folder, category, prompts_file_path, platform
                         .replace("-", "")
                     )
                     gptTitle = clean_text(gptTitle)
-                    gptTitle = "AI generated " + gptTitle
               
                 if platform_flag == 'a':
                     gptKeywords = getKeywords(fullPrompt, "pt")
                 if platform_flag == 'v':
                     gptKeywords = getKeywords(fullPrompt, "en")
-                    gptKeywords = "ai generated," + gptKeywords
 
                 # Remove leading and trailing whitespaces
                 gptTitle = gptTitle.strip().strip("\n").strip(",")
