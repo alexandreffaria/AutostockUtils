@@ -9,7 +9,7 @@ import random
 accent_color_list = ["#800f00", "#004080", "#80005e", "#800000"]
 accent_color = random.choice(accent_color_list)
 
-# Function to run a shell command Function to run a shell command
+# Function to run a shell command 
 def run_command(command):
     process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE, universal_newlines=True)
     stdout, stderr = process.communicate()
@@ -34,7 +34,7 @@ def show_custom_error(message):
     ok_button.pack(pady=10, padx=20)
 
 # Function to execute the workflow
-def process_workflow():
+def process_workflow(qc, upscale, convertJPG, CSV, send):
     folder_path = folder_var.get()
     if not folder_path:
         show_custom_error("A gente precisa de uma pasta bebê.")
@@ -48,47 +48,52 @@ def process_workflow():
     selected_adobe = adobe_var.get() 
     selected_vecteezy = vecteezy_var.get() 
 
-    command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
-    run_command(command)
+
+    
+
+    qualityControl = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
+    run_command(qualityControl)
 
     # Check if folder exists to avoid running upscale.py without a valid path
     if os.path.exists(folder_path):
-        command = f"python Utils/upscale.py {folder_path}"  # Enclose folder path in quotes
-        run_command(command)
+        upscaleFiles = f"python Utils/upscale.py {folder_path}"  # Enclose folder path in quotes
+        run_command(upscaleFiles)
 
     png_folder = folder_path + "/realesrgan/"
     if selected_vecteezy:
         if os.path.exists(png_folder):
-            command = f"python Utils/convertToJPG.py {png_folder}"  # Enclose folder path in quotes
-            run_command(command)
+            convertToJPG = f"python Utils/convertToJPG.py {png_folder}"  # Enclose folder path in quotes
+            run_command(convertToJPG)
 
     if selected_adobe:
-        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a" 
-        run_command(command)
+        generateCSVAdobe = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a" 
+        run_command(generateCSVAdobe)
 
     if selected_vecteezy:
-        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
-        run_command(command)
-        command = f"python Utils/removeNonAlpha.py {folder_path}/realesrgan/jpgs"
-        run_command(command)
+        generateCSVVecteezy = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
+        run_command(generateCSVVecteezy)
+        removeNonAlpha = f"python Utils/removeNonAlpha.py {folder_path}/realesrgan/jpgs"
+        run_command(removeNonAlpha)
 
     if selected_vecteezy:
-        command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/jpgs/ -p v" 
-        run_command(command)
+        sendSFTPVecteezy = f"python Utils/sendSFTP.py {folder_path}/realesrgan/jpgs/ -p v" 
+        run_command(sendSFTPVecteezy)
     
     if selected_adobe:
-        command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/ -p a" 
-        run_command(command)
+        sendSFTPAdobe = f"python Utils/sendSFTP.py {folder_path}/realesrgan/ -p a" 
+        run_command(sendSFTPAdobe)
 
 def select_folder():
     folder_selected = filedialog.askdirectory()
     if folder_selected:
         folder_var.set(folder_selected)
         root.configure(bg="#2b2b2b")
-        
+
+
 
 # Main window
 root = tk.Tk()
+
 root.title("Autostock Utils")
 root.geometry("300x500")
 root.configure(bg="#2b2b2b")
@@ -137,4 +142,31 @@ vecteezy_checkbox.pack(pady=5)
 process_button = tk.Button(root, text="🚀", command=process_workflow, bg=accent_color, fg="#ffffff", width=15, height=3, font=("Arial", 20))
 process_button.pack(pady=50)
 
+def toggle_option(option_name):
+    options[option_name] = not options[option_name]
+    print(f"{option_name} is {'enabled' if options[option_name] else 'disabled'}")
+
+def apply_options():
+    print("Applying options:")
+    for option_name, option_state in options.items():
+        print(f"{option_name}: {'enabled' if option_state else 'disabled'}")
+
+options = {
+    "Quality Control": False,
+    "Upscale": False,
+    "ConvertJPG": False,
+    "Generate CSV": False,
+    "Send SFTP": False,
+}
+
+menubar = tk.Menu(root)
+
+options_menu = tk.Menu(menubar, tearoff=0)
+
+
+root.config(menu=menubar)
+
 root.mainloop()
+
+
+
