@@ -19,13 +19,13 @@ def deleteWholePage(nPages, pc):
         submit = (656, 672)
         accept = (909, 763)
     elif pc == "oldboi":
-        selectAll = (1188, 321)
-        AiGenerated = (1571, 779)
-        selectSoftware = (1572, 825)
-        midJourney = (1557, 898)
-        submitFor = (1588, 1021)
-        submit = (647, 714)
-        accept = (890, 799)
+        selectAll = (1211, 321)
+        AiGenerated = (1590, 779)
+        selectSoftware = (1588, 825)
+        midJourney = (1519, 898)
+        submitFor = (1621, 1021)
+        submit = (652, 714)
+        accept = (924, 799)
     else:
         print("Invalid PC name.")
         sys.exit(1)
@@ -38,9 +38,9 @@ def deleteWholePage(nPages, pc):
             pyau.click()
             time.sleep(1)
         
-        time.sleep(2)
+        time.sleep(10)
         pyau.press('f5')
-        time.sleep(4)
+        time.sleep(10)
 
         if keyboard.is_pressed('esc'):
             print("Exiting...")
