@@ -155,7 +155,7 @@ def create_csv(folder_path, output_folder, category, prompts_file_path, platform
                     "Title": filename_info[filename_base]["Title"],
                     "Description": filename_info[filename_base]["Description"],
                     "Keywords": filename_info[filename_base]["Keywords"],
-                    "License": "Free",
+                    "License": "Pro",
                 }
             )
 
