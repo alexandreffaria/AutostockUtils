@@ -80,7 +80,7 @@ I'm going to give you a brief description of an image, and you should generate a
         return gptTitle.replace('"', "")
     else:
         gptPrompt = f"""
-I'm going to give you a brief description of an image, and you should generate a descriptive title for it, don't be creative: {prompt}
+I'm going to give you a brief description of an image, and you should generate a descriptive title for it, don't be creative, it should be at least 3 words: {prompt}
 """
         gptTitle = getGPTResponse(gptPrompt)
         return gptTitle.replace('"', "")
