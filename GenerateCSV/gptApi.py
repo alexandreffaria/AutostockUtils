@@ -54,7 +54,7 @@ Título:
     else:
         gptKeywords = getGPTResponse(
             f"""
-Give me 40 keywords related to this description. Here is an example:
+Give me 40 keywords related to this description, you should give me at least 6 keywords. Here is an example:
 Description:
 A close up shot with a 50mm lens capturing a young woman enjoying a cozy moment by the fireplace with a book in hand and a warm blanket draped around her shoulders Soft natural light illuminates the scene creating a tranquil and peaceful atmosphere
 Keywords:
