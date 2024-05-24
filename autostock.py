@@ -46,7 +46,8 @@ def process_workflow():
         return
     
     selected_adobe = adobe_var.get() 
-    selected_vecteezy = vecteezy_var.get() 
+    selected_vecteezy = vecteezy_var.get()
+    selected_freepik = freepik_var.get()
 
     command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
     run_command(command)
@@ -73,12 +74,18 @@ def process_workflow():
         run_command(command)
 
     if selected_vecteezy:
+        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f" 
+        run_command(command)
+
+    if selected_vecteezy:
         command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/jpgs/ -p v" 
         run_command(command)
     
     if selected_adobe:
         command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/ -p a" 
         run_command(command)
+
+    
 
 def select_folder():
     folder_selected = filedialog.askdirectory()
@@ -132,6 +139,12 @@ adobe_checkbox.pack(pady=5)
 vecteezy_var = tk.BooleanVar(value=True)  # Set Vecteezy checkbox initially checked
 vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff")
 vecteezy_checkbox.pack(pady=5)
+
+# Checkbox for Vecteezy
+freepik_var = tk.BooleanVar(value=True)  # Set Vecteezy checkbox initially checked
+freepik_checkbox = tk.Checkbutton(root, text="Freepik", variable=freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff")
+freepik_checkbox.pack(pady=5)
+
 
 # Process button
 process_button = tk.Button(root, text="🚀", command=process_workflow, bg=accent_color, fg="#ffffff", width=15, height=3, font=("Arial", 20))
