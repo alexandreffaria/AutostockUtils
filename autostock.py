@@ -97,7 +97,7 @@ def select_folder():
 # Main window
 root = tk.Tk()
 root.title("Autostock Utils")
-root.geometry("300x500")
+root.geometry("300x600")
 root.configure(bg="#2b2b2b")
 # Center the window title
 root.wm_title("Autostock Utils")
