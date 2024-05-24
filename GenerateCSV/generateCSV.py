@@ -27,29 +27,27 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
 
     return None
 
-def create_csv(folder_path, output_folder, category, prompts_file_path, platform_flag, category_key):
+def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key):
 
     if platform_flag == 'a':
         parent_folder_name = os.path.basename(
-        os.path.normpath(os.path.join(folder_path, ".."))
-    )
+            os.path.normpath(os.path.join(folder_path, ".."))
+        )
         csv_file_name = f"{parent_folder_name}_adobe.csv"
         csv_file_path = os.path.join(output_folder, csv_file_name)
     if platform_flag == 'v':
         parent_folder_name = os.path.basename(
-        os.path.normpath(os.path.join(folder_path, "../.."))
-    )
+            os.path.normpath(os.path.join(folder_path, "../.."))
+        )
         csv_file_name = f"{parent_folder_name}_vecteezy_output.csv"
         csv_file_path = os.path.join(output_folder, csv_file_name)
     if platform_flag == 'f':
         parent_folder_name = os.path.basename(
-        os.path.normpath(os.path.join(folder_path, "../.."))
-    )
+            os.path.normpath(os.path.join(folder_path, "../.."))
+        )
         csv_file_name = f"{parent_folder_name}_freepik_output.csv"
         csv_file_path = os.path.join(output_folder, csv_file_name)
         
-
-    # Get a list of all files in the specified folder
     # Get a list of all files in the specified folder with PNG or JPG extensions
     files = [
         f for f in os.listdir(folder_path)
@@ -67,7 +65,7 @@ def create_csv(folder_path, output_folder, category, prompts_file_path, platform
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         if platform_flag == 'f':
             fieldnames = ["Filename", "Title", "Keywords", "Prompt", "Model"]
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
         
         writer.writeheader()
 
@@ -77,20 +75,13 @@ def create_csv(folder_path, output_folder, category, prompts_file_path, platform
         current_file_count = 0  # Counter for unique filenames
 
         for file in files:
-            if platform_flag == 'a' or platform_flag == 'f':  
-                filename_base = (
-                    file[8:63].rsplit("_", 1)[0].replace("_", " ")
-                    if "_" in file[63:]
-                    else file[63:]
-                )
-            if platform_flag == 'v':
-                filename_base = os.path.splitext(file)[0]  # Remove file extension
-                filename_base_prompt = (
-                    file[8:63].rsplit("_", 1)[0].replace("_", " ")
-                    if "_" in file[63:]
-                    else file[63:]
-                )
-
+            
+            filename_base = (
+                file[8:63].rsplit("_", 1)[0].replace("_", " ")
+                if "_" in file[63:]
+                else file[63:]
+            )
+          
             if filename_base not in filename_info:
                 # Increment the counter for unique filenames
                 current_file_count += 1
@@ -116,7 +107,9 @@ def create_csv(folder_path, output_folder, category, prompts_file_path, platform
                 gptKeywords = gptKeywords.strip(".").strip("\n")
 
                 # Enclose keywords in double quotes
-                gptKeywords = f"{gptKeywords}"
+                if not platform_flag == 'f':
+                    gptKeywords = f"{gptKeywords}"
+                
 
                 # Store title, keywords, and category for the unique filename
                 if platform_flag == 'a':    
@@ -196,7 +189,7 @@ def main():
     prompts_file_path = os.path.join(prompts_folder_path, prompts_file_name)
     
     
-    create_csv(folder_path, output_folder, category, prompts_file_path, platform_flag, category_key)
+    create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key)
 
 
 if __name__ == "__main__":
