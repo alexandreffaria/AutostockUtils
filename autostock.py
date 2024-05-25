@@ -49,18 +49,17 @@ def process_workflow():
     selected_vecteezy = vecteezy_var.get()
     selected_freepik = freepik_var.get()
 
-    command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
+    command = f"python Utils/qc.py {folder_path}" 
     run_command(command)
 
-    # Check if folder exists to avoid running upscale.py without a valid path
     if os.path.exists(folder_path):
-        command = f"python Utils/upscale.py {folder_path}"  # Enclose folder path in quotes
+        command = f"python Utils/upscale.py {folder_path}"  
         run_command(command)
 
     png_folder = folder_path + "/realesrgan/"
     if selected_vecteezy:
         if os.path.exists(png_folder):
-            command = f"python Utils/convertToJPG.py {png_folder}"  # Enclose folder path in quotes
+            command = f"python Utils/convertToJPG.py {png_folder}"  
             run_command(command)
 
     if selected_adobe:
