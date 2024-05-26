@@ -57,7 +57,7 @@ def process_workflow():
         run_command(command)
 
     png_folder = folder_path + "/realesrgan/"
-    if selected_vecteezy:
+    if selected_vecteezy or selected_freepik:
         if os.path.exists(png_folder):
             command = f"python Utils/convertToJPG.py {png_folder}"  
             run_command(command)
