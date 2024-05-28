@@ -27,7 +27,7 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
 
     return None
 
-def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key):
+def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key, use_file_names):
 
     if platform_flag == 'a':
         parent_folder_name = os.path.basename(
@@ -81,18 +81,27 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                 if "_" in file[63:]
                 else file[63:]
             )
-          
+            
             if filename_base not in filename_info:
+
                 # Increment the counter for unique filenames
                 current_file_count += 1
                 fullPrompt = find_prompt_for_filename(
                     filename_base.strip(), prompts_file_path
                 )
-                if platform_flag == 'a': 
+                if platform_flag == 'a':
+                    if use_file_names:
+                        gptTitle = (
+                        clean_text(createTitleWithoutPrompt(fullPrompt, "pt"))
+                    )
                     gptTitle = (
                         clean_text(createTitle(fullPrompt, "pt"))
                     )
                 if platform_flag == 'v' or platform_flag == 'f':
+                    if use_file_names:
+                        gptTitle = (
+                        clean_text(createTitleWithoutPrompt(fullPrompt, "en"))
+                    )
                     gptTitle = (
                         clean_text(createTitle(fullPrompt, "en"))
                     )
@@ -175,6 +184,8 @@ def main():
     parser.add_argument('category', type=str, help='Category as a string.')
     parser.add_argument('-p', '--platform', choices=['a', 'v', 'f'], default='a',
                         help='Choose platform -p a for Adobe and -p v for Vecteezy or -f for Freepik')
+    parser.add_argument('--no-prompt', action='store_true', 
+                        help='If set, no prompt will be shown.')
 
 
     args = parser.parse_args()
@@ -182,14 +193,14 @@ def main():
     output_folder = folder_path  
     category = args.category
     platform_flag = args.platform
+    use_file_names = args.no_prompt
 
     category_key = next(key for key, value in categorias.items() if value == category)
     
     prompts_file_name = f"{category_key}-{category}.txt"
     prompts_file_path = os.path.join(prompts_folder_path, prompts_file_name)
     
-    
-    create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key)
+    create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key, use_file_names)
 
 
 if __name__ == "__main__":
