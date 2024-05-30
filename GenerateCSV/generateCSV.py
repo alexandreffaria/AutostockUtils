@@ -83,7 +83,7 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
             )
             
             if filename_base not in filename_info:
-
+                print(filename_base)
                 # Increment the counter for unique filenames
                 current_file_count += 1
                 fullPrompt = find_prompt_for_filename(
@@ -92,24 +92,31 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                 if platform_flag == 'a':
                     if use_file_names:
                         gptTitle = (
-                        clean_text(createTitleWithoutPrompt(fullPrompt, "pt"))
+                        clean_text(createTitleWithoutPrompt(filename_base, "pt"))
                     )
-                    gptTitle = (
-                        clean_text(createTitle(fullPrompt, "pt"))
-                    )
+                    else:
+                        gptTitle = (
+                            clean_text(createTitle(fullPrompt, "pt"))
+                        )
                 if platform_flag == 'v' or platform_flag == 'f':
                     if use_file_names:
                         gptTitle = (
-                        clean_text(createTitleWithoutPrompt(fullPrompt, "en"))
+                        clean_text(createTitleWithoutPrompt(filename_base, "en"))
                     )
-                    gptTitle = (
-                        clean_text(createTitle(fullPrompt, "en"))
-                    )
-              
-                if platform_flag == 'a':
-                    gptKeywords = getKeywords(fullPrompt, "pt")
-                if platform_flag == 'v' or platform_flag == 'f':
-                    gptKeywords = getKeywords(fullPrompt, "en")
+                    else: 
+                        gptTitle = (
+                            clean_text(createTitle(fullPrompt, "en"))
+                        )
+                if use_file_names:
+                    if platform_flag == 'a':
+                        gptKeywords = getKeywords(gptTitle, "pt")
+                    if platform_flag == 'v' or platform_flag == 'f':
+                        gptKeywords = getKeywords(gptTitle, "en")
+                else:
+                    if platform_flag == 'a':
+                        gptKeywords = getKeywords(fullPrompt, "pt")
+                    if platform_flag == 'v' or platform_flag == 'f':
+                        gptKeywords = getKeywords(fullPrompt, "en")
 
                 # Remove leading and trailing whitespaces
                 gptTitle = gptTitle.strip().strip("\n").strip(",")
@@ -166,7 +173,7 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                         "Filename": file,
                         "Title": filename_info[filename_base]["Title"],
                         "Keywords": filename_info[filename_base]["Keywords"],
-                        "Prompt": fullPrompt,
+                        "Prompt": gptTitle,
                         "Model": "Midjourney 6",
                     }
                 )
