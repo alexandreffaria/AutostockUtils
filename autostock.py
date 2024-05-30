@@ -73,6 +73,7 @@ def process_workflow():
         run_command(command)
 
     if selected_freepik:
+        # command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f --no-prompt" 
         command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f" 
         run_command(command)
 
