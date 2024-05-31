@@ -74,7 +74,7 @@ while True:
         params = " --ar 1:2 --chaos 25 "
  
     if not isNapTime() and not isLunchBreak():
-        time.sleep(random.uniform(3 * random.uniform(40,60), 7 * random.uniform(40,60)))
+        # time.sleep(random.uniform(3 * random.uniform(40,60), 7 * random.uniform(40,60)))
         sendPrompt(getPrompt(), params)
         
     else:
