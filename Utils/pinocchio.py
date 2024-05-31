@@ -25,7 +25,7 @@ def isNapTime():
     return current_time > awake_end
 
 def sendPrompt(prompt, params):
-    pyau.moveTo(1027,1037)
+    pyau.moveTo(500,500)
 
     pyau.click()
     time.sleep(random.uniform(3,10))
@@ -74,7 +74,7 @@ while True:
         params = " --ar 1:2 --chaos 25 "
  
     if not isNapTime() and not isLunchBreak():
-        time.sleep(random.uniform(3 * random.uniform(40,60), 7 * random.uniform(40,60)))
+        # time.sleep(random.uniform(3 * random.uniform(40,60), 7 * random.uniform(40,60)))
         sendPrompt(getPrompt(), params)
         
     else:
