@@ -48,13 +48,13 @@ def process_workflow():
     selected_adobe = adobe_var.get() 
     selected_vecteezy = vecteezy_var.get() 
 
-    command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
-    run_command(command)
+    #command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
+    #run_command(command)
 
     # Check if folder exists to avoid running upscale.py without a valid path
-    if os.path.exists(folder_path):
-        command = f"python Utils/upscale.py {folder_path}"  # Enclose folder path in quotes
-        run_command(command)
+    # if os.path.exists(folder_path):
+    #     command = f"python Utils/upscale.py {folder_path}"  # Enclose folder path in quotes
+    #     run_command(command)
 
     png_folder = folder_path + "/realesrgan/"
     if selected_vecteezy:
@@ -62,9 +62,9 @@ def process_workflow():
             command = f"python Utils/convertToJPG.py {png_folder}"  # Enclose folder path in quotes
             run_command(command)
 
-    if selected_adobe:
-        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a" 
-        run_command(command)
+    # if selected_adobe:
+    #     command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a" 
+    #     run_command(command)
 
     if selected_vecteezy:
         command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
