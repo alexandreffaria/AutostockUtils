@@ -11,7 +11,7 @@ OpenAI.api_key = api_key
 client = OpenAI()
 
 gptModel = "gpt-3.5-turbo-1106"
-# gptmodel = "gpt-4"
+# gptModel = "gpt-4"
 prompts_file_path = "prompts.txt"
 
 
@@ -56,7 +56,7 @@ def getGPTResponse(model, content):
     response = client.chat.completions.create(
         model=model,
         messages=gptPrompt,
-        temperature=1,
+        temperature=1.5,
         max_tokens=256,
         top_p=1,
         frequency_penalty=1,
@@ -85,6 +85,7 @@ def main(category, strategy, amount, description):
                 Do: Bright orange California poppies drawn with colored pencils
                 Here is the topic:
                 Topic: "{description}"
+                Focus on Brazilian culture, but don't do it 100% of the time.
                 ***ONLY GIVE ONE DESCRIPTION AT THE TIME WITH NO INFORMATION OTHER THAN THE DESCRIPTION ITSELF***
                 your anwser should look like this: Fruit smoothie with colorful striped straws
                 '''

@@ -40,6 +40,8 @@ class ImageViewer(tk.Tk):
         self.bind("<Key-q>", lambda event: sys.exit())
         self.bind("<Key-w>", lambda event: self.move_image_to_folder("watermark"))
         self.bind("<Key-b>", lambda event: self.move_image_to_folder("letterbox"))
+        self.bind("<Key-h>", lambda event: self.previous_image())  # Binding 'h' to move left
+        self.bind("<Key-l>", lambda event: self.next_image()) 
 
     def move_image_to_folder(self, target_folder):
         if not self.files:
@@ -98,7 +100,6 @@ class ImageViewer(tk.Tk):
         # Get screen width and height
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
-        
         # Resize image to fit screen size
         image.thumbnail((screen_width, screen_height))
 
