@@ -5,42 +5,35 @@ import keyboard
 from tqdm import tqdm
 
 if len(sys.argv) != 3:
-    print("Usage: python3 markAsAi_Vecteezy.py <number of pages to mark as AI> <name of pc>")
+    print("Usage: python3 freepikSubmit.py <number of pages> <name of pc>")
     sys.exit(1)
 
 
 def deleteWholePage(nPages, pc):
     if pc == "medusa":
-        selectAll = (1233, 296)
-        AiGenerated = (1593, 745)
-        selectSoftware = (1592, 791)
-        midJourney = (1563, 875)
-        submitFor = (1583, 985)
-        submit = (656, 672)
-        accept = (909, 763)
+        selectAll = (292,298)
+        submit = (1867,250)
     elif pc == "oldboi":
-        selectAll = (1211, 321)
-        AiGenerated = (1590, 779)
-        selectSoftware = (1588, 825)
-        midJourney = (1519, 898)
-        submitFor = (1621, 1021)
-        submit = (652, 714)
-        accept = (924, 799)
+        selectAll = (292,298)
+        submit = (1867,250)
+        
     else:
         print("Invalid PC name.")
         sys.exit(1)
 
-    clicks = [selectAll, AiGenerated, selectSoftware, midJourney, submitFor, submit, accept]
+    clicks = [selectAll, submit]
 
     for _ in tqdm(range(nPages), desc="Processing Pages", unit="page"):
-        for i in range(7):
+        for i in range(len(clicks)):
             pyau.moveTo(clicks[i])
             pyau.click()
             time.sleep(1)
         
-        time.sleep(10)
-        pyau.press('f5')
-        time.sleep(10)
+        time.sleep(5)
+        closeMessage = (1883,177)
+        pyau.moveTo(closeMessage)
+        pyau.click()
+        
 
         if keyboard.is_pressed('esc'):
             print("Exiting...")

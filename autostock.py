@@ -46,20 +46,21 @@ def process_workflow():
         return
     
     selected_adobe = adobe_var.get() 
-    selected_vecteezy = vecteezy_var.get() 
+    selected_vecteezy = vecteezy_var.get()
+    selected_freepik = freepik_var.get()
 
-    #command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
-    #run_command(command)
+    command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
+    run_command(command)
 
     # Check if folder exists to avoid running upscale.py without a valid path
-    # if os.path.exists(folder_path):
-    #     command = f"python Utils/upscale.py {folder_path}"  # Enclose folder path in quotes
-    #     run_command(command)
+    if os.path.exists(folder_path):
+        command = f"python Utils/upscale.py {folder_path}"  # Enclose folder path in quotes
+        run_command(command)
 
     png_folder = folder_path + "/realesrgan/"
-    if selected_vecteezy:
+    if selected_vecteezy or selected_freepik:
         if os.path.exists(png_folder):
-            command = f"python Utils/convertToJPG.py {png_folder}"  # Enclose folder path in quotes
+            command = f"python Utils/convertToJPG.py {png_folder}"  
             run_command(command)
 
     # if selected_adobe:
@@ -69,16 +70,27 @@ def process_workflow():
     if selected_vecteezy:
         command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
         run_command(command)
-        command = f"python Utils/removeNonAplha.py {folder_path}/realesrgan/jpgs"
+        command = f"python Utils/removeNonAlpha.py {folder_path}/realesrgan/jpgs"
+        run_command(command)
+
+    if selected_freepik:
+        # command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f --no-prompt" 
+        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f" 
         run_command(command)
 
     if selected_vecteezy:
         command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/jpgs/ -p v" 
         run_command(command)
     
+    if selected_freepik:
+        command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/jpgs/ -p f" 
+        run_command(command)
+    
     if selected_adobe:
         command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/ -p a" 
         run_command(command)
+
+    
 
 def select_folder():
     folder_selected = filedialog.askdirectory()
@@ -90,7 +102,7 @@ def select_folder():
 # Main window
 root = tk.Tk()
 root.title("Autostock Utils")
-root.geometry("300x500")
+root.geometry("300x600")
 root.configure(bg="#2b2b2b")
 # Center the window title
 root.wm_title("Autostock Utils")
@@ -132,6 +144,12 @@ adobe_checkbox.pack(pady=5)
 vecteezy_var = tk.BooleanVar(value=True)  # Set Vecteezy checkbox initially checked
 vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff")
 vecteezy_checkbox.pack(pady=5)
+
+# Checkbox for Vecteezy
+freepik_var = tk.BooleanVar(value=True)  # Set Vecteezy checkbox initially checked
+freepik_checkbox = tk.Checkbutton(root, text="Freepik", variable=freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff")
+freepik_checkbox.pack(pady=5)
+
 
 # Process button
 process_button = tk.Button(root, text="🚀", command=process_workflow, bg=accent_color, fg="#ffffff", width=15, height=3, font=("Arial", 20))

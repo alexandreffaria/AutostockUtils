@@ -54,7 +54,7 @@ Título:
     else:
         gptKeywords = getGPTResponse(
             f"""
-Give me 40 keywords related to this description. Here is an example:
+Give me 40 keywords related to this description, you should give me at least 6 keywords. Here is an example:
 Description:
 A close up shot with a 50mm lens capturing a young woman enjoying a cozy moment by the fireplace with a book in hand and a warm blanket draped around her shoulders Soft natural light illuminates the scene creating a tranquil and peaceful atmosphere
 Keywords:
@@ -80,7 +80,25 @@ I'm going to give you a brief description of an image, and you should generate a
         return gptTitle.replace('"', "")
     else:
         gptPrompt = f"""
-I'm going to give you a brief description of an image, and you should generate a descriptive title for it, don't be creative: {prompt}
+I'm going to give you a brief description of an image, and you should generate a descriptive title for it, don't be creative, it should be at least 3 words: {prompt}
 """
         gptTitle = getGPTResponse(gptPrompt)
+        return gptTitle.replace('"', "")
+
+def createTitleWithoutPrompt(prompt, language):
+    print(f"PROMTP: {prompt}")
+
+    if language == "pt":
+        gptPrompt = f"""
+Eu vou te fornecer uma descrição incompleta de uma imagem, você deve fazer o mínimo possível, ou até mesmo nada se for o caso, para completar a descrição, e então crie um título simples, descritivo e apropriado para essa imagem. Deve conter pelo menos 5 palavras, não seja nem um pouco criativo, e sua resposta deve ser apenas o título, não adicione nada mais que ele. Sempre me dê um título completo: {prompt}
+"""
+        gptTitle = getGPTResponse(gptPrompt)
+        print(f"GPTTITLE: {gptTitle}")
+        return gptTitle.replace('"', "")
+    else:
+        gptPrompt = f"""
+I'm going to give you an incomplete description of an image, you should do as little as possible, if at all, to complete the description, and create a simple, discriptive and appropriate title for it. It should be at least 5 words long, and don't be creative at all, and your answer should be only the title, don't add anything else to it. Always give me a complete title: {prompt}
+"""
+        gptTitle = getGPTResponse(gptPrompt)
+        print(f"GPTTITLE: {gptTitle}")
         return gptTitle.replace('"', "")
