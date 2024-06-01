@@ -15,7 +15,7 @@ def isLunchBreak():
     randomMinute = int(random.uniform(1,10))
     lunch_start = datetime.strptime(f"12:0{randomMinute}", "%H:%M").time()
     randomMinute = int(random.uniform(1,10))
-    lunch_end = datetime.strptime(f"12:2{randomMinute}", "%H:%M").time()
+    lunch_end = datetime.strptime(f"13:0{randomMinute}", "%H:%M").time()
     return lunch_start <= current_time <= lunch_end
 
 def isNapTime():
@@ -25,11 +25,9 @@ def isNapTime():
     return current_time > awake_end
 
 def sendPrompt(prompt, params):
-    pyau.moveTo(550,720)
+    pyau.moveTo(1027,1037)
 
-    pyau.moveTo(775,984)
     pyau.click()
-
     time.sleep(random.uniform(3,10))
     pyperclip.copy("/imagine")
     pyau.hotkey('ctrl', 'v')
@@ -40,13 +38,11 @@ def sendPrompt(prompt, params):
 
     pyau.typewrite(prompt.strip())
     time.sleep(random.uniform(3,10))
-    pyau.typewrite(" realistic, editorial ")
+    pyau.typewrite(" shot by hasselblad X1D, editorial photography  ")
     pyau.typewrite(params)
 
     pyau.press("enter")
 
-    pyau.moveTo(1512,192)
-    pyau.click()
 
 def getPromptList(promptsListPath):
     promptList = []
@@ -73,12 +69,12 @@ while True:
     current_time = datetime.now().time()
     midday = datetime.strptime(f"12:00", "%H:%M").time()
     if current_time < midday:
-        params = " --ar 2:1 --chaos 5 "
+        params = " --ar 2:1 --chaos 25 "
     else:
-        params = " --ar 2:1 --chaos 5 "
+        params = " --ar 1:2 --chaos 25 "
  
-    if not isLunchBreak():
-        time.sleep(random.uniform(1 * random.uniform(8,20), 3 * random.uniform(8,20)))
+    if not isNapTime() and not isLunchBreak():
+        time.sleep(random.uniform(3 * random.uniform(40,60), 7 * random.uniform(40,60)))
         sendPrompt(getPrompt(), params)
         
     else:
@@ -88,7 +84,9 @@ while True:
             while isLunchBreak():
                 print("Nom nom nom nom nom nom")
                 time.sleep(60)
-
+        elif isNapTime():
+            print("Taking a nap....")
+            while isNapTime():
                 sys.exit(1)
         
     time.sleep(10)
