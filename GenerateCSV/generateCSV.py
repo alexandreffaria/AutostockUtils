@@ -160,7 +160,7 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
             if platform_flag == 'v':
                 writer.writerow(
                     {
-                        "Filename": filename_base,  # Update filename without extension
+                        "Filename": file,  # Update filename without extension
                         "Title": filename_info[filename_base]["Title"],
                         "Description": filename_info[filename_base]["Description"],
                         "Keywords": filename_info[filename_base]["Keywords"],
