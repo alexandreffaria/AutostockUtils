@@ -27,7 +27,7 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
 
     return None
 
-def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key):
+def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key, use_file_names):
 
     if platform_flag == 'a':
         parent_folder_name = os.path.basename(
@@ -81,26 +81,42 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                 if "_" in file[63:]
                 else file[63:]
             )
-          
+            
             if filename_base not in filename_info:
+                print(filename_base)
                 # Increment the counter for unique filenames
                 current_file_count += 1
                 fullPrompt = find_prompt_for_filename(
                     filename_base.strip(), prompts_file_path
                 )
-                if platform_flag == 'a': 
-                    gptTitle = (
-                        clean_text(createTitle(fullPrompt, "pt"))
-                    )
-                if platform_flag == 'v' or platform_flag == 'f':
-                    gptTitle = (
-                        clean_text(createTitle(fullPrompt, "en"))
-                    )
-              
                 if platform_flag == 'a':
-                    gptKeywords = getKeywords(fullPrompt, "pt")
+                    if use_file_names:
+                        gptTitle = (
+                        clean_text(createTitleWithoutPrompt(filename_base, "pt"))
+                    )
+                    else:
+                        gptTitle = (
+                            clean_text(createTitle(fullPrompt, "pt"))
+                        )
                 if platform_flag == 'v' or platform_flag == 'f':
-                    gptKeywords = getKeywords(fullPrompt, "en")
+                    if use_file_names:
+                        gptTitle = (
+                        clean_text(createTitleWithoutPrompt(filename_base, "en"))
+                    )
+                    else: 
+                        gptTitle = (
+                            clean_text(createTitle(fullPrompt, "en"))
+                        )
+                if use_file_names:
+                    if platform_flag == 'a':
+                        gptKeywords = getKeywords(gptTitle, "pt")
+                    if platform_flag == 'v' or platform_flag == 'f':
+                        gptKeywords = getKeywords(gptTitle, "en")
+                else:
+                    if platform_flag == 'a':
+                        gptKeywords = getKeywords(fullPrompt, "pt")
+                    if platform_flag == 'v' or platform_flag == 'f':
+                        gptKeywords = getKeywords(fullPrompt, "en")
 
                 # Remove leading and trailing whitespaces
                 gptTitle = gptTitle.strip().strip("\n").strip(",")
@@ -144,7 +160,7 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
             if platform_flag == 'v':
                 writer.writerow(
                     {
-                        "Filename": filename_base,  # Update filename without extension
+                        "Filename": file,  # Update filename without extension
                         "Title": filename_info[filename_base]["Title"],
                         "Description": filename_info[filename_base]["Description"],
                         "Keywords": filename_info[filename_base]["Keywords"],
@@ -157,7 +173,7 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                         "Filename": file,
                         "Title": filename_info[filename_base]["Title"],
                         "Keywords": filename_info[filename_base]["Keywords"],
-                        "Prompt": fullPrompt,
+                        "Prompt": gptTitle,
                         "Model": "Midjourney 6",
                     }
                 )
@@ -175,6 +191,8 @@ def main():
     parser.add_argument('category', type=str, help='Category as a string.')
     parser.add_argument('-p', '--platform', choices=['a', 'v', 'f'], default='a',
                         help='Choose platform -p a for Adobe and -p v for Vecteezy or -f for Freepik')
+    parser.add_argument('--no-prompt', action='store_true', 
+                        help='If set, no prompt will be shown.')
 
 
     args = parser.parse_args()
@@ -182,14 +200,14 @@ def main():
     output_folder = folder_path  
     category = args.category
     platform_flag = args.platform
+    use_file_names = args.no_prompt
 
     category_key = next(key for key, value in categorias.items() if value == category)
     
     prompts_file_name = f"{category_key}-{category}.txt"
     prompts_file_path = os.path.join(prompts_folder_path, prompts_file_name)
     
-    
-    create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key)
+    create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key, use_file_names)
 
 
 if __name__ == "__main__":
