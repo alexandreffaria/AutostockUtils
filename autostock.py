@@ -52,29 +52,29 @@ def process_workflow():
     command = f"python Utils/qc.py {folder_path}" 
     run_command(command)
 
-    if os.path.exists(folder_path):
-        command = f"python Utils/upscale.py {folder_path}"  
-        run_command(command)
+    # if os.path.exists(folder_path):
+    #     command = f"python Utils/upscale.py {folder_path}"  
+    #     run_command(command)
 
-    png_folder = folder_path + "/realesrgan/"
-    if selected_vecteezy or selected_freepik:
-        if os.path.exists(png_folder):
-            command = f"python Utils/convertToJPG.py {png_folder}"  
-            run_command(command)
+    # png_folder = folder_path + "/realesrgan/"
+    # if selected_vecteezy or selected_freepik:
+    #     if os.path.exists(png_folder):
+    #         command = f"python Utils/convertToJPG.py {png_folder}"  
+    #         run_command(command)
 
-    if selected_adobe:
-        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a" 
-        run_command(command)
+    # if selected_adobe:
+    #     command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a" 
+    #     run_command(command)
 
-    if selected_vecteezy:
-        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
-        run_command(command)
-        command = f"python Utils/removeNonAlpha.py {folder_path}/realesrgan/jpgs"
-        run_command(command)
+    # if selected_vecteezy:
+    #     command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
+    #     run_command(command)
+    #     command = f"python Utils/removeNonAlpha.py {folder_path}/realesrgan/jpgs"
+    #     run_command(command)
 
-    if selected_freepik:
-        command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f" 
-        run_command(command)
+    # if selected_freepik:
+    #     command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f" 
+    #     run_command(command)
 
     if selected_vecteezy:
         command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/jpgs/ -p v" 
