@@ -92,11 +92,11 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                 if platform_flag == 'a':
                     if use_file_names:
                         gptTitle = (
-                        clean_text(createTitleWithoutPrompt(filename_base, "pt"))
+                        createTitleWithoutPrompt(filename_base, "pt")
                     )
                     else:
                         gptTitle = (
-                            clean_text(createTitle(fullPrompt, "pt"))
+                            createTitle(fullPrompt, "pt")
                         )
                 if platform_flag == 'v' or platform_flag == 'f':
                     if use_file_names:
