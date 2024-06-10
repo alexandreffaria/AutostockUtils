@@ -25,7 +25,7 @@ def isNapTime():
     return current_time > awake_end
 
 def sendPrompt(prompt, params):
-    pyau.moveTo(1027,1037)
+    pyau.moveTo(600,600)
 
     pyau.click()
     time.sleep(random.uniform(3,10))
