@@ -95,16 +95,11 @@ def process_workflow():
     selected_adobe = adobe_var.get() 
     selected_vecteezy = vecteezy_var.get()
     selected_freepik = freepik_var.get()
-    selected_QC = qc_var.get()
     selected_upscale = upscale_var.get()
     selected_convertToJPG = convertToJPG_var.get()
     selected_createCSV = createCSV_var.get()
     selected_upload = upload_var.get()
     selected_NoPrompt = noPrompt_var.get()
-
-    if selected_QC:
-        command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
-        run_command(command)
 
     if selected_adobe:
         if selected_upscale:
@@ -140,10 +135,18 @@ def select_folder():
         root.configure(bg="#2b2b2b")
         
 
+def runQC():
+    folder_path = folder_var.get()
+    if not folder_path:
+        show_custom_error("A gente precisa de uma pasta bebê.")
+        return
+    command = f"python Utils/qc.py {folder_path}"  # Enclose folder path in quotes
+    run_command(command)
+
 # Main window
 root = tk.Tk()
 root.title("Autostock Utils")
-root.geometry("300x800")
+root.geometry("300x900")
 root.configure(bg="#2b2b2b")
 # Center the window title
 root.wm_title("Autostock Utils")
@@ -176,12 +179,13 @@ category_optionmenu.pack(pady=25)
 
 category_optionmenu.config(highlightthickness=1, highlightbackground=accent_color) 
 
+# Button to run QC separately
+qc_button = tk.Button(root, text="🔬 QC", command=runQC, bg=accent_color, width=12, height=2, fg="#ffffff")
+qc_button.pack(pady=5)
+
+
 process_labels = tk.Label(root,text="Quais processos?", bg="#2b2b2b", fg="#ffffff", font=bold_font, height=1)
 process_labels.pack(pady=5, padx=20)
-
-qc_var = tk.BooleanVar(value=True)  
-qc_checkbox = tk.Checkbutton(root, text="QC", variable=qc_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff" )
-qc_checkbox.pack(pady=5)
 
 upscale_var = tk.BooleanVar(value=True)  
 upscale_checkbox = tk.Checkbutton(root, text="Upscale", variable=upscale_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff" )
