@@ -13,7 +13,7 @@ def organize_files_into_batches(folder_path, batch_size=1000):
     
     # Sort the files to maintain a consistent order
     files.sort()
-    
+    batch_size = int(batch_size)
     # Create subfolders and move files
     for i in range(0, len(files), batch_size):
         batch_folder_name = f"batch_{i // batch_size + 1}"
@@ -31,8 +31,9 @@ def organize_files_into_batches(folder_path, batch_size=1000):
         print(f"Moved files {i + 1} to {min(i + batch_size, len(files))} into {batch_folder_name}")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python organize_files.py <folder_path>")
+    if len(sys.argv) != 3:
+        print("Usage: python batchFolders.py <folder_path> <batch_size>")
     else:
         folder_path = sys.argv[1]
-        organize_files_into_batches(folder_path)
+        batch_size = sys.argv[2]
+        organize_files_into_batches(folder_path, batch_size)
