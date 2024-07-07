@@ -6,3 +6,6 @@ last_directory.txt
 build/
 *.spec
 autoEnv
+*.png
+/Stats/Data
+/Stats/Graphs
