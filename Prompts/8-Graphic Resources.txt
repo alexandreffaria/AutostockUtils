@@ -35,7 +35,6 @@ A set of colorful geometric patterns suitable for web design
 A set of colorful handdrawn icons representing different types of graphic design tools and resources
 A set of colorful handdrawn icons representing office supplies
 A set of colorful handdrawn vector icons for office supplies
-A set of colorful infographics with clean modern design
 A set of colorful markers arranged in a row
 A set of colorful vector icons representing technology and communication devices
 A set of flat design icons representing different graphic resources such as fonts colors and layout templates
@@ -55,7 +54,6 @@ A set of modern minimalist icons for web design
 A set of modern minimalist office supplies
 A set of modern minimalistic office supplies
 A set of modern vector icons related to business and finance
-A set of simple and clean infographic icons
 A set of simple minimalist icons representing various business concepts
 A set of sleek and modern office icons
 A set of sleek modern icons for web and mobile applications
@@ -196,7 +194,6 @@ Clean modern vector icons for business and finance
 Clear minimalistic icons representing graphic design tools
 Colored pencils arranged in a neat row
 Colored pencils of various colors arranged neatly in a row
-Colorful Infographic design with geometric shapes and bold typography
 Colorful abstract background with geometric shapes
 Colorful abstract digital patterns for web design
 Colorful abstract geometric background
@@ -259,23 +256,6 @@ Colorful icons of technology and gadgets
 Colorful icons of various office supplies
 Colorful icons representing business finance and investment
 Colorful icons representing various business concepts
-Colorful infographic charts and graphs
-Colorful infographic design with bold geometric shapes
-Colorful infographic elements for digital marketing materials
-Colorful infographic elements on a dark background
-Colorful infographic elements with a modern geometric style
-Colorful infographic elements with geometric patterns
-Colorful infographic elements with geometric shapes
-Colorful infographic elements with geometric shapes and bold typography
-Colorful infographic elements with modern geometric shapes
-Colorful infographic icons representing various business concepts
-Colorful infographic template with geometric shapes and vibrant gradients
-Colorful infographic with bold geometric shapes
-Colorful infographic with geometric shapes
-Colorful infographic with minimalist design
-Colorful infographic with modern geometric shapes
-Colorful infographic with simple clean icons
-Colorful infographics showing statistics and data in a visually appealing way
 Colorful markers and pencils arranged in a vibrant pattern
 Colorful minimalist vector icons of office supplies
 Colorful modern abstract geometric shapes
@@ -336,7 +316,6 @@ Desktop with various graphic design resources and tools
 Digital abstract background with geometric shapes and vibrant colors
 Digital camera with vibrant geometric background
 Digital drawings of various office and stationery supplies
-Digital infographic design with vibrant modern colors
 Digital workspace with a modern minimalist design
 Flat lay composition of modern graphic design resources
 Flat lay of artistic office supplies on a white desk
@@ -413,8 +392,6 @@ Illustration of various digital devices interconnected on an abstract colorful b
 Illustration of various graphic design elements like pens paper and paint brushes
 Illustration of various graphic design tools and resources
 Illustration of various office supplies in a flat design style
-Infographic elements with bright modern colors
-Infographic elements with vibrant colors
 Laptop computer with abstract geometric pattern
 Laptop tablet and smartphone icons on a geometric background
 Laptop with creative design software open
@@ -468,7 +445,6 @@ Modern and abstract geometric shapes in bold colors
 Modern and minimalist geometric patterns in pastel colors
 Modern and minimalist office workspace
 Modern digital devices and gadgets on a clean white background
-Modern digital infographic elements for business presentations
 Modern flat design digital illustration of different graphic resources
 Modern flat design graphic resources for web and app development
 Modern flat design graphic resources for web and print use
@@ -498,8 +474,6 @@ Modern geometric shapes in pastel colors
 Modern geometric shapes in primary colors
 Modern geometric vector patterns
 Modern illustration of various office supplies on a clean white background
-Modern infographic elements with bold colors and clean lines
-Modern infographic elements with geometric shapes and vibrant colors
 Modern laptop and tablet on a clean desk
 Modern laptop with creative workspace concept
 Modern laptops and tablets with clean minimalist design
@@ -543,7 +517,6 @@ Simple clean graphic design elements for website headers
 Simple clean icons representing various technology devices
 Simple clean vector graphics of modern office supplies
 Simple clean vector icons for technology and business concepts
-Simple colorful infographic with geometric shapes and bold text
 Simple colorful pie charts with bold text labels
 Simple crisp graphic designs for web banners
 Simple flat design icons representing graphic resources
@@ -556,8 +529,6 @@ Simple geometric patterns in bright contrasting colors
 Simple geometric patterns in pastel colors
 Simple geometric patterns in vibrant colors
 Simple graphic resources for social media posts
-Simple infographic icons representing various business concepts
-Simple infographic with colorful bar graphs
 Simple minimalist graphic design elements
 Simple minimalist vector icons of office supplies
 Simple minimalist vector icons representing various technology devices
@@ -569,7 +540,6 @@ Simple modern geometric patterns in primary colors
 Simple modern graphic design elements
 Simple modern icons representing digital tools and devices
 Simple modern icons representing technology and communication devices
-Simple modern infographic design
 Simple modern vector icons for web design
 Simple sleek vector graphic of a laptop and smartphone
 Simple vector graphic resources for web design
@@ -791,7 +761,6 @@ Vibrant geometric patterns in primary colors
 Vibrant geometric patterns on a dark background
 Vibrant geometric patterns with bold colors
 Vibrant icons of modern technology devices
-Vibrant modern flat design infographic template
 Vibrant modern geometric patterns
 Vibrant vector icons for digital devices
 Vibrant vector icons of everyday objects
