@@ -74,13 +74,23 @@ def createTitle(prompt, language):
         return ""
     if language == "pt":
         gptPrompt = f"""
-I'm going to give you a brief description of an image, and you should generate a descriptive title for it in Brazillian Portuguese, don't be creative: {prompt}
+I'm going to give you a brief description of an image, and you should generate a descriptive title for it in Brazillian Portuguese, don't be creative. 
+Here is an example:
+Anxiety and stress portrayed as dark stormy clouds
+output:
+Ansiedade e estresse representados com formas abstratas
+Here is the description: {prompt}
 """
         gptTitle = getGPTResponse(gptPrompt)
         return gptTitle.replace('"', "")
     else:
         gptPrompt = f"""
-I'm going to give you a brief description of an image, and you should generate a descriptive title for it, don't be creative, it should be at least 3 words: {prompt}
+I'm going to give you a brief description of an image, and you should generate a descriptive title for it, don't be creative, it should be at least 3 words:
+Here is an example:
+Anxiety and stress portrayed as dark stormy clouds
+output:
+Anxiety and stress portrayed as dark stormy clouds
+Here is the description: {prompt}
 """
         gptTitle = getGPTResponse(gptPrompt)
         return gptTitle.replace('"', "")
