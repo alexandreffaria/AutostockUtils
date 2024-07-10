@@ -5,7 +5,7 @@ from scipy.stats import linregress
 import seaborn as sns
 
 # File path
-input_file = 'weeklyEarning-08-23_07-24_treated.csv'
+input_file = 'Stats/Data/weeklyEarning-08-23_07-24_treated.csv'
 
 # Load the data
 df = pd.read_csv(input_file)
@@ -38,7 +38,7 @@ plt.grid(True)
 plt.legend()
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.savefig('time_series_plot.png')
+plt.savefig('Stats/Graphs/time_series_plot.png')
 plt.show()
 
 # Scatter Plot with Linear Regression
@@ -52,7 +52,7 @@ plt.xlabel('Date Index')
 plt.ylabel('Amount (US$)')
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('scatter_with_trend.png')
+plt.savefig('Stats/Graphs/scatter_with_trend.png')
 plt.show()
 
 print("Regression Statistics:")
@@ -62,18 +62,32 @@ print(f"R-squared: {r_value**2:.4f}")
 print(f"P-value: {p_value:.4f}")
 print(f"Standard Error: {std_err:.4f}\n")
 
-# Plot with Trend Line
+# Projected Earnings for the Next Year
+last_index = df.index[-1]
+projected_indices = np.arange(last_index + 1, last_index + 1 + 730)
+projected_dates = pd.date_range(start=df['Date'].iloc[-1] + pd.Timedelta(days=1), periods=730)
+projected_earnings = intercept + slope * projected_indices
+total_projected_earnings = projected_earnings.sum()
+
+print(f"Total Projected Earnings for the Next Year: {total_projected_earnings:.2f}")
+
+# Extend the DataFrame with projected values
+projected_df = pd.DataFrame({'Date': projected_dates, 'Amount': projected_earnings})
+df_extended = pd.concat([df, projected_df])
+
+# Plot with Trend Line and Projected Earnings
 plt.figure(figsize=(10, 5))
 plt.plot(df['Date'], df['Amount'], marker='o', linestyle='-', color='b', label='Daily Earnings')
-plt.plot(df['Date'], df['Trend'], color='r', linestyle='-', label='Trend Line')
-plt.title('Daily Earnings with Trend Line')
+plt.plot(df_extended['Date'], df_extended['Trend'], color='r', linestyle='-', label='Trend Line')
+plt.plot(projected_df['Date'], projected_df['Amount'], marker='o', linestyle='--', color='g', label='Projected Earnings')
+plt.title('Daily Earnings with Trend Line and Projected Earnings')
 plt.xlabel('Date')
 plt.ylabel('Amount (US$)')
 plt.grid(True)
 plt.legend()
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.savefig('trend_line_plot.png')
+plt.savefig('Stats/Graphs/trend_line_and_projection_plot.png')
 plt.show()
 
 # Distribution
@@ -84,7 +98,7 @@ plt.xlabel('Amount (US$)')
 plt.ylabel('Frequency')
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('distribution_plot.png')
+plt.savefig('Stats/Graphs/distribution_plot.png')
 plt.show()
 
 # Box Plot
@@ -94,11 +108,11 @@ plt.title('Box Plot of Daily Earnings')
 plt.xlabel('Amount (US$)')
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('box_plot.png')
+plt.savefig('Stats/Graphs/box_plot.png')
 plt.show()
 
 # Moving Average
-window_size = 30  # Example window size for weekly moving average
+window_size = 7  # Example window size for weekly moving average
 df['Moving Average'] = df['Amount'].rolling(window=window_size).mean()
 
 plt.figure(figsize=(10, 5))
@@ -111,5 +125,5 @@ plt.grid(True)
 plt.legend()
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.savefig('moving_average_plot.png')
+plt.savefig('Stats/Graphs/moving_average_plot.png')
 plt.show()
