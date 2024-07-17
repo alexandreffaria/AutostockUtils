@@ -93,7 +93,7 @@ def process_workflow():
         return
     
     selected_adobe = adobe_var.get() 
-    selected_vecteezy = vecteezy_var.get()
+    # selected_vecteezy = vecteezy_var.get()
     selected_freepik = freepik_var.get()
     selected_upscale = upscale_var.get()
     selected_convertToJPG = convertToJPG_var.get()
@@ -108,15 +108,15 @@ def process_workflow():
             createCVS(folder_path, selected_category, "Adobe", selected_NoPrompt)
         if selected_upload:
             upload(folder_path, "Adobe")
-    if selected_vecteezy:
-        if selected_upscale:
-            upscale(folder_path)
-        if selected_convertToJPG:
-            convertToJPG(folder_path)
-        if selected_createCSV:
-            createCVS(folder_path, selected_category, "Vecteezy", selected_NoPrompt)
-        if selected_upload:
-            upload(folder_path, "Vecteezy")
+    # if selected_vecteezy:
+    #     if selected_upscale:
+    #         upscale(folder_path)
+    #     if selected_convertToJPG:
+    #         convertToJPG(folder_path)
+    #     if selected_createCSV:
+    #         createCVS(folder_path, selected_category, "Vecteezy", selected_NoPrompt)
+    #     if selected_upload:
+    #         upload(folder_path, "Vecteezy")
     if selected_freepik:
         if selected_upscale:
             upscale(folder_path)
