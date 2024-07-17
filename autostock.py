@@ -199,7 +199,7 @@ createCSV_var = tk.BooleanVar(value=True)
 createCSV_checkbox = tk.Checkbutton(root, text="Generate CSV's", variable=createCSV_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff" )
 createCSV_checkbox.pack(pady=5)
 
-upload_var = tk.BooleanVar(value=True)  
+upload_var = tk.BooleanVar(value=False)  
 upload_checkbox = tk.Checkbutton(root, text="Upload Files", variable=upload_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff" )
 upload_checkbox.pack(pady=5)
 
@@ -215,9 +215,9 @@ adobe_var = tk.BooleanVar(value=True)
 adobe_checkbox = tk.Checkbutton(root, text="Adobe", variable=adobe_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff" )
 adobe_checkbox.pack(pady=5)
 
-vecteezy_var = tk.BooleanVar(value=True)  
-vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff")
-vecteezy_checkbox.pack(pady=5)
+# vecteezy_var = tk.BooleanVar(value=False)  
+# vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff")
+# vecteezy_checkbox.pack(pady=5)
 
 freepik_var = tk.BooleanVar(value=True)  
 freepik_checkbox = tk.Checkbutton(root, text="Freepik", variable=freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff")
