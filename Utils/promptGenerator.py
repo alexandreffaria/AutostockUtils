@@ -10,8 +10,9 @@ OpenAI.api_key = api_key
 
 client = OpenAI()
 
-gptModel = "gpt-3.5-turbo-1106"
+# gptModel = "gpt-3.5-turbo-1106"
 # gptModel = "gpt-4"
+gptModel = "gpt-4o-mini"
 prompts_file_path = "prompts.txt"
 
 
