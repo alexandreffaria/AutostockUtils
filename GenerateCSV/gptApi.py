@@ -3,7 +3,8 @@ from openai import OpenAI
 import os
 
 env_file_path = ".env"
-gptModel = "gpt-3.5-turbo-1106"
+# gptModel = "gpt-3.5-turbo-1106"
+gptModel = "gpt-4o-mini"
 
 load_dotenv(env_file_path)
 OpenAI.api_key = os.getenv("OPENAI_API_KEY")
