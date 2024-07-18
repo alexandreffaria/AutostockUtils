@@ -48,22 +48,21 @@ def getGPTResponse(model, content):
         },
         {
             "role": "user", 
-            "content": f'''
-                            {content}
-                        '''},
+            "content": content,
+        }
     ]
 
     response = client.chat.completions.create(
         model=model,
         messages=gptPrompt,
-        temperature=1.5,
-        max_tokens=256,
+        temperature=1.1,
+        max_tokens=1024,
         top_p=1,
-        frequency_penalty=1,
-        presence_penalty=1,
+        frequency_penalty=0,
+        presence_penalty=0,
     )
 
-    return response.choices[0].message.content.strip().replace("'", "").replace(",", "").replace(".", "").replace("-", "").replace("(", "").replace(")", "")
+    return response.choices[0].message.content.strip()
 
 def main(category, strategy, amount, description):
     date = datetime.now().strftime("%Y-%m-%d")
@@ -72,22 +71,31 @@ def main(category, strategy, amount, description):
     filename = f"{output_folder}/prompts_{categorias[category]}_{strategy}_{date}.txt"
     if not description:
         description = categorias[category]
-    with open(filename, "a") as file:
+    with open(filename, "a",encoding="utf-8") as file:
         
         for i in range(amount):
                 vivid_description = ""
                 vivid_description_request = f'''
-                I want you to create a prompt for me for a topic that I'm going to give you. That prompt will than be used to create images, that are going to be selled in a big stock images website. 
-                FOLLOW THIS RULE:
-                The Midjourney Bot works best with simple, short sentences that describe what you want to see. 
-                Avoid long lists of requests and instructions. 
-                Instead of: Show me a picture of lots of blooming California poppies, make them bright, vibrant orange, and draw them in an illustrated style with colored pencils 
-                Do: Bright orange California poppies drawn with colored pencils
-                Here is the topic:
-                Topic: "{description}"
-                Focus on Brazilian culture, but don't do it 100% of the time.
-                ***ONLY GIVE ONE DESCRIPTION AT THE TIME WITH NO INFORMATION OTHER THAN THE DESCRIPTION ITSELF***
-                your anwser should look like this: Fruit smoothie with colorful striped straws
+I want you to create a prompt for me for a topic that I'm going to give you. That prompt will than be used to create images, that are going to be sold in a big stock images website. 
+FOLLOW THIS RULE:
+The Midjourney Bot works best with simple, short sentences that describe what you want to see. 
+Avoid long lists of requests and instructions. 
+Instead of: Show me a picture of lots of blooming California poppies, make them bright, vibrant orange, and draw them in an illustrated style with colored pencils 
+Do: Bright orange California poppies drawn with colored pencils
+Here is the topic:
+Topic: "{description}"
+***ONLY GIVE ONE DESCRIPTION AT THE TIME WITH NO INFORMATION OTHER THAN THE DESCRIPTION ITSELF***
+be a little bit creative every now and again c:
+your anwser should look exactly like this: Fruit smoothie with colorful striped straws.
+give me 15 different prompts at a time. One on each line, exactly like this:
+Mint mojito with lime garnish
+Cappuccino with cocoa powder on top
+Cup of coffee with latte art
+Pink lemonade with sliced lemons and mint leaves
+Cold glass of water with lemon slices
+Cocoa with marshmallows on top
+Flavored water with fresh fruits and herbs
+DONT EVER ADDRESS ME ONLY GIVE ME THE PROMPTS
                 '''
                 while not vivid_description.strip() or "sorry" in vivid_description.lower() or "cannot" in vivid_description.lower():
                     vivid_description = getGPTResponse(gptModel, vivid_description_request)
