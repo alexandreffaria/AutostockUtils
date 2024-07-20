@@ -236,21 +236,21 @@ Boxer training in a gym with focus on hand wraps
 Yoga practice on a serene beach at sunrise  
 Rock climber scaling a cliff in a scenic landscape  
 Football team huddled together on the field
-1. Soccer ball on a grassy field at sunset  
-2. Group of friends playing beach volleyball  
-3. Classic wooden surfboard on a sandy beach  
-4. Close-up of a basketball inside a hoop  
-5. Running shoes on a track ready for a race  
-6. Ice skater mid-spin on a frozen lake  
-7. Tennis racket and balls on a bright court  
-8. Cycling gear and bicycle in a scenic landscape  
-9. Hiker with a backpack overlooking a mountain view  
-10. Gym weights on a colorful exercise mat  
-11. Golf ball resting on a tee with a sunset background  
-12. Cheerleaders performing a jump in mid-air  
-13. Football player throwing a pass on a field  
-14. Snowboarder hitting a jump in snowy mountains  
-15. Martial artist in a dynamic kicking pose
+Soccer ball on a grassy field at sunset  
+Group of friends playing beach volleyball  
+Classic wooden surfboard on a sandy beach  
+Close-up of a basketball inside a hoop  
+Running shoes on a track ready for a race  
+Ice skater mid-spin on a frozen lake  
+Tennis racket and balls on a bright court  
+Cycling gear and bicycle in a scenic landscape  
+Hiker with a backpack overlooking a mountain view  
+Gym weights on a colorful exercise mat  
+Golf ball resting on a tee with a sunset background  
+Cheerleaders performing a jump in mid-air  
+Football player throwing a pass on a field  
+Snowboarder hitting a jump in snowy mountains  
+Martial artist in a dynamic kicking pose
 Basketball on a wooden court with sneakers  
 Football on a grassy field with goalposts  
 Tennis racket and ball on a sunlit court  
@@ -918,21 +918,21 @@ Running shoes on a forest path at dawn
 Fitness tracker on a wrist with a blurred gym background  
 Rugby ball on a well-groomed pitch  
 Rock climbing gear on a boulder with a scenic view
-1. Soccer ball on a grassy field
-2. Tennis racket and ball on a bright court
-3. Basketball hoop with a ball in mid-air
-4. Runner at the starting line in the morning light
-5. Vintage baseball glove and ball on a wooden bench
-6. Surfboard on the beach at sunset
-7. Gymnast executing a perfect split jump
-8. Cyclist racing along a mountain trail
-9. Ice skater gliding elegantly on frozen lake
-10. Climber reaching the summit of a rocky peak
-11. Referee signaling a foul in a soccer game
-12. Football player diving for a touchdown
-13. Swimmer diving into a crystal-clear pool
-14. Cheerleader performing a stunt at a game
-15. Skiers racing down a snowy slope
+Soccer ball on a grassy field
+Tennis racket and ball on a bright court
+Basketball hoop with a ball in mid-air
+Runner at the starting line in the morning light
+Vintage baseball glove and ball on a wooden bench
+Surfboard on the beach at sunset
+Gymnast executing a perfect split jump
+Cyclist racing along a mountain trail
+Ice skater gliding elegantly on frozen lake
+Climber reaching the summit of a rocky peak
+Referee signaling a foul in a soccer game
+Football player diving for a touchdown
+Swimmer diving into a crystal-clear pool
+Cheerleader performing a stunt at a game
+Skiers racing down a snowy slope
 Soccer ball on a grassy field  
 Basketball on a polished court  
 Tennis racket and ball on a clay court  
@@ -1555,21 +1555,21 @@ Skiers descending a snowy slope
 Fitness class in a bright, modern gym  
 Rowing boat on a calm lake at sunrise  
 Skateboard on a graffiti-covered ramp
-1. Basketball on a wooden court  
-2. Soccer ball on a grassy field  
-3. Tennis racket and ball on a clay court  
-4. Surfboard resting on a sandy beach  
-5. Bicycle parked against a vibrant urban mural  
-6. Gym weights arranged neatly on a bench  
-7. Skateboard atop a concrete ramp  
-8. Running shoes tied together, hanging on a fence  
-9. Volleyball on a net in a sunny park  
-10. Baseball glove and ball on a diamond  
-11. Golf clubs resting on a finely cut green  
-12. Yoga mat spread out on a scenic backdrop  
-13. Ice hockey puck on a frozen rink  
-14. Climbing gear secured to a rocky wall  
-15. Swimming goggles beside a clear pool
+Basketball on a wooden court  
+Soccer ball on a grassy field  
+Tennis racket and ball on a clay court  
+Surfboard resting on a sandy beach  
+Bicycle parked against a vibrant urban mural  
+Gym weights arranged neatly on a bench  
+Skateboard atop a concrete ramp  
+Running shoes tied together, hanging on a fence  
+Volleyball on a net in a sunny park  
+Baseball glove and ball on a diamond  
+Golf clubs resting on a finely cut green  
+Yoga mat spread out on a scenic backdrop  
+Ice hockey puck on a frozen rink  
+Climbing gear secured to a rocky wall  
+Swimming goggles beside a clear pool
 Basketball on a vibrant court  
 Soccer ball on fresh green grass  
 Baseball glove and ball on a wooden bench  
