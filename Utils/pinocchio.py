@@ -25,7 +25,7 @@ def isNapTime():
     return current_time > awake_end
 
 def sendPrompt(prompt, params):
-    pyau.moveTo(600,600)
+    pyau.moveTo(623, 723)
 
     pyau.click()
     time.sleep(random.uniform(3,10))
@@ -38,7 +38,7 @@ def sendPrompt(prompt, params):
 
     pyau.typewrite(prompt.strip())
     time.sleep(random.uniform(3,10))
-    pyau.typewrite(" shot by hasselblad X1D, editorial photography  ")
+    # pyau.typewrite(" shot by hasselblad X1D, editorial photography  ")
     pyau.typewrite(params)
 
     pyau.press("enter")
@@ -69,13 +69,13 @@ while True:
     current_time = datetime.now().time()
     midday = datetime.strptime(f"12:00", "%H:%M").time()
     if current_time < midday:
-        params = " --ar 2:1 --chaos 25 "
+        params = " --ar 2:1 --chaos 15 "
     else:
-        params = " --ar 1:2 --chaos 25 "
+        params = " --ar 3:1 --chaos 15 "
  
     if not isNapTime() and not isLunchBreak():
-        time.sleep(random.uniform(3 * random.uniform(40,60), 7 * random.uniform(40,60)))
         sendPrompt(getPrompt(), params)
+        time.sleep(random.uniform(3 * random.uniform(40,60), 7 * random.uniform(40,60)))
         
     else:
         print("what")

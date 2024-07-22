@@ -3,6 +3,7 @@
 # Specify the folder path
 folder="/home/meulindux/AutostockUtils/Prompts"
 touch /home/meulindux/AutostockUtils/hey
+source /home/meulindux/AutostockUtils/venv/bin/activate
 export DISPLAY=:0
 exec > >(tee -a log) 2>&1
 
