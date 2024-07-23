@@ -76,11 +76,9 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
 
         for file in files:
             
-            filename_base = (
-                file[14:63].rsplit("_", 1)[0].replace("_", " ")
-                if "_" in file[63:]
-                else file[63:]
-            )
+            filename_parts = file.split("_")
+            parts_that_matter = filename_parts[1:-2]
+            filename_base = " ".join(parts_that_matter)
             
             if filename_base not in filename_info:
                 print(filename_base)
