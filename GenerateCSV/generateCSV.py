@@ -75,13 +75,17 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
         current_file_count = 0  # Counter for unique filenames
 
         for file in files:
-            
-            filename_parts = file.split("_")
-            parts_that_matter = filename_parts[1:-2]
-            filename_base = " ".join(parts_that_matter)
+            if "94574" in file:
+                filename_parts = file.split("_")
+                parts_that_matter = filename_parts[2:-2]
+                filename_base = " ".join(parts_that_matter)
+            else:
+                filename_parts = file.split("_")
+                parts_that_matter = filename_parts[1:-2]
+                filename_base = " ".join(parts_that_matter)
             
             if filename_base not in filename_info:
-                print(filename_base)
+                
                 # Increment the counter for unique filenames
                 current_file_count += 1
                 fullPrompt = find_prompt_for_filename(
