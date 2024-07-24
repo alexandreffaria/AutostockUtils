@@ -126,7 +126,7 @@ def process_workflow():
         if selected_convertToJPG:
             convertToJPG(folder_path)
         if selected_createCSV:
-            createCVS(folder_path, selected_category, "Freepik", selected_NoPrompt)
+           createCVS(folder_path, selected_category, "Freepik", selected_NoPrompt, "en")
         if selected_upload:
             upload(folder_path, "Freepik")
     
