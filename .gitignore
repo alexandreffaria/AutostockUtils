@@ -9,3 +9,4 @@ autoEnv
 *.png
 /Stats/Data
 /Stats/Graphs
+settings.json
