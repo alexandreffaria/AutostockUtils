@@ -27,7 +27,7 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
 
     return None
 
-def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key, use_file_names):
+def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key, use_file_names, language):
 
     if platform_flag == 'a':
         parent_folder_name = os.path.basename(
@@ -94,7 +94,7 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                 if platform_flag == 'a':
                     if use_file_names:
                         gptTitle = (
-                        createTitleWithoutPrompt(filename_base, "pt")
+                        createTitleWithoutPrompt(filename_base, language)
                     )
                     else:
                         gptTitle = (
@@ -103,22 +103,22 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                 if platform_flag == 'v' or platform_flag == 'f':
                     if use_file_names:
                         gptTitle = (
-                        clean_text(createTitleWithoutPrompt(filename_base, "en"))
+                        clean_text(createTitleWithoutPrompt(filename_base, language))
                     )
                     else: 
                         gptTitle = (
-                            clean_text(createTitle(fullPrompt, "en"))
+                            clean_text(createTitle(fullPrompt, language))
                         )
                 if use_file_names:
                     if platform_flag == 'a':
-                        gptKeywords = getKeywords(gptTitle, "pt")
+                        gptKeywords = getKeywords(gptTitle, language)
                     if platform_flag == 'v' or platform_flag == 'f':
-                        gptKeywords = getKeywords(gptTitle, "en")
+                        gptKeywords = getKeywords(gptTitle, language)
                 else:
                     if platform_flag == 'a':
-                        gptKeywords = getKeywords(fullPrompt, "pt")
+                        gptKeywords = getKeywords(fullPrompt, language)
                     if platform_flag == 'v' or platform_flag == 'f':
-                        gptKeywords = getKeywords(fullPrompt, "en")
+                        gptKeywords = getKeywords(fullPrompt, language)
 
                 # Remove leading and trailing whitespaces
                 gptTitle = gptTitle.strip().strip("\n").strip(",")
@@ -195,6 +195,7 @@ def main():
                         help='Choose platform -p a for Adobe and -p v for Vecteezy or -f for Freepik')
     parser.add_argument('--no-prompt', action='store_true', 
                         help='If set, no prompt will be shown.')
+    parser.add_argument('--language', type=str, default='pt', help='Language for titles and keywords (pt or en).')
 
 
     args = parser.parse_args()
@@ -203,13 +204,14 @@ def main():
     category = args.category
     platform_flag = args.platform
     use_file_names = args.no_prompt
+    language = args.language
 
     category_key = next(key for key, value in categorias.items() if value == category)
     
     prompts_file_name = f"{category_key}-{category}.txt"
     prompts_file_path = os.path.join(prompts_folder_path, prompts_file_name)
     
-    create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key, use_file_names)
+    create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key, use_file_names, language)
 
 
 if __name__ == "__main__":

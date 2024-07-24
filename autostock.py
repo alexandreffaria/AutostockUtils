@@ -46,16 +46,18 @@ def convertToJPG(folder_path):
         command = f"python Utils/convertToJPG.py {png_folder}"  
         run_command(command)
 
-def createCVS(folder_path, selected_category, platform, noPrompt):
+
+
+def createCVS(folder_path, selected_category, platform, noPrompt, language):
     if noPrompt:
         if platform == "Adobe":
-            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a --no-prompt" 
+            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a --no-prompt --language {language}" 
             run_command(command)
         elif platform == "Vecteezy":
-            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v --no-prompt" 
+            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v --no-prompt --language {language}" 
             run_command(command)
         elif platform == "Freepik":
-            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f --no-prompt" 
+            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f --no-prompt --language {language}" 
             run_command(command)
     else:
         if platform == "Adobe":
@@ -100,12 +102,13 @@ def process_workflow():
     selected_createCSV = createCSV_var.get()
     selected_upload = upload_var.get()
     selected_NoPrompt = noPrompt_var.get()
+    selected_language = language_var.get()
 
     if selected_adobe:
         if selected_upscale:
             upscale(folder_path)
         if selected_createCSV:
-            createCVS(folder_path, selected_category, "Adobe", selected_NoPrompt)
+            createCVS(folder_path, selected_category, "Adobe", selected_NoPrompt, selected_language)        
         if selected_upload:
             upload(folder_path, "Adobe")
     # if selected_vecteezy:
@@ -210,6 +213,14 @@ noPrompt_checkbox.pack(pady=5)
 
 platform_labels = tk.Label(root,text="Quais plataformas?", bg="#2b2b2b", fg="#ffffff", font=bold_font, height=1)
 platform_labels.pack(pady=5, padx=20)
+
+language_var = tk.StringVar()
+language_var.set("en")
+
+language_menu = tk.OptionMenu(root, language_var, "pt", "en")
+language_menu.config(bg="#4d4d4d", fg="#ffffff")  # Adjust background and foreground colors
+language_menu.pack(pady=5)
+language_menu.config(highlightthickness=1, highlightbackground=accent_color) 
 
 adobe_var = tk.BooleanVar(value=True)  
 adobe_checkbox = tk.Checkbutton(root, text="Adobe", variable=adobe_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff" )
