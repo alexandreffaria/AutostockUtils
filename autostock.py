@@ -96,8 +96,12 @@ def process_workflow():
     selected_upload = upload_var.get()
     selected_NoPrompt = noPrompt_var.get()
     selected_language = language_var.get()
+    folder_path = folder_var.get()
+    selected_category = category_var.get()
 
     settings = {
+        "folder_path": folder_path,
+        "selected_category": selected_category,
         "selected_adobe": selected_adobe,
         "selected_freepik": selected_freepik,
         "selected_upscale": selected_upscale,
@@ -109,12 +113,10 @@ def process_workflow():
     } 
     save_settings(settings)
 
-    folder_path = folder_var.get()
     if not folder_path:
         show_custom_error("A gente precisa de uma pasta bebê.")
         return
     
-    selected_category = category_var.get()
     if selected_category == "Categoria":
         show_custom_error("A gente precisa de uma categoria bebê.")
         return

@@ -35,11 +35,9 @@ def getGPTResponse(content):
 
 
 def getKeywords(title, language):
-    print(f"KEYWD LANG: {language}")
     if title == "":
         return ""
     if language == "pt":
-        print(f"PT: {language}")
         gptKeywords = getGPTResponse(
             f"""
 Me dê 40 palavras-chave que sejam relacionadas a esse título. Separadas por virgulas e ordenadas por ordem de relevância. Aqui está um exemplo:
@@ -55,7 +53,6 @@ Título:
         )
         return gptKeywords.replace('"', "").replace(".", "")
     else:
-        print(f"EN: {language}")
         gptKeywords = getGPTResponse(
             f"""
 Give me 40 keywords related to this description, you should give me at least 6 keywords. Here is an example:
@@ -74,11 +71,9 @@ ONLY AWNSER WITH COMMA SEPARATED KEYWORDS AND NOTHING ELSE!
 
 
 def createTitle(prompt, language):
-    print(f"TITLE LANG: {language}")
     if not prompt:
         return ""
     if language == "pt":
-        print(f"IN PT TITLE: {language}")
         gptPrompt = f"""
 I'm going to give you a brief description of an image, and you should generate a descriptive title for it in Brazillian Portuguese, don't be creative. 
 Here is an example:
@@ -90,7 +85,6 @@ Here is the description: {prompt}
         gptTitle = getGPTResponse(gptPrompt)
         return gptTitle.replace('"', "")
     else:
-        print(f"IN EN TITLE: {language}")
         gptPrompt = f"""
 I'm going to give you a brief description of an image, and you should generate a descriptive title for it, don't be creative, it should be at least 3 words:
 Here is an example:
@@ -103,19 +97,16 @@ Here is the description: {prompt}
         return gptTitle.replace('"', "")
 
 def createTitleWithoutPrompt(prompt, language):
-    print(f"PROMTP: {prompt}")
 
     if language == "pt":
         gptPrompt = f"""
 Eu vou te fornecer uma descrição incompleta de uma imagem, você deve fazer o mínimo possível, ou até mesmo nada se for o caso, para completar a descrição, e então crie um título simples, descritivo e apropriado para essa imagem. Deve conter pelo menos 5 palavras, não seja nem um pouco criativo, e sua resposta deve ser apenas o título, não adicione nada mais que ele. Sempre me dê um título completo: {prompt}
 """
         gptTitle = getGPTResponse(gptPrompt)
-        print(f"GPTTITLE: {gptTitle}")
         return gptTitle.replace('"', "")
     else:
         gptPrompt = f"""
 I'm going to give you an incomplete description of an image, you should do as little as possible, if at all, to complete the description, and create a simple, discriptive and appropriate title for it. It should be at least 5 words long, and don't be creative at all, and your answer should be only the title, don't add anything else to it. Always give me a complete title: {prompt}
 """
         gptTitle = getGPTResponse(gptPrompt)
-        print(f"GPTTITLE: {gptTitle}")
         return gptTitle.replace('"', "")
