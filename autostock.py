@@ -53,30 +53,20 @@ def createCVS(folder_path, selected_category, platform, noPrompt, language):
         if platform == "Adobe":
             command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a --no-prompt --language {language}" 
             run_command(command)
-        elif platform == "Vecteezy":
-            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v --no-prompt --language {language}" 
-            run_command(command)
         elif platform == "Freepik":
-            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f --no-prompt --language {language}" 
+            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f --no-prompt --language {language}"
             run_command(command)
     else:
         if platform == "Adobe":
-            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a" 
-            run_command(command)
-        elif platform == "Vecteezy":
-            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p v" 
+            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p a --language {language}" 
             run_command(command)
         elif platform == "Freepik":
-            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f" 
+            command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/jpgs/ \"{selected_category}\" -p f --language {language}" 
             run_command(command)
 
 def upload(folder_path, platform):
     if platform == "Adobe":
         command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/ -p a" 
-        run_command(command)
-
-    elif platform == "Vecteezy":
-        command = f"python Utils/sendSFTP.py {folder_path}/realesrgan/jpgs/ -p v" 
         run_command(command)
     
     elif platform == "Freepik":
@@ -95,7 +85,6 @@ def process_workflow():
         return
     
     selected_adobe = adobe_var.get() 
-    # selected_vecteezy = vecteezy_var.get()
     selected_freepik = freepik_var.get()
     selected_upscale = upscale_var.get()
     selected_convertToJPG = convertToJPG_var.get()
@@ -108,19 +97,10 @@ def process_workflow():
         if selected_upscale:
             upscale(folder_path)
         if selected_createCSV:
-            print(selected_language)
             createCVS(folder_path, selected_category, "Adobe", selected_NoPrompt, selected_language)        
         if selected_upload:
             upload(folder_path, "Adobe")
-    # if selected_vecteezy:
-    #     if selected_upscale:
-    #         upscale(folder_path)
-    #     if selected_convertToJPG:
-    #         convertToJPG(folder_path)
-    #     if selected_createCSV:
-    #         createCVS(folder_path, selected_category, "Vecteezy", selected_NoPrompt)
-    #     if selected_upload:
-    #         upload(folder_path, "Vecteezy")
+
     if selected_freepik:
         if selected_upscale:
             upscale(folder_path)
@@ -152,12 +132,12 @@ root = tk.Tk()
 root.title("Autostock Utils")
 root.geometry("300x900")
 root.configure(bg="#2b2b2b")
-# Center the window title
 root.wm_title("Autostock Utils")
-
 root.wm_iconbitmap('meulindo.ico')
 
 bold_font = Font(family="Arial", size=12, weight="bold")
+small_font = Font(family="Arial", size=9)
+
 
 # Folder selection
 folder_var = tk.StringVar()
@@ -187,7 +167,6 @@ category_optionmenu.config(highlightthickness=1, highlightbackground=accent_colo
 qc_button = tk.Button(root, text="🔬 QC", command=runQC, bg=accent_color, width=12, height=2, fg="#ffffff")
 qc_button.pack(pady=5)
 
-
 process_labels = tk.Label(root,text="Quais processos?", bg="#2b2b2b", fg="#ffffff", font=bold_font, height=1)
 process_labels.pack(pady=5, padx=20)
 
@@ -212,7 +191,7 @@ noPrompt_checkbox = tk.Checkbutton(root, text="Generate CSV's without prompt", v
 noPrompt_checkbox.pack(pady=5)
 
 
-platform_labels = tk.Label(root,text="Quais plataformas?", bg="#2b2b2b", fg="#ffffff", font=bold_font, height=1)
+platform_labels = tk.Label(root,text="Qual idioma pra adobe?", bg="#2b2b2b", fg="#ffffff", font=small_font, height=1)
 platform_labels.pack(pady=5, padx=20)
 
 language_var = tk.StringVar()
@@ -223,18 +202,16 @@ language_menu.config(bg="#4d4d4d", fg="#ffffff")  # Adjust background and foregr
 language_menu.pack(pady=5)
 language_menu.config(highlightthickness=1, highlightbackground=accent_color) 
 
+platform_labels = tk.Label(root,text="Quais plataformas?", bg="#2b2b2b", fg="#ffffff", font=bold_font, height=1)
+platform_labels.pack(pady=5, padx=20)
+
 adobe_var = tk.BooleanVar(value=True)  
 adobe_checkbox = tk.Checkbutton(root, text="Adobe", variable=adobe_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff" )
 adobe_checkbox.pack(pady=5)
 
-# vecteezy_var = tk.BooleanVar(value=False)  
-# vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff")
-# vecteezy_checkbox.pack(pady=5)
-
 freepik_var = tk.BooleanVar(value=True)  
 freepik_checkbox = tk.Checkbutton(root, text="Freepik", variable=freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color,activebackground="#2b2b2b", activeforeground="#fff")
 freepik_checkbox.pack(pady=5)
-
 
 # Process button
 process_button = tk.Button(root, text="🚀", command=process_workflow, bg=accent_color, fg="#ffffff", width=15, height=3, font=("Arial", 20))
