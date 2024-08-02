@@ -15,7 +15,6 @@ client = OpenAI()
 gptModel = "gpt-4o-mini"
 prompts_file_path = "prompts.txt"
 
-
 categorias = {
     1: "Animals",
     2: "Buildings and Architecture",
@@ -39,25 +38,47 @@ categorias = {
     20: "Transportation",
     21: "Travel",
 }
+RULES = """
+I want you to create a prompt for me for a topic that I'm going to give you. That prompt will then be used to create images, that are going to be sold on a big stock images website. 
+FOLLOW THIS RULE:
+The Midjourney Bot works best with simple, short sentences that describe what you want to see. 
+Avoid long lists of requests and instructions. 
+Instead of: Show me a picture of lots of blooming California poppies, make them bright, vibrant orange, and draw them in an illustrated style with colored pencils 
+Do: Bright orange California poppies drawn with colored pencils
+don't repeat yourself
+"""
 
-
-def getGPTResponse(model, content):
+def getGPTResponse(model, content, previousPrompts):
     gptPrompt = [
         {
+            "role": "user", 
+            "content": RULES,
+        },
+        {
             "role": "system",
-            "content": "",
+            "content": "I understand the rules. Give me the topic you want me to create the description.",
         },
         {
             "role": "user", 
-            "content": content,
-        }
+            "content": "Drinks",
+        },
+        {
+            "role": "system",
+            "content": "Mint mojito with lime garnish",
+        },
     ]
+
+    for prompt in previousPrompts:
+        gptPrompt.append({"role": "user", "content": prompt[0]})
+        gptPrompt.append({"role": "system", "content": prompt[1]})
+    
+    gptPrompt.append({"role": "user", "content": content})
 
     response = client.chat.completions.create(
         model=model,
         messages=gptPrompt,
         temperature=1.1,
-        max_tokens=1024,
+        max_tokens=4096,
         top_p=1,
         frequency_penalty=0,
         presence_penalty=0,
@@ -72,39 +93,13 @@ def main(category, strategy, amount, description):
     filename = f"{output_folder}/prompts_{categorias[category]}_{strategy}_{date}.txt"
     if not description:
         description = categorias[category]
-    with open(filename, "a",encoding="utf-8") as file:
-        
+    with open(filename, "a", encoding="utf-8") as file:
+        previousPrompts = []
         for i in range(amount):
-                vivid_description = ""
-                vivid_description_request = f'''
-I want you to create a prompt for me for a topic that I'm going to give you. That prompt will than be used to create images, that are going to be sold in a big stock images website. 
-FOLLOW THIS RULE:
-The Midjourney Bot works best with simple, short sentences that describe what you want to see. 
-Avoid long lists of requests and instructions. 
-Instead of: Show me a picture of lots of blooming California poppies, make them bright, vibrant orange, and draw them in an illustrated style with colored pencils 
-Do: Bright orange California poppies drawn with colored pencils
-Here is the topic:
-Topic: "{description}"
-***ONLY GIVE ONE DESCRIPTION AT THE TIME WITH NO INFORMATION OTHER THAN THE DESCRIPTION ITSELF***
-be a little bit creative every now and again c:
-your anwser should look exactly like this: Fruit smoothie with colorful striped straws.
-give me 15 different prompts at a time. One on each line, exactly like this:
-Mint mojito with lime garnish
-Cappuccino with cocoa powder on top
-Cup of coffee with latte art
-Pink lemonade with sliced lemons and mint leaves
-Cold glass of water with lemon slices
-Cocoa with marshmallows on top
-Flavored water with fresh fruits and herbs
-DONT EVER ADDRESS ME ONLY GIVE ME THE PROMPTS
-                '''
-                while not vivid_description.strip() or "sorry" in vivid_description.lower() or "cannot" in vivid_description.lower():
-                    vivid_description = getGPTResponse(gptModel, vivid_description_request)
-                    
-                print(f"{i}: {vivid_description}")
-
-                file.write(vivid_description + "\n")
-
+            vivid_description = getGPTResponse(gptModel, description, previousPrompts)
+            previousPrompts.append((description, vivid_description))
+            print(f"{i}: {vivid_description}")
+            file.write(vivid_description + "\n")
 
 if __name__ == "__main__":
     # Set up command-line argument parsing
