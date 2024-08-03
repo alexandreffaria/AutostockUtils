@@ -102,7 +102,7 @@ def create_csv(folder_path: str, selected_category: str, platform: str, no_promp
     Run the generateCSV script.
     """
     prompt_flag = "--no-prompt" if no_prompt else ""
-    command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p {platform[0]} {prompt_flag} --language {language}"
+    command = f"python generateCSV/generateCSV.py {folder_path}/realesrgan/ \"{selected_category}\" -p {platform[0].lower()} {prompt_flag} --language {language}"
     run_command(command)
 
 def upload(folder_path: str, platform: str) -> None:
@@ -153,7 +153,7 @@ def process_workflow() -> None:
         if selected_upscale:
             upscale(folder_path)
         if selected_create_csv:
-            create_csv(folder_path, selected_category, "Adobe", selected_no_prompt, selected_language)        
+            create_csv(folder_path, selected_category, "a", selected_no_prompt, selected_language)        
         if selected_upload:
             upload(folder_path, "Adobe")
 
@@ -163,7 +163,7 @@ def process_workflow() -> None:
         if selected_convert_to_jpg:
             convert_to_jpg(folder_path)
         if selected_create_csv:
-           create_csv(folder_path, selected_category, "Freepik", selected_no_prompt, "en")
+           create_csv(folder_path, selected_category, "f", selected_no_prompt, "en")
         if selected_upload:
             upload(folder_path, "Freepik")
 
