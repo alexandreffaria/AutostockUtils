@@ -19,10 +19,10 @@ SFTP_PASSWORD_adobe=
 SFTP_HOST_adobe=sftp.contributor.adobestock.com
 SFTP_USERNAME_freepik=
 SFTP_PASSWORD_freepik=
-SFTP_HOST_freepik=cm-prod-ftp-bucket/alexandreffaria61364/
+SFTP_HOST_freepik=
 SFTP_PORT=22
-MOUSE_X=623
-MOUSE_Y=723
+MOUSE_X=
+MOUSE_Y=
 ICON_PATH=meulindo.ico
 ```
 
