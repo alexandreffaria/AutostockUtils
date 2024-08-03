@@ -254,5 +254,8 @@ def main() -> None:
     viewer = ImageViewer(folder_path, files)
     viewer.mainloop()
 
+    # Delete marked images after closing the viewer
+    viewer.delete_marked_images()
+
 if __name__ == "__main__":
     main()
