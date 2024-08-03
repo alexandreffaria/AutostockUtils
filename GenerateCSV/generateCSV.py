@@ -60,9 +60,6 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
         if platform_flag == 'a':
             fieldnames = ["Filename", "Title", "Keywords", "Category", "Releases"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        if platform_flag == 'v':
-            fieldnames = ["Filename", "Title", "Description", "Keywords", "License"]
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         if platform_flag == 'f':
             fieldnames = ["Filename", "Title", "Keywords", "Prompt", "Model"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
@@ -100,7 +97,7 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                         gptTitle = (
                             createTitle(fullPrompt, language)
                         )
-                if platform_flag == 'v' or platform_flag == 'f':
+                if platform_flag == 'f':
                     if use_file_names:
                         gptTitle = (
                         clean_text(createTitleWithoutPrompt(filename_base, language))
@@ -112,12 +109,12 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                 if use_file_names:
                     if platform_flag == 'a':
                         gptKeywords = getKeywords(gptTitle, language)
-                    if platform_flag == 'v' or platform_flag == 'f':
+                    if platform_flag == 'f':
                         gptKeywords = getKeywords(gptTitle, language)
                 else:
                     if platform_flag == 'a':
                         gptKeywords = getKeywords(fullPrompt, language)
-                    if platform_flag == 'v' or platform_flag == 'f':
+                    if platform_flag == 'f':
                         gptKeywords = getKeywords(fullPrompt, language)
 
                 # Remove leading and trailing whitespaces
@@ -136,12 +133,7 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                         "Keywords": gptKeywords,
                         "Category": category_key,
                     }
-                if platform_flag == 'v':
-                    filename_info[filename_base] = {
-                    "Title": gptTitle,
-                    "Description": "",  # No change in description
-                    "Keywords": gptKeywords,
-                }
+               
                 if platform_flag == 'f':
                     filename_info[filename_base] = {
                     "Title": gptTitle,
@@ -159,16 +151,7 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                         "Releases": "",
                     }
                 )
-            if platform_flag == 'v':
-                writer.writerow(
-                    {
-                        "Filename": file,  # Update filename without extension
-                        "Title": filename_info[filename_base]["Title"],
-                        "Description": filename_info[filename_base]["Description"],
-                        "Keywords": filename_info[filename_base]["Keywords"],
-                        "License": "Pro",
-                    }
-                )
+            
             if platform_flag == 'f':
                 writer.writerow(
                     {
@@ -191,7 +174,7 @@ def main():
     parser = argparse.ArgumentParser(description='Process image folders and category.')
     parser.add_argument('folder_path', type=str, help='Path to the image folder.')
     parser.add_argument('category', type=str, help='Category as a string.')
-    parser.add_argument('-p', '--platform', choices=['a', 'v', 'f'], default='a',
+    parser.add_argument('-p', '--platform', choices=['a', 'f'], default='a',
                         help='Choose platform -p a for Adobe and -p v for Vecteezy or -f for Freepik')
     parser.add_argument('--no-prompt', action='store_true', 
                         help='If set, no prompt will be shown.')
