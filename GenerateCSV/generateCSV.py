@@ -35,12 +35,7 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
         )
         csv_file_name = f"{parent_folder_name}_adobe.csv"
         csv_file_path = os.path.join(output_folder, csv_file_name)
-    if platform_flag == 'v':
-        parent_folder_name = os.path.basename(
-            os.path.normpath(os.path.join(folder_path, "../.."))
-        )
-        csv_file_name = f"{parent_folder_name}_vecteezy_output.csv"
-        csv_file_path = os.path.join(output_folder, csv_file_name)
+
     if platform_flag == 'f':
         parent_folder_name = os.path.basename(
             os.path.normpath(os.path.join(folder_path, "../.."))
