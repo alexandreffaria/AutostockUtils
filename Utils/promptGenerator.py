@@ -45,7 +45,11 @@ The Midjourney Bot works best with simple, short sentences that describe what yo
 Avoid long lists of requests and instructions. 
 Instead of: Show me a picture of lots of blooming California poppies, make them bright, vibrant orange, and draw them in an illustrated style with colored pencils 
 Do: Bright orange California poppies drawn with colored pencils
-don't repeat yourself
+
+- Don't repeat yourself
+- If you want something to be in text on the image put the text in quotation marks. You can choose to use a text or not, but if you  do, it must be in quotation marks.
+- YOUR ANWSER SHOULD ONLY CONTAIN THE DESCRIPTION AND NOTHING ELSE
+- Explore the topic and make it interesting but keep the description short but varied.
 """
 
 def getGPTResponse(model, content, previousPrompts):
