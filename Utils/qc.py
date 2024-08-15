@@ -40,6 +40,7 @@ class ImageViewer(tk.Tk):
         self.bind("<Right>", lambda event: self.next_image())
         self.bind("<Left>", lambda event: self.previous_image())
         self.bind("<Key-x>", lambda event: self.mark_image_for_deletion())
+        self.bind("<Control_R>", lambda event: self.mark_image_for_deletion())
         self.bind("<Key-q>", lambda event: self.close_viewer())
         self.bind("<Key-w>", lambda event: self.move_image_to_folder("watermark"))
         self.bind("<Key-b>", lambda event: self.move_image_to_folder("letterbox"))
