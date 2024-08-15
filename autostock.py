@@ -118,6 +118,7 @@ def process_workflow() -> None:
     """
     selected_adobe = adobe_var.get()
     selected_freepik = freepik_var.get()
+    selected_vecteezy = vecteezy_var.get()
     selected_upscale = upscale_var.get()
     selected_convert_to_jpg = convert_to_jpg_var.get()
     selected_create_csv = create_csv_var.get()
@@ -131,6 +132,7 @@ def process_workflow() -> None:
         "folder_path": folder_path,
         "selected_category": selected_category,
         "selected_adobe": selected_adobe,
+        "selected_vecteezy": selected_vecteezy,
         "selected_freepik": selected_freepik,
         "selected_upscale": selected_upscale,
         "selected_convert_to_jpg": selected_convert_to_jpg,
@@ -156,6 +158,14 @@ def process_workflow() -> None:
             create_csv(folder_path, selected_category, "a", selected_no_prompt, selected_language)        
         if selected_upload:
             upload(folder_path, "Adobe")
+
+    if selected_vecteezy:
+        if selected_upscale:
+            upscale(folder_path)
+        if selected_create_csv:
+           create_csv(folder_path, selected_category, "v", selected_no_prompt, "en")
+        if selected_upload:
+            upload(folder_path, "Vecteezy")
 
     if selected_freepik:
         if selected_upscale:
@@ -247,12 +257,12 @@ create_csv_checkbox = tk.Checkbutton(root, text="Generate CSV's", variable=creat
 create_csv_checkbox.pack(pady=5)
 
 upload_var = tk.BooleanVar(value=settings.get("selected_upload", False))
-upload_checkbox = tk.Checkbutton(root, text="Upload Files", variable=upload_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color, activebackground="#2b2b2b", activeforeground="#fff")
-upload_checkbox.pack(pady=5)
+# upload_checkbox = tk.Checkbutton(root, text="Upload Files", variable=upload_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color, activebackground="#2b2b2b", activeforeground="#fff")
+# upload_checkbox.pack(pady=5)
 
 no_prompt_var = tk.BooleanVar(value=settings.get("selected_no_prompt", False))
-no_prompt_checkbox = tk.Checkbutton(root, text="Generate CSV's without prompt", variable=no_prompt_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color, activebackground="#2b2b2b", activeforeground="#fff")
-no_prompt_checkbox.pack(pady=5)
+# no_prompt_checkbox = tk.Checkbutton(root, text="Generate CSV's without prompt", variable=no_prompt_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color, activebackground="#2b2b2b", activeforeground="#fff")
+# no_prompt_checkbox.pack(pady=5)
 
 platform_labels = tk.Label(root, text="Qual idioma pra adobe?", bg="#2b2b2b", fg="#ffffff", font=small_font, height=1)
 platform_labels.pack(pady=5, padx=20)
@@ -269,6 +279,10 @@ platform_labels.pack(pady=5, padx=20)
 adobe_var = tk.BooleanVar(value=settings.get("selected_adobe", True))
 adobe_checkbox = tk.Checkbutton(root, text="Adobe", variable=adobe_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color, activebackground="#2b2b2b", activeforeground="#fff")
 adobe_checkbox.pack(pady=5)
+
+vecteezy_var = tk.BooleanVar(value=settings.get("selected_vecteezy", True))
+vecteezy_checkbox = tk.Checkbutton(root, text="Vecteezy", variable=vecteezy_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color, activebackground="#2b2b2b", activeforeground="#fff")
+vecteezy_checkbox.pack(pady=5)
 
 freepik_var = tk.BooleanVar(value=settings.get("selected_freepik", True))
 freepik_checkbox = tk.Checkbutton(root, text="Freepik", variable=freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color, activebackground="#2b2b2b", activeforeground="#fff")
