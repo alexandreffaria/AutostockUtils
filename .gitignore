@@ -10,3 +10,5 @@ autoEnv
 /Stats/Data
 /Stats/Graphs
 settings.json
+log
+dailyIndexFile
