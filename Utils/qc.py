@@ -44,6 +44,7 @@ class ImageViewer(tk.Tk):
         self.bind("<Key-q>", lambda event: self.close_viewer())
         self.bind("<Key-w>", lambda event: self.move_image_to_folder("watermark"))
         self.bind("<Key-b>", lambda event: self.move_image_to_folder("letterbox"))
+        self.bind("<Key-/>", lambda event: self.move_image_to_folder("letterbox"))
         self.bind("<Key-h>", lambda event: self.previous_image())  # Binding 'h' to move left
         self.bind("<Key-l>", lambda event: self.next_image())
         self.bind("<BackSpace>", lambda event: self.undo_last_action())
