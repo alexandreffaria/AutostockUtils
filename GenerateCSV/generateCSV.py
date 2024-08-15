@@ -36,6 +36,13 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
         csv_file_name = f"{parent_folder_name}_adobe.csv"
         csv_file_path = os.path.join(output_folder, csv_file_name)
 
+    if platform_flag == 'v':
+        parent_folder_name = os.path.basename(
+            os.path.normpath(os.path.join(folder_path, ".."))
+        )
+        csv_file_name = f"{parent_folder_name}_vecteezy.csv"
+        csv_file_path = os.path.join(output_folder, csv_file_name)
+
     if platform_flag == 'f':
         parent_folder_name = os.path.basename(
             os.path.normpath(os.path.join(folder_path, ".."))
@@ -54,6 +61,9 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
     with open(csv_file_path, "w", newline="", encoding="utf-8") as csvfile:
         if platform_flag == 'a':
             fieldnames = ["Filename", "Title", "Keywords", "Category", "Releases"]
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        if platform_flag == 'v':
+            fieldnames = ["Filename", "Title", "Description", "Keywords", "License"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         if platform_flag == 'f':
             fieldnames = ["Filename", "Title", "Keywords", "Prompt", "Model"]
@@ -92,6 +102,15 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                         gptTitle = (
                             createTitle(fullPrompt, language)
                         )
+                if platform_flag == 'v':
+                    if use_file_names:
+                        gptTitle = (
+                        createTitleWithoutPrompt(filename_base, language)
+                    )
+                    else:
+                        gptTitle = (
+                            createTitle(fullPrompt, language)
+                        )
                 if platform_flag == 'f':
                     if use_file_names:
                         gptTitle = (
@@ -101,16 +120,8 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                         gptTitle = (
                             clean_text(createTitle(fullPrompt, language))
                         )
-                if use_file_names:
-                    if platform_flag == 'a':
-                        gptKeywords = getKeywords(gptTitle, language)
-                    if platform_flag == 'f':
-                        gptKeywords = getKeywords(gptTitle, language)
-                else:
-                    if platform_flag == 'a':
-                        gptKeywords = getKeywords(fullPrompt, language)
-                    if platform_flag == 'f':
-                        gptKeywords = getKeywords(fullPrompt, language)
+            
+                gptKeywords = getKeywords(fullPrompt, language)
 
                 # Remove leading and trailing whitespaces
                 gptTitle = gptTitle.strip().strip("\n").strip(",")
@@ -128,7 +139,13 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                         "Keywords": gptKeywords,
                         "Category": category_key,
                     }
-               
+                if platform_flag == 'v':
+                    filename_info[filename_base] = {
+                        "Title": gptTitle,
+                        "Description": "",
+                        "Keywords": gptKeywords,
+                        "License": "pro",
+                    }
                 if platform_flag == 'f':
                     filename_info[filename_base] = {
                     "Title": gptTitle,
@@ -144,6 +161,17 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                         "Keywords": filename_info[filename_base]["Keywords"],
                         "Category": filename_info[filename_base]["Category"],
                         "Releases": "",
+                    }
+                )
+            
+            if platform_flag == 'v':
+                writer.writerow(
+                    {
+                        "Filename": file,
+                        "Title": filename_info[filename_base]["Title"],
+                        "Description": "",
+                        "Keywords": filename_info[filename_base]["Keywords"],
+                        "License": "pro",
                     }
                 )
             
@@ -169,7 +197,7 @@ def main():
     parser = argparse.ArgumentParser(description='Process image folders and category.')
     parser.add_argument('folder_path', type=str, help='Path to the image folder.')
     parser.add_argument('category', type=str, help='Category as a string.')
-    parser.add_argument('-p', '--platform', choices=['a', 'f'], default='a',
+    parser.add_argument('-p', '--platform', choices=['a', 'f', 'v'], default='a',
                         help='Choose platform -p a for Adobe and -p v for Vecteezy or -f for Freepik')
     parser.add_argument('--no-prompt', action='store_true', 
                         help='If set, no prompt will be shown.')
