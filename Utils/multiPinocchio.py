@@ -15,10 +15,10 @@ env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'
 load_dotenv(env_path)
 
 # Get coordinates from environment variables
-MOUSE_X1 = int(os.getenv('MOUSE_X1', 623))
-MOUSE_Y1 = int(os.getenv('MOUSE_Y1', 723))
-MOUSE_X2 = int(os.getenv('MOUSE_X2', 700))  
-MOUSE_Y2 = int(os.getenv('MOUSE_Y2', 800))
+MOUSE_X1 = int(os.getenv('MOUSE_X1'))
+MOUSE_Y1 = int(os.getenv('MOUSE_Y1'))
+MOUSE_X2 = int(os.getenv('MOUSE_X2'))  
+MOUSE_Y2 = int(os.getenv('MOUSE_Y2'))
 
 def is_lunch_break() -> bool:
     current_time = datetime.now().time()
