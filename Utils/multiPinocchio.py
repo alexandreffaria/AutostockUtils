@@ -96,6 +96,7 @@ if __name__ == "__main__":
             prompt = get_prompt(prompt_list)
             send_prompt_to_coords(prompt, params, MOUSE_X1, MOUSE_Y1)
             time.sleep(random.uniform(3, 10))  # Short wait before sending to second window
+            prompt = get_prompt(prompt_list)
             send_prompt_to_coords(prompt, params, MOUSE_X2, MOUSE_Y2)
             time.sleep(random.uniform(3 * random.uniform(40, 60), 7 * random.uniform(40, 60)))
         else:
