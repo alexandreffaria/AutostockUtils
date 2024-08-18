@@ -19,6 +19,8 @@ MOUSE_X1 = int(os.getenv('MOUSE_X1'))
 MOUSE_Y1 = int(os.getenv('MOUSE_Y1'))
 MOUSE_X2 = int(os.getenv('MOUSE_X2'))  
 MOUSE_Y2 = int(os.getenv('MOUSE_Y2'))
+MOUSE_X3 = int(os.getenv('MOUSE_X3'))  
+MOUSE_Y3 = int(os.getenv('MOUSE_Y3'))
 
 def is_lunch_break() -> bool:
     current_time = datetime.now().time()
@@ -98,6 +100,9 @@ if __name__ == "__main__":
             time.sleep(1)  # Short wait before sending to second window
             prompt = get_prompt(prompt_list)
             send_prompt_to_coords(prompt, params, MOUSE_X2, MOUSE_Y2)
+            time.sleep(1)  # Short wait before sending to second window
+            prompt = get_prompt(prompt_list)
+            send_prompt_to_coords(prompt, params, MOUSE_X3, MOUSE_Y3)
             time.sleep(random.uniform(3 * random.uniform(40, 60), 7 * random.uniform(40, 60)))
         else:
             if is_lunch_break():
