@@ -40,13 +40,13 @@ def send_prompt_to_coords(prompt: str, params: str, x: int, y: int) -> None:
     try:
         pyau.moveTo(x, y)
         pyau.click()
-        time.sleep(random.uniform(3, 5))
+        time.sleep(random.uniform(4, 5))
         pyau.typewrite("/imagine")
-        time.sleep(random.uniform(3, 5))
+        time.sleep(random.uniform(4, 5))
         pyau.press("enter")
-        time.sleep(random.uniform(3, 5))
+        time.sleep(random.uniform(4, 5))
         pyau.typewrite(prompt.strip())
-        time.sleep(random.uniform(3, 5))
+        time.sleep(random.uniform(4, 5))
         pyau.typewrite(params)
         pyau.press("enter")
         logging.info(f"Sent prompt: {prompt.strip()} with params: {params} to coordinates ({x}, {y})")
@@ -103,7 +103,7 @@ if __name__ == "__main__":
             time.sleep(1)  # Short wait before sending to second window
             prompt = get_prompt(prompt_list)
             send_prompt_to_coords(prompt, params, MOUSE_X3, MOUSE_Y3)
-            time.sleep(random.uniform(3 * random.uniform(40, 60), 7 * random.uniform(40, 60)))
+            time.sleep(random.uniform(3 * random.uniform(40, 60), 5 * random.uniform(40, 60)))
         else:
             if is_lunch_break():
                 logging.info("Eating some bytes... Nom nom nom")
