@@ -12,7 +12,7 @@ months = {
 # Initialize an empty dictionary
 daily_earnings = {}
 
-input_file = "Stats/Data/jun24-jul24.txt"
+input_file = "Stats/Data/4mes.txt"
 
 # Read the data from the file
 with open(input_file, 'r', encoding='utf-8') as data:
