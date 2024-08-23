@@ -7,6 +7,20 @@ def get_aspect_ratio(image_path):
         width, height = img.size
     return width, height
 
+def get_aspect_ratio_folder_name(width, height):
+    ratio = width / height
+    
+    # Define the folder names based on the aspect ratio logic
+    if ratio == 768 / 1536:
+        return "1by2"
+    if ratio == 1536 / 768:
+        return "2by1"
+    if ratio == 1904 / 640:
+        return "3by1"
+    
+    # Fallback to default "WxH" format if no specific folder names are defined
+    return f"{width}x{height}"
+
 def organize_images_by_aspect_ratio(folder_path):
     # Check if the folder path exists
     if not os.path.exists(folder_path):
@@ -24,11 +38,11 @@ def organize_images_by_aspect_ratio(folder_path):
             print(f"Skipping non-image file: {filename}")
             continue
         
-        # Calculate the aspect ratio
-        aspect_ratio = f"{width}x{height}"
+        # Get the aspect ratio folder name
+        aspect_ratio_folder_name = get_aspect_ratio_folder_name(width, height)
         
         # Create a directory for this aspect ratio if it doesn't exist
-        aspect_ratio_folder = os.path.join(folder_path, aspect_ratio)
+        aspect_ratio_folder = os.path.join(folder_path, aspect_ratio_folder_name)
         if not os.path.exists(aspect_ratio_folder):
             os.makedirs(aspect_ratio_folder)
         
