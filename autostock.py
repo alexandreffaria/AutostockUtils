@@ -1,4 +1,5 @@
 import os
+import shutil
 import tkinter as tk
 from tkinter import filedialog
 from tkinter.font import Font
@@ -149,6 +150,10 @@ def process_workflow() -> None:
         show_custom_error("A gente precisa de uma categoria bebê.")
         return
     
+    # if there is a folder called letterbox, move all files from all subfolders to the folderpath folder
+    if os.path.exists(folder_path + "/letterbox/"):
+        move_and_delete_files(folder_path)
+
     if selected_adobe:
         if selected_upscale:
             upscale(folder_path)
@@ -156,8 +161,6 @@ def process_workflow() -> None:
             create_csv(folder_path, selected_category, "a", selected_no_prompt, selected_language)        
         if selected_upload:
             upload(folder_path, "Adobe")
-
-
 
     if selected_freepik:
         if selected_upscale:
@@ -168,6 +171,41 @@ def process_workflow() -> None:
            create_csv(folder_path, selected_category, "f", selected_no_prompt, "en")
         if selected_upload:
             upload(folder_path, "Freepik")
+
+def move_and_delete_files(folder_path):
+    letterbox_folder = os.path.join(folder_path, "letterbox")
+    
+    if os.path.exists(letterbox_folder):
+        for root, dirs, files in os.walk(letterbox_folder):
+            # Check and delete JPEG folders immediately
+            for dir_name in dirs:
+                dir_path = os.path.join(root, dir_name)
+                if dir_name.lower() == "jpeg":
+                    shutil.rmtree(dir_path)
+                    print(f"Deleted JPEG directory and its contents: {dir_path}")
+
+            for file in files:
+                file_path = os.path.join(root, file)
+                # Skip .jpg files
+                if file.lower().endswith(".jpg"):
+                    os.remove(file_path)
+                    print(f"Deleted .jpg file: {file_path}")
+                else:
+                    target_file_path = os.path.join(folder_path, file)
+                    shutil.move(file_path, target_file_path)
+                    print(f"Moved {file_path} to {target_file_path}")
+
+        # Remove empty directories
+        for root, dirs, files in os.walk(letterbox_folder, topdown=False):
+            for dir_name in dirs:
+                dir_path = os.path.join(root, dir_name)
+                if not os.listdir(dir_path):  # Check if the directory is empty
+                    os.rmdir(dir_path)
+                    print(f"Deleted empty directory: {dir_path}")
+        
+        # Finally, delete the letterbox folder itself
+        shutil.rmtree(letterbox_folder)
+        print(f"Deleted the letterbox directory: {letterbox_folder}")
 
 def select_folder() -> None:
     """
@@ -193,6 +231,10 @@ def run_qc() -> None:
 
     command = f"python Utils/qc.py {folder_path}"
     run_command(command)
+
+    if os.path.exists(folder_path + "/letterbox/"):
+        run_command(f"python Utils/organize_images.py {folder_path}/letterbox/")
+
     save_settings(load_settings())  # Save settings after running qc.py
 
 # Main window
