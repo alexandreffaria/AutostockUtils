@@ -5,7 +5,7 @@ from scipy.stats import linregress
 import seaborn as sns
 
 # File path
-input_file = 'Stats/Data/jun24-jul24_treated.csv'
+input_file = 'Stats/Data/4mes_treated.csv'
 
 # Load the data
 df = pd.read_csv(input_file)
