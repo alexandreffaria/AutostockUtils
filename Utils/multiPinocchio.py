@@ -15,10 +15,12 @@ env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'
 load_dotenv(env_path)
 
 # Get coordinates from environment variables
-MOUSE_X1 = int(os.getenv('MOUSE_X1', 623))
-MOUSE_Y1 = int(os.getenv('MOUSE_Y1', 723))
-MOUSE_X2 = int(os.getenv('MOUSE_X2', 700))  
-MOUSE_Y2 = int(os.getenv('MOUSE_Y2', 800))
+MOUSE_X1 = int(os.getenv('MOUSE_X1'))
+MOUSE_Y1 = int(os.getenv('MOUSE_Y1'))
+MOUSE_X2 = int(os.getenv('MOUSE_X2'))  
+MOUSE_Y2 = int(os.getenv('MOUSE_Y2'))
+MOUSE_X3 = int(os.getenv('MOUSE_X3'))  
+MOUSE_Y3 = int(os.getenv('MOUSE_Y3'))
 
 def is_lunch_break() -> bool:
     current_time = datetime.now().time()
@@ -38,13 +40,13 @@ def send_prompt_to_coords(prompt: str, params: str, x: int, y: int) -> None:
     try:
         pyau.moveTo(x, y)
         pyau.click()
-        time.sleep(random.uniform(3, 10))
+        time.sleep(random.uniform(4, 5))
         pyau.typewrite("/imagine")
-        time.sleep(random.uniform(3, 10))
+        time.sleep(random.uniform(4, 5))
         pyau.press("enter")
-        time.sleep(random.uniform(3, 10))
+        time.sleep(random.uniform(4, 5))
         pyau.typewrite(prompt.strip())
-        time.sleep(random.uniform(3, 10))
+        time.sleep(random.uniform(4, 5))
         pyau.typewrite(params)
         pyau.press("enter")
         logging.info(f"Sent prompt: {prompt.strip()} with params: {params} to coordinates ({x}, {y})")
@@ -95,10 +97,13 @@ if __name__ == "__main__":
         if not is_nap_time() and not is_lunch_break():
             prompt = get_prompt(prompt_list)
             send_prompt_to_coords(prompt, params, MOUSE_X1, MOUSE_Y1)
-            time.sleep(random.uniform(3, 10))  # Short wait before sending to second window
+            time.sleep(1)  # Short wait before sending to second window
             prompt = get_prompt(prompt_list)
             send_prompt_to_coords(prompt, params, MOUSE_X2, MOUSE_Y2)
-            time.sleep(random.uniform(3 * random.uniform(40, 60), 7 * random.uniform(40, 60)))
+            time.sleep(1)  # Short wait before sending to second window
+            prompt = get_prompt(prompt_list)
+            send_prompt_to_coords(prompt, params, MOUSE_X3, MOUSE_Y3)
+            time.sleep(random.uniform(3 * random.uniform(40, 60), 5 * random.uniform(40, 60)))
         else:
             if is_lunch_break():
                 logging.info("Eating some bytes... Nom nom nom")
