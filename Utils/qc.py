@@ -50,6 +50,7 @@ class ImageViewer(tk.Tk):
         self.bind("<BackSpace>", lambda event: self.undo_last_action())
         self.bind("<Return>", lambda event: self.copy_image_to_special())
         self.bind("<space>", lambda event: self.move_image_to_lulz())
+        self.bind("<Key-t>", lambda event: self.move_image_to_tut())
 
     def close_viewer(self):
         self.destroy()
@@ -234,6 +235,33 @@ class ImageViewer(tk.Tk):
             self.load_image()
         except Exception as e:
             logging.error(f"Error moving file {file_name} to 'lulz' folder: {e}")
+
+    def move_image_to_tut(self) -> None:
+        """
+        Move the current image to the 'tut' folder two levels up.
+        """
+        if not self.files:
+            return
+
+        try:
+            file_name = self.files[self.current_index]
+            source_path = os.path.join(self.folder_path, file_name)
+            tut_folder_path = os.path.join(self.folder_path, '..', '..', 'tut')
+            os.makedirs(tut_folder_path, exist_ok=True)
+
+            target_path = os.path.join(tut_folder_path, file_name)
+            shutil.move(source_path, target_path)
+
+            logging.info(f"{file_name} moved to 'tut' folder.")
+            self.actions_stack.append(('move', 'tut', file_name))
+            del self.files[self.current_index]  # Remove the moved file from the list
+
+            if self.current_index >= len(self.files):
+                self.current_index = len(self.files) - 1
+
+            self.load_image()
+        except Exception as e:
+            logging.error(f"Error moving file {file_name} to 'tut' folder: {e}")
 
 def main() -> None:
     """
