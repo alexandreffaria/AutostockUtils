@@ -5,7 +5,7 @@ import logging
 import time
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', handlers=[
+logging.basicConfig(level=logging.INFO, format='%(levelname)s - %(message)s', handlers=[
     logging.StreamHandler(sys.stdout)
 ])
 
@@ -52,6 +52,7 @@ def main():
     files_to_process = [f for f in png_files if f not in upscaled_files]
     total_files = len(files_to_process)
     processed_files = 0
+    cumulative_time = 0
 
     for filename in png_files:
         if filename in upscaled_files:
@@ -62,7 +63,13 @@ def main():
             elapsed_time = process_image(folder_path, filename)
             if elapsed_time is not None:
                 processed_files += 1
-                logging.info(f"{processed_files}/{total_files} - Processed {filename} in {elapsed_time:.2f} seconds")
+                cumulative_time += elapsed_time
+                avg_time = cumulative_time / processed_files
+                remaining_files = total_files - processed_files
+                eta = remaining_files * avg_time
+                eta_hours = int(eta // 3600)
+                eta_minutes = int((eta % 3600) // 60)
+                logging.info(f"{processed_files}/{total_files} \nProcessed in {elapsed_time:.2f} seconds.\n{eta_hours} hrs {eta_minutes} min left")
         except Exception as e:
             logging.error(f"Error processing {filename}: {e}")
 
