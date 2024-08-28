@@ -5,7 +5,9 @@ import logging
 import time
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', handlers=[
+    logging.StreamHandler(sys.stdout)
+])
 
 def process_image(folder_path, filename):
     input_image = os.path.join(folder_path, filename)
@@ -40,11 +42,12 @@ def main():
     output_folder = os.path.join(folder_path, "realesrgan")
     os.makedirs(output_folder, exist_ok=True)
 
+    upscaled_files = {f for f in os.listdir(output_folder) if f.endswith(".png")}
+
     start_time = time.time()  # Record start time
 
     for filename in png_files:
-        output_image = os.path.join(output_folder, filename)
-        if os.path.exists(output_image):
+        if filename in upscaled_files:
             print(f"Skipping {filename} as it is already upscaled.")
             continue
 

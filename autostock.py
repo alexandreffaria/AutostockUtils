@@ -51,19 +51,19 @@ def run_command(command: str) -> None:
     logging.info(f"Running command: {command}")
     try:
         process = Popen(command, shell=True, stdout=PIPE, stderr=PIPE, universal_newlines=True)
-        stdout, stderr = process.communicate()
+        while True:
+            output = process.stdout.readline()
+            if output == '' and process.poll() is not None:
+                break
+            if output:
+                logging.info(output.strip())
+        
+        stderr = process.communicate()[1]
+        if stderr:
+            logging.error(stderr)
+        
         if process.returncode != 0:
             logging.error(f"Command '{command}' failed with return code {process.returncode}")
-            if stdout:
-                logging.error(f"stdout:\n{stdout}")
-            if stderr:
-                logging.error(f"stderr:\n{stderr}")
-        else:
-            logging.info(f"Command '{command}' executed successfully.")
-            if stdout:
-                logging.info(f"stdout:\n{stdout}")
-            if stderr:
-                logging.info(f"stderr:\n{stderr}")
     except Exception as e:
         logging.exception(f"Exception occurred while running command '{command}': {e}")
 
@@ -85,9 +85,8 @@ def upscale(folder_path: str) -> None:
     """
     Run the upscale script.
     """
-    if not os.path.exists(folder_path + "/realesrgan/"):
-        command = f"python Utils/upscale.py {folder_path}"
-        run_command(command)
+    command = f"python Utils/upscale.py {folder_path}"
+    run_command(command)
 
 def convert_to_jpg(folder_path: str) -> None:
     """
@@ -163,8 +162,6 @@ def process_workflow() -> None:
             upload(folder_path, "Adobe")
 
     if selected_freepik:
-        if selected_upscale:
-            upscale(folder_path)
         if selected_convert_to_jpg:
             convert_to_jpg(folder_path)
         if selected_create_csv:
