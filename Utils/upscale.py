@@ -19,10 +19,14 @@ def process_image(folder_path, filename):
         "-n", "realesrgan-x4plus"
     ]
     try:
-        result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        logging.info(f"Output of upscaling {filename}:\n{result.stdout}")
+        start_time = time.time()
+        subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        end_time = time.time()
+        processing_time = end_time - start_time
+        return processing_time
     except subprocess.CalledProcessError as e:
         logging.error(f"Error upscaling {filename}:\n{e.stderr}")
+        return None
 
 def main():
     if len(sys.argv) != 2:
@@ -45,6 +49,9 @@ def main():
     upscaled_files = {f for f in os.listdir(output_folder) if f.endswith(".png")}
 
     start_time = time.time()  # Record start time
+    files_to_process = [f for f in png_files if f not in upscaled_files]
+    total_files = len(files_to_process)
+    processed_files = 0
 
     for filename in png_files:
         if filename in upscaled_files:
@@ -52,14 +59,16 @@ def main():
             continue
 
         try:
-            process_image(folder_path, filename)
-            print(f"Processed: {filename}")
+            elapsed_time = process_image(folder_path, filename)
+            if elapsed_time is not None:
+                processed_files += 1
+                logging.info(f"{processed_files}/{total_files} - Processed {filename} in {elapsed_time:.2f} seconds")
         except Exception as e:
             logging.error(f"Error processing {filename}: {e}")
 
     end_time = time.time()  # Record end time
-    elapsed_time = end_time - start_time  # Calculate elapsed time
-    logging.info(f"Total processing time: {elapsed_time:.2f} seconds")
+    total_elapsed_time = end_time - start_time  # Calculate total elapsed time
+    logging.info(f"Total processing time: {total_elapsed_time:.2f} seconds")
 
 if __name__ == "__main__":
     main()
