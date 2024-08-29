@@ -10,9 +10,10 @@ import json
 import logging
 from dotenv import load_dotenv
 import threading
+import time
 
 # Configure logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Load environment variables from .env file
 env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env')
@@ -48,26 +49,36 @@ def save_settings(settings: dict) -> None:
         logging.info("Settings saved successfully.")
 
 
-
 def run_command(command):
     try:
         logging.info(f"Running command: {command}")
 
-        result = subprocess.run(command, shell=True, text=True, capture_output=True)
+        # Use Popen to start the process and capture its output
+        process = subprocess.Popen(command, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        # Log stdout and stderr for debugging purposes
-        if result.stdout:
-            logging.info(result.stdout.strip())
-        if result.stderr:
-            logging.error(result.stderr.strip())
+        # Read stdout and stderr line by line as the process runs
+        for stdout_line in iter(process.stdout.readline, ''):
+            if stdout_line:
+                logging.info(stdout_line.strip())
+        
+        # Ensure all lines are read and printed
+        process.stdout.close()
+        return_code = process.wait()
+
+        # Read and log any remaining stderr output after the process ends
+        for stderr_line in iter(process.stderr.readline, ''):
+            if stderr_line:
+                logging.error(stderr_line.strip())
+
+        process.stderr.close()
 
         # Check if the command was successful
-        result.check_returncode()
+        if return_code != 0:
+            raise subprocess.CalledProcessError(return_code, command)
     except subprocess.CalledProcessError as e:
         logging.error(f"Command '{e.cmd}' returned non-zero exit status {e.returncode}.")
     except Exception as e:
         logging.error(f"An unexpected error occurred: {e}")
-
 
 def show_custom_error(message: str) -> None:
     """
@@ -167,6 +178,7 @@ def process_workflow() -> None:
         move_and_delete_files(folder_path)
 
     def run_tasks():
+        start = time.time()
         logging.debug("Running tasks...")
         if selected_adobe:
             if selected_upscale:
@@ -189,6 +201,10 @@ def process_workflow() -> None:
             if selected_upload:
                 logging.debug("Uploading files to Freepik.")
                 upload(folder_path, "Freepik")
+        dur = time.time() - start
+        hours = int(dur // 3600)
+        minutes = int((dur % 3600) // 60)
+        logging.info(f":::JOB DONE in {hours}hrs {minutes}min:::")
 
     threading.Thread(target=run_tasks).start()
 
@@ -260,6 +276,9 @@ def run_qc() -> None:
 
     save_settings(load_settings())  # Save settings after running qc.py
 
+def run_qc_in_thread():
+    thread = threading.Thread(target=run_qc)
+    thread.start()
 
 # Main window
 root = tk.Tk()
@@ -296,7 +315,7 @@ category_optionmenu.pack(pady=25)
 category_optionmenu.config(highlightthickness=1, highlightbackground=accent_color)
 
 # Button to run QC separately
-qc_button = tk.Button(root, text="🔬 QC", command=run_qc, bg=accent_color, width=12, height=2, fg="#ffffff")
+qc_button = tk.Button(root, text="🔬 QC", command=run_qc_in_thread, bg=accent_color, width=12, height=2, fg="#ffffff")
 qc_button.pack(pady=5)
 
 process_labels = tk.Label(root, text="Quais processos?", bg="#2b2b2b", fg="#ffffff", font=bold_font, height=1)
