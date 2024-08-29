@@ -278,7 +278,7 @@ def main() -> None:
 
     files = [
         f for f in os.listdir(folder_path)
-        if os.path.isfile(os.path.join(folder_path, f))
+        if os.path.isfile(os.path.join(folder_path, f)) and f.lower().endswith('.png')
     ]
 
     viewer = ImageViewer(folder_path, files)
