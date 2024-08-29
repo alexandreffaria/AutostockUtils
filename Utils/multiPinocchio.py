@@ -103,7 +103,7 @@ if __name__ == "__main__":
             time.sleep(1)  # Short wait before sending to second window
             prompt = get_prompt(prompt_list)
             send_prompt_to_coords(prompt, params, MOUSE_X3, MOUSE_Y3)
-            time.sleep(random.uniform(3 * random.uniform(40, 60), 5 * random.uniform(40, 60)))
+            time.sleep(random.uniform(2 * random.uniform(40, 60), 3 * random.uniform(40, 60)))
         else:
             if is_lunch_break():
                 logging.info("Eating some bytes... Nom nom nom")
