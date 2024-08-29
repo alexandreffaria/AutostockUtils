@@ -18,7 +18,7 @@ env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'
 load_dotenv(env_path)
 
 # Get icon path from environment variables
-ICON_PATH = os.getenv('ICON_PATH', 'meulindo.ico')
+ICON_PATH = "meulindo.ico"
 
 SETTINGS_FILE = "settings.json"
 accent_color_list = ["#800f00", "#004080", "#80005e", "#800000"]
