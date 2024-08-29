@@ -14,7 +14,7 @@ env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '.env'
 load_dotenv(env_path)
 
 # Get icon path from environment variables
-ICON_PATH = os.getenv('ICON_PATH', '../meulindo.ico')
+ICON_PATH = os.getenv('ICON_PATH', 'meulindo.ico')
 
 class ImageViewer(tk.Tk):
     def __init__(self, folder_path: str, files: list):
