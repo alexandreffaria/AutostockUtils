@@ -30,24 +30,11 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
 def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key, use_file_names, language):
 
     if platform_flag == 'a':
-        parent_folder_name = os.path.basename(
-            os.path.normpath(os.path.join(folder_path, ".."))
-        )
-        csv_file_name = f"{parent_folder_name}_adobe.csv"
-        csv_file_path = os.path.join(output_folder, csv_file_name)
-
-    if platform_flag == 'v':
-        parent_folder_name = os.path.basename(
-            os.path.normpath(os.path.join(folder_path, ".."))
-        )
-        csv_file_name = f"{parent_folder_name}_vecteezy.csv"
+        csv_file_name = f"{categorias[category_key]}_adobe.csv"
         csv_file_path = os.path.join(output_folder, csv_file_name)
 
     if platform_flag == 'f':
-        parent_folder_name = os.path.basename(
-            os.path.normpath(os.path.join(folder_path, ".."))
-        )
-        csv_file_name = f"{parent_folder_name}_freepik_output.csv"
+        csv_file_name = f"{categorias[category_key]}_freepik.csv"
         csv_file_path = os.path.join(output_folder, csv_file_name)
         
     # Get a list of all files in the specified folder with PNG or JPG extensions
