@@ -117,7 +117,7 @@ def create_csv(folder_path: str, selected_category: str, platform: str, no_promp
     Run the generateCSV script.
     """
     prompt_flag = "--no-prompt" if no_prompt else ""
-    command = f"python generateCSV/generateCSV.py {folder_path}/ \"{selected_category}\" -p {platform[0].lower()} {prompt_flag} --language {language}"
+    command = f"python generateCSV/generateCSV.py {folder_path} \"{selected_category}\" -p {platform[0].lower()} {prompt_flag} --language {language}"
     run_command(command)
 
 
@@ -198,6 +198,8 @@ def process_workflow() -> None:
             if selected_create_csv:
                 logging.debug("Creating CSV for Freepik.")
                 create_csv(folder_path, selected_category, "f", selected_no_prompt, "en")
+                command = f'python ./Utils/addQuotesToCSV.py {folder_path}"{selected_category}_freepik.csv"'
+                run_command(command)
             if selected_upload:
                 logging.debug("Uploading files to Freepik.")
                 upload(folder_path, "Freepik")
