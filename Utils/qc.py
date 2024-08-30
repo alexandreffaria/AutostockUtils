@@ -5,6 +5,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import logging
 from dotenv import load_dotenv
+import zipfile
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -15,6 +16,36 @@ load_dotenv(env_path)
 
 # Get icon path from environment variables
 ICON_PATH = os.getenv('ICON_PATH', 'meulindo.ico')
+
+def unzip_files(folder_path: str) -> None:
+    """
+    Unzip all .zip files in the specified folder.
+
+    Args:
+        folder_path (str): The path of the folder containing .zip files.
+    """
+    zip_files = [
+        item for item in os.listdir(folder_path) if item.lower().endswith('.zip')
+    ]
+
+    # First, unzip all zip files
+    for item in zip_files:
+        file_path = os.path.join(folder_path, item)
+        try:
+            with zipfile.ZipFile(file_path, 'r') as zip_ref:
+                zip_ref.extractall(folder_path)
+            logging.info(f"Unzipped {item}")
+        except Exception as e:
+            logging.error(f"Error unzipping file {item}: {e}")
+
+    # Then, delete all zip files after extraction
+    for item in zip_files:
+        file_path = os.path.join(folder_path, item)
+        try:
+            os.remove(file_path)
+            logging.info(f"Removed {item}")
+        except Exception as e:
+            logging.error(f"Error deleting file {item}: {e}")
 
 class ImageViewer(tk.Tk):
     def __init__(self, folder_path: str, files: list):
@@ -234,7 +265,7 @@ class ImageViewer(tk.Tk):
 
             self.load_image()
         except Exception as e:
-            logging.error(f"Error moving file {file_name} to 'lulz' folder: {e}")
+                        logging.error(f"Error moving file {file_name} to 'lulz' folder: {e}")
 
     def move_image_to_tut(self) -> None:
         """
@@ -276,6 +307,8 @@ def main() -> None:
         logging.error(f"The specified folder '{folder_path}' does not exist.")
         sys.exit(1)
 
+    unzip_files(folder_path)  # Unzip .zip files before loading images
+
     files = [
         f for f in os.listdir(folder_path)
         if os.path.isfile(os.path.join(folder_path, f)) and f.lower().endswith('.png')
@@ -289,3 +322,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
