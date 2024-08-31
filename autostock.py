@@ -212,10 +212,6 @@ class AutostockGUI:
             for csv_file in freepik_csv_files:
                 self.run_command(f'python ./Utils/addQuotesToCSV.py "{csv_file}"')
                 logging.info(f"Added quotes to CSV: {csv_file}")
-        else:
-            error_message = f"No Freepik CSV file found in {folder_path}"
-            logging.error(error_message)
-            messagebox.showerror("Error", error_message)
             
     def move_and_delete_files(self, folder_path):
         letterbox_folder = os.path.join(folder_path, "letterbox")
