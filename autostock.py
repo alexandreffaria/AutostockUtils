@@ -1,7 +1,7 @@
 import os
 import shutil
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 from tkinter.font import Font
 import subprocess
 from GenerateCSV.categorias import categorias
@@ -10,7 +10,9 @@ import json
 import logging
 from dotenv import load_dotenv
 import threading
+import queue
 import time
+import glob
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -26,341 +28,226 @@ SETTINGS_FILE = "settings.json"
 accent_color_list = ["#800f00", "#004080", "#80005e", "#800000"]
 accent_color = random.choice(accent_color_list)
 
-
-def load_settings() -> dict:
-    """
-    Load settings from the JSON file.
-    """
+def load_settings():
     if os.path.exists(SETTINGS_FILE):
         with open(SETTINGS_FILE, "r") as file:
-            settings = json.load(file)
-            logging.info("Settings loaded successfully.")
-            return settings
-    logging.warning("Settings file not found.")
+            return json.load(file)
     return {}
 
-
-def save_settings(settings: dict) -> None:
-    """
-    Save settings to the JSON file.
-    """
+def save_settings(settings):
     with open(SETTINGS_FILE, "w") as file:
         json.dump(settings, file, indent=4)
-        logging.info("Settings saved successfully.")
+
+class SubprocessRunner:
+    def __init__(self, command, output_queue):
+        self.command = command
+        self.output_queue = output_queue
+
+    def run(self):
+        try:
+            process = subprocess.Popen(
+                self.command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                bufsize=1,
+                universal_newlines=True
+            )
+
+            for line in iter(process.stdout.readline, ''):
+                self.output_queue.put(line.strip())
+
+            process.stdout.close()
+            return_code = process.wait()
+
+            if return_code != 0:
+                self.output_queue.put(f"Command failed with return code {return_code}")
+        except Exception as e:
+            self.output_queue.put(f"Error running command: {str(e)}")
+
+class AutostockGUI:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Autostock Utils")
+        self.master.geometry("300x900")
+        self.master.configure(bg="#2b2b2b")
+        self.master.wm_iconbitmap(ICON_PATH)
+
+        self.bold_font = Font(family="Arial", size=12, weight="bold")
+        self.small_font = Font(family="Arial", size=9)
+
+        self.settings = load_settings()
+        self.setup_ui()
+
+        self.output_queue = queue.Queue()
+        self.after_id = None
+        self.check_output_queue()
+
+    def setup_ui(self):
+        # Folder selection
+        self.folder_var = tk.StringVar(value=self.settings.get("folder_path", ""))
+        tk.Label(self.master, text="Deixa eu fazer procê ❤️", bg="#2b2b2b", fg="#ffffff", font=self.bold_font).pack(pady=5)
+        tk.Entry(self.master, textvariable=self.folder_var, width=16, bg="#4d4d4d", fg="#ffffff", font=("Arial", 20)).pack(pady=5)
+        tk.Button(self.master, text="🔎", command=self.select_folder, bg=accent_color, fg="#ffffff", font=("Arial", 20)).pack(pady=20)
+
+        # Category selection
+        self.category_var = tk.StringVar(value=self.settings.get("selected_category", "Categoria"))
+        tk.OptionMenu(self.master, self.category_var, *categorias.values()).pack(pady=25)
+
+        # QC Button
+        tk.Button(self.master, text="🔬 QC", command=self.run_qc, bg=accent_color, width=12, height=2, fg="#ffffff").pack(pady=5)
+
+        # Process checkboxes
+        tk.Label(self.master, text="Quais processos?", bg="#2b2b2b", fg="#ffffff", font=self.bold_font).pack(pady=5)
+        self.upscale_var = tk.BooleanVar(value=self.settings.get("selected_upscale", True))
+        tk.Checkbutton(self.master, text="Upscale", variable=self.upscale_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
+        self.convert_to_jpg_var = tk.BooleanVar(value=self.settings.get("selected_convert_to_jpg", True))
+        tk.Checkbutton(self.master, text="Convert to JPG", variable=self.convert_to_jpg_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
+        self.create_csv_var = tk.BooleanVar(value=self.settings.get("selected_create_csv", True))
+        tk.Checkbutton(self.master, text="Generate CSV's", variable=self.create_csv_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
+
+        # Language selection
+        tk.Label(self.master, text="Qual idioma pra adobe?", bg="#2b2b2b", fg="#ffffff", font=self.small_font).pack(pady=5)
+        self.language_var = tk.StringVar(value=self.settings.get("selected_language", "en"))
+        tk.OptionMenu(self.master, self.language_var, "pt", "en").pack(pady=5)
+
+        # Platform selection
+        tk.Label(self.master, text="Quais plataformas?", bg="#2b2b2b", fg="#ffffff", font=self.bold_font).pack(pady=5)
+        self.adobe_var = tk.BooleanVar(value=self.settings.get("selected_adobe", True))
+        tk.Checkbutton(self.master, text="Adobe", variable=self.adobe_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
+        self.freepik_var = tk.BooleanVar(value=self.settings.get("selected_freepik", True))
+        tk.Checkbutton(self.master, text="Freepik", variable=self.freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
+
+        # Process button
+        tk.Button(self.master, text="🚀", command=self.process_workflow, bg=accent_color, fg="#ffffff", width=15, height=3, font=("Arial", 20)).pack(pady=50)
+
+    def select_folder(self):
+        folder_selected = filedialog.askdirectory()
+        if folder_selected:
+            self.folder_var.set(folder_selected)
+
+    def run_command(self, command):
+        runner = SubprocessRunner(command, self.output_queue)
+        thread = threading.Thread(target=runner.run)
+        thread.start()
+        return thread
+
+    def check_output_queue(self):
+        try:
+            while True:
+                output = self.output_queue.get_nowait()
+                logging.info(output)
+        except queue.Empty:
+            pass
+        finally:
+            self.after_id = self.master.after(100, self.check_output_queue)
+
+    def run_qc(self):
+        folder_path = self.folder_var.get()
+        if not folder_path:
+            messagebox.showerror("Error", "A gente precisa de uma pasta bebê.")
+            return
+
+        self.run_command(f"python Utils/qc.py {folder_path}")
+
+        if os.path.exists(os.path.join(folder_path, "letterbox")):
+            self.run_command(f"python Utils/organize_images.py {os.path.join(folder_path, 'letterbox')}")
+
+        self.save_current_settings()
+
+    def process_workflow(self):
+        folder_path = self.folder_var.get()
+        if not folder_path:
+            messagebox.showerror("Error", "A gente precisa de uma pasta bebê.")
+            return
+
+        selected_category = self.category_var.get()
+        if selected_category == "Categoria":
+            messagebox.showerror("Error", "A gente precisa de uma categoria bebê.")
+            return
+
+        self.save_current_settings()
+
+        # Move files from letterbox if it exists
+        if os.path.exists(os.path.join(folder_path, "letterbox")):
+            self.move_and_delete_files(folder_path)
+
+        tasks = []
+
+        if self.adobe_var.get():
+            if self.upscale_var.get():
+                tasks.append((self.upscale, (folder_path,)))
+            if self.create_csv_var.get():
+                tasks.append((self.create_csv, (folder_path, selected_category, "a", self.language_var.get())))
+
+        if self.freepik_var.get():
+            if self.convert_to_jpg_var.get():
+                tasks.append((self.convert_to_jpg, (folder_path,)))
+            if self.create_csv_var.get():
+                tasks.append((self.create_csv, (folder_path, selected_category, "f", "en")))
+                tasks.append((self.add_quotes_to_csv, (folder_path, )))
+
+        threading.Thread(target=self.run_tasks, args=(tasks,)).start()
+
+    def run_tasks(self, tasks):
+        for task, args in tasks:
+            task(*args)
 
 
-def run_command(command):
-    try:
-        logging.info(f"Running command: {command}")
+    def upscale(self, folder_path):
+        self.run_command(f"python Utils/upscale.py {folder_path}")
 
-        # Use Popen to start the process and capture its output
-        process = subprocess.Popen(command, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    def convert_to_jpg(self, folder_path):
+        time.sleep(180)
+        png_folder = os.path.join(folder_path, "realesrgan")
+        self.run_command(f"python Utils/convertToJPG.py {png_folder}")
 
-        # Read stdout and stderr line by line as the process runs
-        for stdout_line in iter(process.stdout.readline, ''):
-            if stdout_line:
-                logging.info(stdout_line.strip())
-        
-        # Ensure all lines are read and printed
-        process.stdout.close()
-        return_code = process.wait()
+    def create_csv(self, folder_path, selected_category, platform, language):
+        self.run_command(f"python generateCSV/generateCSV.py {folder_path} \"{selected_category}\" -p {platform[0].lower()} --language {language}")
 
-        # Read and log any remaining stderr output after the process ends
-        for stderr_line in iter(process.stderr.readline, ''):
-            if stderr_line:
-                logging.error(stderr_line.strip())
+    def add_quotes_to_csv(self, folder_path):
+        freepik_csv_files = glob.glob(os.path.join(folder_path, "*_freepik.csv"))
+        if freepik_csv_files:
+            for csv_file in freepik_csv_files:
+                self.run_command(f'python ./Utils/addQuotesToCSV.py "{csv_file}"')
+                logging.info(f"Added quotes to CSV: {csv_file}")
+        else:
+            error_message = f"No Freepik CSV file found in {folder_path}"
+            logging.error(error_message)
+            messagebox.showerror("Error", error_message)
+            
+    def move_and_delete_files(self, folder_path):
+        letterbox_folder = os.path.join(folder_path, "letterbox")
+        if os.path.exists(letterbox_folder):
+            for root, dirs, files in os.walk(letterbox_folder):
+                for dir_name in list(dirs):
+                    dir_path = os.path.join(root, dir_name)
+                    if dir_name.lower() == "jpeg":
+                        shutil.rmtree(dir_path)
+                        dirs.remove(dir_name)
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    if file.lower().endswith(".jpg"):
+                        os.remove(file_path)
+                    else:
+                        shutil.move(file_path, os.path.join(folder_path, file))
+            shutil.rmtree(letterbox_folder)
 
-        process.stderr.close()
+    def save_current_settings(self):
+        settings = {
+            "folder_path": self.folder_var.get(),
+            "selected_category": self.category_var.get(),
+            "selected_upscale": self.upscale_var.get(),
+            "selected_convert_to_jpg": self.convert_to_jpg_var.get(),
+            "selected_create_csv": self.create_csv_var.get(),
+            "selected_language": self.language_var.get(),
+            "selected_adobe": self.adobe_var.get(),
+            "selected_freepik": self.freepik_var.get(),
+        }
+        save_settings(settings)
 
-        # Check if the command was successful
-        if return_code != 0:
-            raise subprocess.CalledProcessError(return_code, command)
-    except subprocess.CalledProcessError as e:
-        logging.error(f"Command '{e.cmd}' returned non-zero exit status {e.returncode}.")
-    except Exception as e:
-        logging.error(f"An unexpected error occurred: {e}")
-
-def show_custom_error(message: str) -> None:
-    """
-    Show a custom error message in a tkinter window.
-    """
-    error_window = tk.Toplevel(root)
-    error_window.configure(bg="#2b2b2b")
-    error_window.title("Cadê?!")
-    error_window.wm_iconbitmap(ICON_PATH)
-    error_label = tk.Label(error_window, text=message, bg="#2b2b2b", fg="#ffffff")
-    error_label.pack(padx=20, pady=10)
-    ok_button = tk.Button(error_window, text="Desculpe meu senhor", command=error_window.destroy, bg=accent_color, fg="#ffffff")
-    ok_button.pack(pady=10, padx=20)
-    logging.error(message)
-
-
-def upscale(folder_path: str) -> None:
-    """
-    Run the upscale script.
-    """
-    command = f"python Utils/upscale.py {folder_path}"
-    run_command(command)
-
-
-def convert_to_jpg(folder_path: str) -> None:
-    """
-    Run the convertToJPG script.
-    """
-    png_folder = folder_path + "/realesrgan/"
-    command = f"python Utils/convertToJPG.py {png_folder}"
-    run_command(command)
-
-
-def create_csv(folder_path: str, selected_category: str, platform: str, no_prompt: bool, language: str) -> None:
-    """
-    Run the generateCSV script.
-    """
-    prompt_flag = "--no-prompt" if no_prompt else ""
-    command = f"python generateCSV/generateCSV.py {folder_path} \"{selected_category}\" -p {platform[0].lower()} {prompt_flag} --language {language}"
-    run_command(command)
-
-
-def upload(folder_path: str, platform: str) -> None:
-    """
-    Run the sendSFTP script.
-    """
-    command = f"python Utils/sendSFTP.py {folder_path}/ {platform[0].lower()}"
-    run_command(command)
-
-
-def process_workflow() -> None:
-    """
-    Execute the selected workflow.
-    """
-    logging.debug("Process button clicked.")
-    selected_adobe = adobe_var.get()
-    selected_freepik = freepik_var.get()
-    selected_upscale = upscale_var.get()
-    selected_convert_to_jpg = convert_to_jpg_var.get()
-    selected_create_csv = create_csv_var.get()
-    selected_upload = upload_var.get()
-    selected_no_prompt = no_prompt_var.get()
-    selected_language = language_var.get()
-    folder_path = folder_var.get()
-    selected_category = category_var.get()
-
-    logging.debug(f"Selected Adobe: {selected_adobe}, Selected Freepik: {selected_freepik}, "
-                  f"Selected Upscale: {selected_upscale}, Selected Convert to JPG: {selected_convert_to_jpg}, "
-                  f"Selected Create CSV: {selected_create_csv}, Selected Upload: {selected_upload}, "
-                  f"Selected No Prompt: {selected_no_prompt}, Selected Language: {selected_language}, "
-                  f"Folder Path: {folder_path}, Selected Category: {selected_category}")
-
-    settings = {
-        "folder_path": folder_path,
-        "selected_category": selected_category,
-        "selected_adobe": selected_adobe,
-        "selected_freepik": selected_freepik,
-        "selected_upscale": selected_upscale,
-        "selected_convert_to_jpg": selected_convert_to_jpg,
-        "selected_create_csv": selected_create_csv,
-        "selected_upload": selected_upload,
-        "selected_no_prompt": selected_no_prompt,
-        "selected_language": selected_language,
-    }
-    save_settings(settings)
-
-    if not folder_path:
-        show_custom_error("A gente precisa de uma pasta bebê.")
-        return
-
-    if selected_category == "Categoria":
-        show_custom_error("A gente precisa de uma categoria bebê.")
-        return
-
-    # If there is a folder called letterbox, move all files from all subfolders to the folderpath folder
-    if os.path.exists(folder_path + "/letterbox/"):
-        move_and_delete_files(folder_path)
-
-    def run_tasks():
-        start = time.time()
-        logging.debug("Running tasks...")
-        if selected_adobe:
-            if selected_upscale:
-                logging.debug("Upscaling images for Adobe.")
-                upscale(folder_path)
-            if selected_create_csv:
-                logging.debug("Creating CSV for Adobe.")
-                create_csv(folder_path, selected_category, "a", selected_no_prompt, selected_language)
-            if selected_upload:
-                logging.debug("Uploading files to Adobe.")
-                upload(folder_path, "Adobe")
-
-        if selected_freepik:
-            if selected_convert_to_jpg:
-                logging.debug("Converting images to JPG for Freepik.")
-                convert_to_jpg(folder_path)
-            if selected_create_csv:
-                logging.debug("Creating CSV for Freepik.")
-                create_csv(folder_path, selected_category, "f", selected_no_prompt, "en")
-                command = f'python ./Utils/addQuotesToCSV.py {folder_path}/"{selected_category}_freepik.csv"'
-                run_command(command)
-            if selected_upload:
-                logging.debug("Uploading files to Freepik.")
-                upload(folder_path, "Freepik")
-        dur = time.time() - start
-        hours = int(dur // 3600)
-        minutes = int((dur % 3600) // 60)
-        logging.info(f":::JOB DONE in {hours}hrs {minutes}min:::")
-
-    threading.Thread(target=run_tasks).start()
-
-
-def move_and_delete_files(folder_path):
-    letterbox_folder = os.path.join(folder_path, "letterbox")
-
-    if os.path.exists(letterbox_folder):
-        for root, dirs, files in os.walk(letterbox_folder):
-            # Check and delete JPEG folders immediately
-            for dir_name in dirs:
-                dir_path = os.path.join(root, dir_name)
-                if dir_name.lower() == "jpeg":
-                    shutil.rmtree(dir_path)
-                    print(f"Deleted JPEG directory and its contents: {dir_path}")
-
-            for file in files:
-                file_path = os.path.join(root, file)
-                # Skip .jpg files
-                if file.lower().endswith(".jpg"):
-                    os.remove(file_path)
-                    print(f"Deleted .jpg file: {file_path}")
-                else:
-                    target_file_path = os.path.join(folder_path, file)
-                    shutil.move(file_path, target_file_path)
-                    print(f"Moved {file_path} to {target_file_path}")
-
-        # Remove empty directories
-        for root, dirs, files in os.walk(letterbox_folder, topdown=False):
-            for dir_name in dirs:
-                dir_path = os.path.join(root, dir_name)
-                if not os.listdir(dir_path):  # Check if the directory is empty
-                    os.rmdir(dir_path)
-                    print(f"Deleted empty directory: {dir_path}")
-
-        # Finally, delete the letterbox folder itself
-        shutil.rmtree(letterbox_folder)
-        print(f"Deleted the letterbox directory: {letterbox_folder}")
-
-
-def select_folder() -> None:
-    """
-    Open a file dialog to select a folder.
-    """
-    folder_selected = filedialog.askdirectory()
-    if folder_selected:
-        folder_var.set(folder_selected)
-        root.configure(bg="#2b2b2b")
-
-
-def run_qc() -> None:
-    """
-    Run the qc.py script.
-    """
-    folder_path = folder_var.get()
-    if not folder_path:
-        show_custom_error("A gente precisa de uma pasta bebê.")
-        return
-
-    save_settings({
-        "folder_path": folder_path
-    })
-
-    command = f"python Utils/qc.py {folder_path}"
-    run_command(command)
-
-    if os.path.exists(folder_path + "/letterbox/"):
-               run_command(f"python Utils/organize_images.py {folder_path}/letterbox/")
-
-    save_settings(load_settings())  # Save settings after running qc.py
-
-def run_qc_in_thread():
-    thread = threading.Thread(target=run_qc)
-    thread.start()
-
-# Main window
-root = tk.Tk()
-root.title("Autostock Utils")
-root.geometry("300x900")
-root.configure(bg="#2b2b2b")
-root.wm_title("Autostock Utils")
-root.wm_iconbitmap(ICON_PATH)
-
-bold_font = Font(family="Arial", size=12, weight="bold")
-small_font = Font(family="Arial", size=9)
-
-settings = load_settings()
-
-# Folder selection
-folder_var = tk.StringVar(value=settings.get("folder_path", ""))
-folder_label = tk.Label(root, text="Deixa eu fazer procê ❤️", bg="#2b2b2b", fg="#ffffff", font=bold_font, height=1)
-folder_label.pack(pady=5, padx=20)
-
-folder_entry = tk.Entry(root, textvariable=folder_var, width=16, bg="#4d4d4d", fg="#ffffff", font=("Arial", 20))
-folder_entry.pack(pady=5)
-folder_button = tk.Button(root, text="🔎", command=select_folder, bg=accent_color, fg="#ffffff", font=("Arial", 20))
-folder_button.pack(pady=20)
-
-# Category selection
-category_var = tk.StringVar(value=settings.get("selected_category", "Categoria"))
-category_menu = tk.Menu(root, bg="#4d4d4d", fg="#ffffff")
-root.config(menu=category_menu)
-
-category_optionmenu = tk.OptionMenu(root, category_var, *categorias.values())
-category_optionmenu["menu"].config(bg="#4d4d4d", fg="#ffffff")
-category_optionmenu.config(bg="#4d4d4d", fg="#ffffff")
-category_optionmenu.pack(pady=25)
-category_optionmenu.config(highlightthickness=1, highlightbackground=accent_color)
-
-# Button to run QC separately
-qc_button = tk.Button(root, text="🔬 QC", command=run_qc_in_thread, bg=accent_color, width=12, height=2, fg="#ffffff")
-qc_button.pack(pady=5)
-
-process_labels = tk.Label(root, text="Quais processos?", bg="#2b2b2b", fg="#ffffff", font=bold_font, height=1)
-process_labels.pack(pady=5, padx=20)
-
-upscale_var = tk.BooleanVar(value=settings.get("selected_upscale", True))
-upscale_checkbox = tk.Checkbutton(root, text="Upscale", variable=upscale_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color, activebackground="#2b2b2b", activeforeground="#fff")
-upscale_checkbox.pack(pady=5)
-
-convert_to_jpg_var = tk.BooleanVar(value=settings.get("selected_convert_to_jpg", True))
-convert_to_jpg_checkbox = tk.Checkbutton(root, text="Convert to JPG", variable=convert_to_jpg_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color, activebackground="#2b2b2b", activeforeground="#fff")
-convert_to_jpg_checkbox.pack(pady=5)
-
-create_csv_var = tk.BooleanVar(value=settings.get("selected_create_csv", True))
-create_csv_checkbox = tk.Checkbutton(root, text="Generate CSV's", variable=create_csv_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color, activebackground="#2b2b2b", activeforeground="#fff")
-create_csv_checkbox.pack(pady=5)
-
-upload_var = tk.BooleanVar(value=settings.get("selected_upload", False))
-
-no_prompt_var = tk.BooleanVar(value=settings.get("selected_no_prompt", False))
-
-platform_labels = tk.Label(root, text="Qual idioma pra adobe?", bg="#2b2b2b", fg="#ffffff", font=small_font, height=1)
-platform_labels.pack(pady=5, padx=20)
-
-language_var = tk.StringVar(value=settings.get("selected_language", "en"))
-language_menu = tk.OptionMenu(root, language_var, "pt", "en")
-language_menu.config(bg="#4d4d4d", fg="#ffffff")
-language_menu.pack(pady=5)
-language_menu.config(highlightthickness=1, highlightbackground=accent_color)
-
-platform_labels = tk.Label(root, text="Quais plataformas?", bg="#2b2b2b", fg="#ffffff", font=bold_font, height=1)
-platform_labels.pack(pady=5, padx=20)
-
-adobe_var = tk.BooleanVar(value=settings.get("selected_adobe", True))
-adobe_checkbox = tk.Checkbutton(root, text="Adobe", variable=adobe_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color, activebackground="#2b2b2b", activeforeground="#fff")
-adobe_checkbox.pack(pady=5)
-
-freepik_var = tk.BooleanVar(value=settings.get("selected_freepik", True))
-freepik_checkbox = tk.Checkbutton(root, text="Freepik", variable=freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color, activebackground="#2b2b2b", activeforeground="#fff")
-freepik_checkbox.pack(pady=5)
-
-# Process button
-process_button = tk.Button(root, text="🚀", command=process_workflow, bg=accent_color, fg="#ffffff", width=15, height=3, font=("Arial", 20))
-process_button.pack(pady=50)
-
-root.mainloop()
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = AutostockGUI(root)
+    root.mainloop()
