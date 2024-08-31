@@ -28,7 +28,6 @@ def unzip_files(folder_path: str) -> None:
         item for item in os.listdir(folder_path) if item.lower().endswith('.zip')
     ]
 
-    # First, unzip all zip files
     for item in zip_files:
         file_path = os.path.join(folder_path, item)
         try:
@@ -38,7 +37,6 @@ def unzip_files(folder_path: str) -> None:
         except Exception as e:
             logging.error(f"Error unzipping file {item}: {e}")
 
-    # Then, delete all zip files after extraction
     for item in zip_files:
         file_path = os.path.join(folder_path, item)
         try:
@@ -83,17 +81,32 @@ class ImageViewer(tk.Tk):
         self.bind("<space>", lambda event: self.move_image_to_lulz())
         self.bind("<Key-t>", lambda event: self.move_image_to_tut())
 
+        # Bind mouse wheel event
+        self.bind("<MouseWheel>", self.on_mouse_wheel)
+        self.bind("<Button-4>", self.on_mouse_wheel)  # For Linux systems
+        self.bind("<Button-5>", self.on_mouse_wheel)  # For Linux systems
+
+        self.bind("<Shift-Left>", lambda event: self.shift_images(-10))
+        self.bind("<Shift-Right>", lambda event: self.shift_images(10))
+
+
+    def shift_images(self, step: int) -> None:
+        """Jump images by the given step."""
+        new_index = self.current_index + step
+        self.current_index = max(0, min(len(self.files) - 1, new_index))
+        self.load_image()
+
+    def on_mouse_wheel(self, event):
+        if event.delta > 0:
+            self.previous_image()
+        else:
+            self.next_image()
+
     def close_viewer(self):
         self.destroy()
         self.delete_marked_images()
 
     def move_image_to_folder(self, target_folder: str) -> None:
-        """
-        Move the current image to the specified target folder.
-
-        Args:
-            target_folder (str): The name of the target folder.
-        """
         if not self.files:
             return
 
@@ -119,25 +132,16 @@ class ImageViewer(tk.Tk):
             logging.error(f"Error moving file {file_name} to {target_folder}: {e}")
 
     def next_image(self) -> None:
-        """
-        Load the next image in the list.
-        """
         if self.files:
             self.current_index = (self.current_index + 1) % len(self.files)
             self.load_image()
 
     def previous_image(self) -> None:
-        """
-        Load the previous image in the list.
-        """
         if self.files:
             self.current_index = (self.current_index - 1) % len(self.files)
             self.load_image()
 
     def mark_image_for_deletion(self) -> None:
-        """
-        Mark the current image for deletion.
-        """
         if not self.files:
             return
 
@@ -152,9 +156,6 @@ class ImageViewer(tk.Tk):
         self.load_image()
 
     def delete_marked_images(self) -> None:
-        """
-        Delete all images that have been marked for deletion.
-        """
         while self.actions_stack:
             action, *args = self.actions_stack.pop()
             if action == 'delete':
@@ -167,9 +168,6 @@ class ImageViewer(tk.Tk):
                     logging.error(f"Error deleting file {file_name}: {e}")
 
     def load_image(self) -> None:
-        """
-        Load the current image and display it.
-        """
         if not self.files:
             return
 
@@ -190,15 +188,11 @@ class ImageViewer(tk.Tk):
             self.viewer.configure(image=photo)
             self.viewer.image = photo
 
-            # Set window title with current file index
             self.title(f"{file_name} - {self.current_index + 1}/{len(self.files)}")
         except Exception as e:
             logging.error(f"Error loading image {file_name}: {e}")
 
     def undo_last_action(self) -> None:
-        """
-        Undo the last action performed.
-        """
         if not self.actions_stack:
             return
 
@@ -221,9 +215,6 @@ class ImageViewer(tk.Tk):
             self.load_image()
 
     def copy_image_to_special(self) -> None:
-        """
-        Copy the current image to the 'Special' folder two levels up.
-        """
         if not self.files:
             return
 
@@ -241,9 +232,6 @@ class ImageViewer(tk.Tk):
             logging.error(f"Error copying file {file_name} to 'Special' folder: {e}")
 
     def move_image_to_lulz(self) -> None:
-        """
-        Move the current image to the 'lulz' folder two levels up.
-        """
         if not self.files:
             return
 
@@ -261,16 +249,12 @@ class ImageViewer(tk.Tk):
             del self.files[self.current_index]  # Remove the moved file from the list
 
             if self.current_index >= len(self.files):
-                self.current_index = len(self.files) - 1
-
+                self.current_index = len(self.files) - 1 
             self.load_image()
         except Exception as e:
-                        logging.error(f"Error moving file {file_name} to 'lulz' folder: {e}")
+            logging.error(f"Error moving file {file_name} to 'lulz' folder: {e}")
 
     def move_image_to_tut(self) -> None:
-        """
-        Move the current image to the 'tut' folder two levels up.
-        """
         if not self.files:
             return
 
@@ -285,7 +269,7 @@ class ImageViewer(tk.Tk):
 
             logging.info(f"{file_name} moved to 'tut' folder.")
             self.actions_stack.append(('move', 'tut', file_name))
-            del self.files[self.current_index]  # Remove the moved file from the list
+            del self.files[self.current_index]
 
             if self.current_index >= len(self.files):
                 self.current_index = len(self.files) - 1
@@ -295,9 +279,6 @@ class ImageViewer(tk.Tk):
             logging.error(f"Error moving file {file_name} to 'tut' folder: {e}")
 
 def main() -> None:
-    """
-    Main function to run the image viewer.
-    """
     if len(sys.argv) != 2:
         logging.error("Usage: python3 qc.py /path/to/images")
         sys.exit(1)
@@ -307,7 +288,7 @@ def main() -> None:
         logging.error(f"The specified folder '{folder_path}' does not exist.")
         sys.exit(1)
 
-    unzip_files(folder_path)  # Unzip .zip files before loading images
+    unzip_files(folder_path)
 
     files = [
         f for f in os.listdir(folder_path)
@@ -317,9 +298,7 @@ def main() -> None:
     viewer = ImageViewer(folder_path, files)
     viewer.mainloop()
 
-    # Delete marked images after closing the viewer
     viewer.delete_marked_images()
 
 if __name__ == "__main__":
     main()
-
