@@ -198,7 +198,7 @@ def process_workflow() -> None:
             if selected_create_csv:
                 logging.debug("Creating CSV for Freepik.")
                 create_csv(folder_path, selected_category, "f", selected_no_prompt, "en")
-                command = f'python ./Utils/addQuotesToCSV.py {folder_path}"{selected_category}_freepik.csv"'
+                command = f'python ./Utils/addQuotesToCSV.py {folder_path}/"{selected_category}_freepik.csv"'
                 run_command(command)
             if selected_upload:
                 logging.debug("Uploading files to Freepik.")
