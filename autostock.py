@@ -120,7 +120,14 @@ class AutostockGUI:
         tk.Checkbutton(self.master, text="Freepik", variable=self.freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
 
         # Process button
-        tk.Button(self.master, text="🚀", command=self.process_workflow, bg=accent_color, fg="#ffffff", width=15, height=3, font=("Arial", 20)).pack(pady=50)
+        tk.Button(
+        self.master, text="🚀", 
+        command=lambda: threading.Thread(target=self.process_workflow_thread).start(),
+        bg=accent_color, 
+        fg="#ffffff", 
+        width=15, 
+        height=3, 
+        font=("Arial", 20)).pack(pady=50)
 
     def select_folder(self):
         folder_selected = filedialog.askdirectory()
@@ -128,10 +135,28 @@ class AutostockGUI:
             self.folder_var.set(folder_selected)
 
     def run_command(self, command):
-        runner = SubprocessRunner(command, self.output_queue)
-        thread = threading.Thread(target=runner.run)
-        thread.start()
-        return thread
+        """Run a command synchronously."""
+        try:
+            process = subprocess.Popen(
+                command,
+                shell=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                bufsize=1,
+                universal_newlines=True
+            )
+
+            for line in iter(process.stdout.readline, ''):
+                logging.info(line.strip())
+
+            process.stdout.close()
+            return_code = process.wait()
+
+            if return_code != 0:
+                logging.error(f"Command failed with return code {return_code}")
+        except Exception as e:
+            logging.error(f"Error running command: {str(e)}")
 
     def check_output_queue(self):
         try:
@@ -156,6 +181,18 @@ class AutostockGUI:
 
         self.save_current_settings()
 
+    def process_workflow_thread(self):
+        """Run the workflow on a separate thread to keep the GUI responsive."""
+        # Disable UI elements during processing
+        self.disable_ui()
+
+        # Run the actual workflow
+        try:
+            self.process_workflow()
+        finally:
+            # Re-enable UI elements after processing
+            self.enable_ui()
+
     def process_workflow(self):
         folder_path = self.folder_var.get()
         if not folder_path:
@@ -173,33 +210,42 @@ class AutostockGUI:
         if os.path.exists(os.path.join(folder_path, "letterbox")):
             self.move_and_delete_files(folder_path)
 
-        tasks = []
+        # Step 1: Upscale images
+        if self.upscale_var.get():
+            self.upscale(folder_path)
 
-        if self.adobe_var.get():
-            if self.upscale_var.get():
-                tasks.append((self.upscale, (folder_path,)))
-            if self.create_csv_var.get():
-                tasks.append((self.create_csv, (folder_path, selected_category, "a", self.language_var.get())))
+        # Step 2: Convert images to JPEG
+        if self.convert_to_jpg_var.get():
+            self.convert_to_jpg(folder_path)
 
+        # Step 3: Create CSV for Freepik
+        if self.freepik_var.get() and self.create_csv_var.get():
+            self.create_csv(f"{folder_path}/realesrgan/jpgs", selected_category, "f", "en")
+
+        # Step 4: Add quotes to the Freepik CSV
         if self.freepik_var.get():
-            if self.convert_to_jpg_var.get():
-                tasks.append((self.convert_to_jpg, (folder_path,)))
-            if self.create_csv_var.get():
-                tasks.append((self.create_csv, (folder_path, selected_category, "f", "en")))
-                tasks.append((self.add_quotes_to_csv, (folder_path, )))
+            self.add_quotes_to_csv(folder_path)
 
-        threading.Thread(target=self.run_tasks, args=(tasks,)).start()
+        # Step 5: Create CSV for Adobe
+        if self.adobe_var.get() and self.create_csv_var.get():
+            self.create_csv(folder_path, selected_category, "a", self.language_var.get())
 
-    def run_tasks(self, tasks):
-        for task, args in tasks:
-            task(*args)
+    def disable_ui(self):
+        """Disable UI elements to prevent interaction during processing."""
+        self.master.config(cursor="wait")
+        for widget in self.master.winfo_children():
+            widget.config(state=tk.DISABLED)
 
+    def enable_ui(self):
+        """Enable UI elements after processing is complete."""
+        self.master.config(cursor="")
+        for widget in self.master.winfo_children():
+            widget.config(state=tk.NORMAL)
 
     def upscale(self, folder_path):
         self.run_command(f"python Utils/upscale.py {folder_path}")
 
     def convert_to_jpg(self, folder_path):
-        time.sleep(180)
         png_folder = os.path.join(folder_path, "realesrgan")
         self.run_command(f"python Utils/convertToJPG.py {png_folder}")
 
