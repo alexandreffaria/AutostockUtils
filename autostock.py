@@ -11,7 +11,6 @@ import logging
 from dotenv import load_dotenv
 import threading
 import queue
-import time
 import glob
 
 # Configure logging
@@ -224,7 +223,7 @@ class AutostockGUI:
 
         # Step 4: Add quotes to the Freepik CSV
         if self.freepik_var.get():
-            self.add_quotes_to_csv(folder_path)
+            self.add_quotes_to_csv(f"{folder_path}/realesrgan/jpgs")
 
         # Step 5: Create CSV for Adobe
         if self.adobe_var.get() and self.create_csv_var.get():
