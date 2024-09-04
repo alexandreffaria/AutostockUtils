@@ -65,7 +65,7 @@ def get_prompt_list(prompts_list_path: str) -> list:
 
 def get_prompt(prompt_list: list) -> str:
     random_prompt = random.choice(prompt_list)
-    logging.info(f"Selected prompt: {random_prompt}")
+    # logging.info(f"Selected prompt: {random_prompt}")
     return random_prompt
 
 if __name__ == "__main__":
