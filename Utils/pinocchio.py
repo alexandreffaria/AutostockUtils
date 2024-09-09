@@ -131,7 +131,7 @@ if __name__ == "__main__":
 
         if not is_nap_time() and not is_lunch_break():
             send_prompt(get_prompt(prompt_list), params)
-            time.sleep(random.uniform(3 * random.uniform(40, 60), 7 * random.uniform(40, 60)))
+            time.sleep(random.uniform(2 * random.uniform(40, 60), 3 * random.uniform(40, 60)))
         else:
             if is_lunch_break():
                 logging.info("Eating some bytes... Nom nom nom")
