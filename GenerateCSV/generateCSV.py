@@ -75,11 +75,11 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
             
             if filename_base not in filename_info:
                 
-                # Increment the counter for unique filenames
                 current_file_count += 1
-                fullPrompt = find_prompt_for_filename(
-                    filename_base.strip(), prompts_file_path
-                )
+                full_file_path = os.path.join(folder_path, file)
+                image_description = get_image_description(full_file_path)
+                
+                fullPrompt = image_description
                 if platform_flag == 'a':
                     if use_file_names:
                         gptTitle = (
@@ -107,8 +107,8 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, cat
                         gptTitle = (
                             clean_text(createTitle(fullPrompt, language))
                         )
-            
-                gptKeywords = getKeywords(fullPrompt, language)
+
+                gptKeywords = getKeywords(image_description, language)
 
                 # Remove leading and trailing whitespaces
                 gptTitle = gptTitle.strip().strip("\n").strip(",")
