@@ -209,6 +209,13 @@ class AutostockGUI:
         if os.path.exists(os.path.join(folder_path, "letterbox")):
             self.move_and_delete_files(folder_path)
 
+        platforms = ""
+
+        if self.freepik_var.get():
+            platforms += " f "
+        if self.adobe_var.get():
+            platforms += " a "
+
         # Step 1: Upscale images
         if self.upscale_var.get():
             self.upscale(folder_path)
@@ -217,21 +224,18 @@ class AutostockGUI:
         if self.convert_to_jpg_var.get():
             self.convert_to_jpg(folder_path)
 
-        # Step 3: Create CSV for Freepik
-        if self.freepik_var.get() and self.create_csv_var.get():
-            self.create_csv(f"{folder_path}/realesrgan/jpgs", selected_category, "f", "en")
+         # Step 3: Create CSVs for all selected platforms
+        if self.create_csv_var.get() and platforms:
+            self.create_csv(folder_path, selected_category, platforms, self.language_var.get())
 
         # Step 4: Add quotes to the Freepik CSV
         if self.freepik_var.get():
-            self.add_quotes_to_csv(f"{folder_path}/realesrgan/jpgs")
+            self.add_quotes_to_csv({folder_path})
 
-        # Step 5: Create CSV for Adobe
-        if self.adobe_var.get() and self.create_csv_var.get():
-            self.create_csv(folder_path, selected_category, "a", self.language_var.get())
 
     def disable_ui(self):
         """Disable UI elements to prevent interaction during processing."""
-        self.master.config(cursor="wait")
+        # self.master.config(cursor="wait")
         for widget in self.master.winfo_children():
             widget.config(state=tk.DISABLED)
 
@@ -248,8 +252,8 @@ class AutostockGUI:
         png_folder = os.path.join(folder_path, "realesrgan")
         self.run_command(f"python Utils/convertToJPG.py {png_folder}")
 
-    def create_csv(self, folder_path, selected_category, platform, language):
-        self.run_command(f"python generateCSV/generateCSV.py {folder_path} \"{selected_category}\" -p {platform[0].lower()} --language {language}")
+    def create_csv(self, folder_path, selected_category, platforms, language):
+        self.run_command(f"python generateCSV/generateCSV.py {folder_path} \"{selected_category}\" -p {platforms} --language {language}")
 
     def add_quotes_to_csv(self, folder_path):
         freepik_csv_files = glob.glob(os.path.join(folder_path, "*_freepik.csv"))

@@ -27,156 +27,117 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
 
     return None
 
-def create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key, use_file_names, language):
+def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, category_key, use_file_names, language):
 
-    if platform_flag == 'a':
-        csv_file_name = f"{categorias[category_key]}_adobe.csv"
+    csv_files = {}
+    
+    for platform_flag in platform_flags:
+        if platform_flag == 'a':
+            csv_file_name = f"{categorias[category_key]}_adobe.csv"
+        elif platform_flag == 'f':
+            csv_file_name = f"{categorias[category_key]}_freepik.csv"
+        elif platform_flag == 'v':
+            csv_file_name = f"{categorias[category_key]}_vecteezy.csv"
+            
         csv_file_path = os.path.join(output_folder, csv_file_name)
+        csv_files[platform_flag] = {
+            "path": csv_file_path,
+            "file": open(csv_file_path, "w", newline="", encoding="utf-8"),
+        }
 
-    if platform_flag == 'f':
-        csv_file_name = f"{categorias[category_key]}_freepik.csv"
-        csv_file_path = os.path.join(output_folder, csv_file_name)
-        
+    writers = {}
+    for platform_flag, file_info in csv_files.items():
+        if platform_flag == 'a':
+            fieldnames = ["Filename", "Title", "Keywords", "Category", "Releases"]
+        elif platform_flag == 'v':
+            fieldnames = ["Filename", "Title", "Description", "Keywords", "License"]
+        elif platform_flag == 'f':
+            fieldnames = ["Filename", "Title", "Keywords", "Prompt", "Model"]
+
+        delimiter = ';' if platform_flag == 'f' else ','
+        writers[platform_flag] = csv.DictWriter(file_info["file"], fieldnames=fieldnames, delimiter=delimiter)
+        writers[platform_flag].writeheader()
+
     # Get a list of all files in the specified folder with PNG or JPG extensions
     files = [
         f for f in os.listdir(folder_path)
         if os.path.isfile(os.path.join(folder_path, f)) and f.lower().endswith(('.png', '.jpg'))
     ]
 
+    # Process each file
+    for file in files:
+        # Extract relevant parts of the filename
+        if "94574" in file:
+            filename_parts = file.split("_")
+            parts_that_matter = filename_parts[2:-2]
+            filename_base = " ".join(parts_that_matter)
+        else:
+            filename_parts = file.split("_")
+            parts_that_matter = filename_parts[1:-2]
+            filename_base = " ".join(parts_that_matter)
 
-    # Create a CSV file and write the header
-    with open(csv_file_path, "w", newline="", encoding="utf-8") as csvfile:
-        if platform_flag == 'a':
-            fieldnames = ["Filename", "Title", "Keywords", "Category", "Releases"]
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        if platform_flag == 'v':
-            fieldnames = ["Filename", "Title", "Description", "Keywords", "License"]
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        if platform_flag == 'f':
-            fieldnames = ["Filename", "Title", "Keywords", "Prompt", "Model"]
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=';')
-        
-        writer.writeheader()
+        fullPrompt = find_prompt_for_filename(filename_base.strip(), prompts_file_path)
 
-        # Dictionary to store title and keywords for each unique filename
-        filename_info = {}
+        if use_file_names:
+            gptTitle = createTitleWithoutPrompt(filename_base, language)
+        else:
+            gptTitle = createTitle(fullPrompt, language)
 
-        current_file_count = 0  # Counter for unique filenames
+        full_file_path = os.path.join(folder_path, file)
+        image_description = get_image_description(full_file_path)
+        gptKeywords = getKeywords(image_description, language)
 
-        for file in files:
-            if "94574" in file:
-                filename_parts = file.split("_")
-                parts_that_matter = filename_parts[2:-2]
-                filename_base = " ".join(parts_that_matter)
-            else:
-                filename_parts = file.split("_")
-                parts_that_matter = filename_parts[1:-2]
-                filename_base = " ".join(parts_that_matter)
-            
-            if filename_base not in filename_info:
-                
-                current_file_count += 1
-                full_file_path = os.path.join(folder_path, file)
-                image_description = get_image_description(full_file_path)
-                
-                fullPrompt = image_description
-                if platform_flag == 'a':
-                    if use_file_names:
-                        gptTitle = (
-                        createTitleWithoutPrompt(filename_base, language)
-                    )
-                    else:
-                        gptTitle = (
-                            createTitle(fullPrompt, language)
-                        )
-                if platform_flag == 'v':
-                    if use_file_names:
-                        gptTitle = (
-                        createTitleWithoutPrompt(filename_base, language)
-                    )
-                    else:
-                        gptTitle = (
-                            createTitle(fullPrompt, language)
-                        )
-                if platform_flag == 'f':
-                    if use_file_names:
-                        gptTitle = (
-                        clean_text(createTitleWithoutPrompt(filename_base, language))
-                    )
-                    else: 
-                        gptTitle = (
-                            clean_text(createTitle(fullPrompt, language))
-                        )
+        # Remove leading and trailing whitespaces
+        gptTitle = gptTitle.strip().strip("\n").strip(",")
+        gptKeywords = gptKeywords.strip(".").strip("\n")
 
-                gptKeywords = getKeywords(image_description, language)
+        for platform_flag in platform_flags:
+            if platform_flag != 'f':
+                gptKeywords = f"{gptKeywords}"
 
-                # Remove leading and trailing whitespaces
-                gptTitle = gptTitle.strip().strip("\n").strip(",")
-                gptKeywords = gptKeywords.strip(".").strip("\n")
-
-                # Enclose keywords in double quotes
-                if not platform_flag == 'f':
-                    gptKeywords = f"{gptKeywords}"
-                
-
-                # Store title, keywords, and category for the unique filename
-                if platform_flag == 'a':    
-                    filename_info[filename_base] = {
+            if platform_flag == 'a':
+                writers[platform_flag].writerow(
+                    {
+                        "Filename": file,
                         "Title": gptTitle,
                         "Keywords": gptKeywords,
                         "Category": category_key,
+                        "Releases": "",
                     }
-                if platform_flag == 'v':
-                    filename_info[filename_base] = {
+                )
+
+            elif platform_flag == 'v':
+                writers[platform_flag].writerow(
+                    {
+                        "Filename": file,
                         "Title": gptTitle,
                         "Description": "",
                         "Keywords": gptKeywords,
                         "License": "pro",
                     }
-                if platform_flag == 'f':
-                    filename_info[filename_base] = {
-                    "Title": gptTitle,
-                    "Keywords": gptKeywords, 
-                }
+                )
 
-            # Write the information to the CSV file for the current file
-            if platform_flag == 'a':
-                writer.writerow(
+            elif platform_flag == 'f':
+                jpg_file = file.replace('.png', '.jpg')
+                writers[platform_flag].writerow(
                     {
-                        "Filename": file,
-                        "Title": filename_info[filename_base]["Title"],
-                        "Keywords": filename_info[filename_base]["Keywords"],
-                        "Category": filename_info[filename_base]["Category"],
-                        "Releases": "",
-                    }
-                )
-            
-            if platform_flag == 'v':
-                writer.writerow(
-                    {
-                        "Filename": file,
-                        "Title": filename_info[filename_base]["Title"],
-                        "Description": "",
-                        "Keywords": filename_info[filename_base]["Keywords"],
-                        "License": "pro",
-                    }
-                )
-            
-            if platform_flag == 'f':
-                writer.writerow(
-                    {
-                        "Filename": file,
-                        "Title": filename_info[filename_base]["Title"],
-                        "Keywords": filename_info[filename_base]["Keywords"],
+                        "Filename": jpg_file,
+                        "Title": gptTitle,
+                        "Keywords": gptKeywords,
                         "Prompt": gptTitle,
                         "Model": "Midjourney 6",
                     }
                 )
 
+            print(f"{file} | written to {platform_flag.upper()} CSV.")
 
-            print(f"{file} | written to CSV.")
+    # Close CSV files
+    for platform_flag, file_info in csv_files.items():
+        file_info["file"].close()
 
-    print(f"CSV file created successfully: {os.path.abspath(csv_file_path)}")
+    for platform_flag, file_info in csv_files.items():
+        print(f"CSV file created successfully: {os.path.abspath(file_info['path'])}")
+
     print(f"Processing complete. {len(set(files))} unique files processed.")
 
 
@@ -184,18 +145,17 @@ def main():
     parser = argparse.ArgumentParser(description='Process image folders and category.')
     parser.add_argument('folder_path', type=str, help='Path to the image folder.')
     parser.add_argument('category', type=str, help='Category as a string.')
-    parser.add_argument('-p', '--platform', choices=['a', 'f', 'v'], default='a',
-                        help='Choose platform -p a for Adobe and -p v for Vecteezy or -f for Freepik')
+    parser.add_argument('-p', '--platforms', type=str, nargs='+', choices=['a', 'f', 'v'], default=['a'],
+                        help='Choose one or more platforms: -p a for Adobe, -p v for Vecteezy, -p f for Freepik')
     parser.add_argument('--no-prompt', action='store_true', 
                         help='If set, no prompt will be shown.')
     parser.add_argument('--language', type=str, default='pt', help='Language for titles and keywords (pt or en).')
-
 
     args = parser.parse_args()
     folder_path = args.folder_path
     output_folder = folder_path  
     category = args.category
-    platform_flag = args.platform
+    platform_flags = args.platforms
     use_file_names = args.no_prompt
     language = args.language
 
@@ -204,7 +164,7 @@ def main():
     prompts_file_name = f"{category_key}-{category}.txt"
     prompts_file_path = os.path.join(prompts_folder_path, prompts_file_name)
     
-    create_csv(folder_path, output_folder, prompts_file_path, platform_flag, category_key, use_file_names, language)
+    create_csv(folder_path, output_folder, prompts_file_path, platform_flags, category_key, use_file_names, language)
 
 
 if __name__ == "__main__":

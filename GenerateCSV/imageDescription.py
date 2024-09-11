@@ -29,7 +29,7 @@ def get_image_description(image_path):
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": "Describe this image"},
+                    {"type": "text", "text": "Describe this image completely, everything in the image should be described."},
                     {
                         "type": "image_url",
                         "image_url": {
