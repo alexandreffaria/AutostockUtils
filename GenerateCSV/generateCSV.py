@@ -84,7 +84,7 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, ca
             gptTitle = createTitle(fullPrompt, language)
 
         full_file_path = os.path.join(folder_path, file)
-        image_description = get_image_description(full_file_path)
+        image_description = get_image_description(full_file_path, fullPrompt)
         gptKeywords = getKeywords(image_description, language)
 
         # Remove leading and trailing whitespaces
