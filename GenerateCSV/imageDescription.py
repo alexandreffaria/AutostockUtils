@@ -11,7 +11,7 @@ def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-def get_image_description(image_path):
+def get_image_description(image_path, prompt):
     # Load API key from environment variables
     api_key = os.getenv("OPENAI_API_KEY")
     
@@ -29,7 +29,7 @@ def get_image_description(image_path):
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": "Describe this image completely, everything in the image should be described."},
+                    {"type": "text", "text": f"Describe this image completely, everything in the image should be described.\n Here is the prompt used to create this image to give you context:\n{prompt}"},
                     {
                         "type": "image_url",
                         "image_url": {
