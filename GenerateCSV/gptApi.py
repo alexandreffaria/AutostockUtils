@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 from openai import OpenAI
 import os
-from imageDescription import get_image_description
 
 env_file_path = ".env"
 # gptModel = "gpt-3.5-turbo-1106"

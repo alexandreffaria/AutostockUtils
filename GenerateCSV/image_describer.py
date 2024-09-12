@@ -7,14 +7,14 @@ from io import BytesIO
 class ImageDescriber:
     def __init__(self, model_id="microsoft/Phi-3.5-vision-instruct", device="cuda:0", num_crops=4):
         self.model_id = model_id
-        
-        # Set _attn_implementation if flash_attention_2 is available
+
+        # Note: set _attn_implementation='eager' if you don't have flash_attn installed// flash_attention_2 <- fuck this shit
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_id,
-            device_map="cuda",
-            trust_remote_code=True,
-            torch_dtype="auto",
-            _attn_implementation="eager"
+        model_id,
+        device_map="cuda",
+        trust_remote_code=True,
+        torch_dtype="auto",
+        _attn_implementation="eager"
         )
 
         # For best performance, use num_crops=4 for multi-frame, num_crops=16 for single-frame

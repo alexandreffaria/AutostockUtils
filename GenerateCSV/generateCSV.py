@@ -4,11 +4,11 @@ import argparse
 from gptApi import *
 from categorias import categorias
 import re
+from image_describer import ImageDescriber
 
-# IMPLEMENT CLEAN TEXT FOR - ' é
-
-prompts_folder_path = "Prompts"
-prompts_extension = ".txt"
+# Constants
+PROMPTS_FOLDER_PATH = "Prompts"
+PROMPTS_EXTENSION = ".txt"
 
 def clean_text(text):
     # Remove non-alphanumeric characters and spaces
@@ -22,12 +22,12 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
         substring = filename_base[:i].strip()
         for prompt in prompts:
             if substring in prompt:
-                # print(f"FOUND: {substring}")
                 return prompt.strip()
 
     return None
 
 def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, category_key, use_file_names, language):
+    describer = ImageDescriber()
 
     csv_files = {}
     
@@ -58,23 +58,15 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, ca
         writers[platform_flag] = csv.DictWriter(file_info["file"], fieldnames=fieldnames, delimiter=delimiter)
         writers[platform_flag].writeheader()
 
-    # Get a list of all files in the specified folder with PNG or JPG extensions
     files = [
         f for f in os.listdir(folder_path)
         if os.path.isfile(os.path.join(folder_path, f)) and f.lower().endswith(('.png', '.jpg'))
     ]
 
-    # Process each file
     for file in files:
-        # Extract relevant parts of the filename
-        if "94574" in file:
-            filename_parts = file.split("_")
-            parts_that_matter = filename_parts[2:-2]
-            filename_base = " ".join(parts_that_matter)
-        else:
-            filename_parts = file.split("_")
-            parts_that_matter = filename_parts[1:-2]
-            filename_base = " ".join(parts_that_matter)
+        filename_parts = file.split("_")
+        parts_that_matter = filename_parts[1:-2]
+        filename_base = " ".join(parts_that_matter)
 
         fullPrompt = find_prompt_for_filename(filename_base.strip(), prompts_file_path)
 
@@ -84,10 +76,10 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, ca
             gptTitle = createTitle(fullPrompt, language)
 
         full_file_path = os.path.join(folder_path, file)
-        image_description = get_image_description(full_file_path, fullPrompt)
+        image_description = describer.describe_image(full_file_path)
+        print(image_description)
         gptKeywords = getKeywords(image_description, language)
 
-        # Remove leading and trailing whitespaces
         gptTitle = gptTitle.strip().strip("\n").strip(",")
         gptKeywords = gptKeywords.strip(".").strip("\n")
 
@@ -111,7 +103,7 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, ca
                     {
                         "Filename": file,
                         "Title": gptTitle,
-                        "Description": "",
+                        "Description": image_description,
                         "Keywords": gptKeywords,
                         "License": "pro",
                     }
@@ -131,7 +123,6 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, ca
 
             print(f"{file} | written to {platform_flag.upper()} CSV.")
 
-    # Close CSV files
     for platform_flag, file_info in csv_files.items():
         file_info["file"].close()
 
@@ -139,7 +130,6 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, ca
         print(f"CSV file created successfully: {os.path.abspath(file_info['path'])}")
 
     print(f"Processing complete. {len(set(files))} unique files processed.")
-
 
 def main():
     parser = argparse.ArgumentParser(description='Process image folders and category.')
@@ -162,10 +152,9 @@ def main():
     category_key = next(key for key, value in categorias.items() if value == category)
     
     prompts_file_name = f"{category_key}-{category}.txt"
-    prompts_file_path = os.path.join(prompts_folder_path, prompts_file_name)
+    prompts_file_path = os.path.join(PROMPTS_FOLDER_PATH, prompts_file_name)
     
     create_csv(folder_path, output_folder, prompts_file_path, platform_flags, category_key, use_file_names, language)
-
 
 if __name__ == "__main__":
     main()
