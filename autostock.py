@@ -230,7 +230,7 @@ class AutostockGUI:
 
         # Step 4: Add quotes to the Freepik CSV
         if self.freepik_var.get():
-            self.add_quotes_to_csv({folder_path})
+            self.add_quotes_to_csv(folder_path)
 
 
     def disable_ui(self):
