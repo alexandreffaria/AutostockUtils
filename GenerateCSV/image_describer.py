@@ -40,7 +40,7 @@ class ImageDescriber:
         messages = [
             {
                 "role": "user",
-                "content": placeholder + "Describe this image as if you were talking to a blind person in an art gallery.",
+                "content": placeholder + "Describe this image as if you were talking to a blind person in an art gallery. Don't mention anything but what you can see in the image.",
             }
         ]
 
