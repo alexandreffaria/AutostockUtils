@@ -11,9 +11,6 @@ from image_describer import ImageDescriber
 PROMPTS_FOLDER_PATH = "Prompts"
 PROMPTS_EXTENSION = ".txt"
 
-def clean_text(text):
-    return re.sub(r"[^a-zA-Z0-9\s]", "", text)
-
 def find_prompt_for_filename(filename_base, prompts_file_path):
     with open(prompts_file_path, "r", encoding="utf-8") as prompts_file:
         prompts = prompts_file.readlines()
@@ -137,7 +134,7 @@ def close_files(csv_files):
 def process_images(folder_path, prompts_file_path, use_file_names, language, describer, csv_files, writers, platform_flags, existing_filenames, category_key):
     files = get_files(folder_path)
     total_files = len(files)
-    start_time = time.time()
+    times = []
 
     for idx, file in enumerate(files):
         # Skip files already processed
@@ -154,11 +151,12 @@ def process_images(folder_path, prompts_file_path, use_file_names, language, des
 
         file_end_time = time.time()
         elapsed_time = file_end_time - file_start_time
+        times.append(elapsed_time)
+        
         print(f"{file} processed in {elapsed_time:.2f} seconds.")
 
-        # Calculate ETA
-        elapsed_total_time = file_end_time - start_time
-        avg_time_per_file = elapsed_total_time / (idx + 1)
+        # Calculate ETA using weighted average
+        avg_time_per_file = sum(times) / len(times)
         eta_seconds = avg_time_per_file * (total_files - idx - 1)
         eta_formatted = format_eta(eta_seconds)
         print(f"Estimated time remaining: {eta_formatted} ({idx+1}/{total_files})")
