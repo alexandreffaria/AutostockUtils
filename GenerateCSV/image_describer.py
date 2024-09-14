@@ -30,7 +30,7 @@ class ImageDescriber:
         with open(image_path, "rb") as image_file:
             return base64.b64encode(image_file.read()).decode()
     
-    def describe_image(self, image_path):
+    def describe_image(self, image_path, prompt):
         base64_image = self.load_image_as_base64(image_path)
         image_bytes = base64.b64decode(base64_image)
         image = Image.open(BytesIO(image_bytes))
@@ -40,7 +40,7 @@ class ImageDescriber:
         messages = [
             {
                 "role": "user",
-                "content": placeholder + "Describe this image as if you were talking to a blind person in an art gallery. Don't mention anything but what you can see in the image.",
+                "content": placeholder + "Describe this image as if you were talking to a blind person in an art gallery. Don't mention anything but what you can see in the image. Here is the prompt used to create this image, use it for context but only describe what you can see: \n" + prompt,
             }
         ]
 
@@ -71,7 +71,6 @@ class ImageDescriber:
             skip_special_tokens=True,
             clean_up_tokenization_spaces=False
         )[0]
-
         return response
 
 # Example usage:
