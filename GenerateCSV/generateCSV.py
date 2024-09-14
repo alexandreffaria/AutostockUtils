@@ -23,7 +23,7 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
         for prompt in prompts:
             if substring in prompt:
                 return prompt.strip()
-
+    
     return None
 
 def format_eta(seconds):
@@ -51,7 +51,6 @@ def process_file(file, folder_path, prompts_file_path, use_file_names, language,
     else:
         gptTitle = createTitle(image_description, language)
 
-    
     gptKeywords = getKeywords(image_description, language)
 
     gptTitle = gptTitle.strip().strip("\n").strip(",")
@@ -91,9 +90,10 @@ def write_row_to_csv(writer, platform_flag, data, category_key):
 
     writer.writerow(row_data)
 
-def create_writers(output_folder, platform_flags, category_key):
+def create_writers_and_read_existing(output_folder, platform_flags, category_key):
     csv_files = {}
     writers = {}
+    existing_filenames = {}
 
     for platform_flag in platform_flags:
         if (csv_file_name := {
@@ -102,9 +102,11 @@ def create_writers(output_folder, platform_flags, category_key):
             'v': f"{categorias[category_key]}_vecteezy.csv"
         }.get(platform_flag)):
             csv_file_path = os.path.join(output_folder, csv_file_name)
+            file_exists = os.path.isfile(csv_file_path)
+            
             csv_files[platform_flag] = {
                 "path": csv_file_path,
-                "file": open(csv_file_path, "w", newline="", encoding="utf-8"),
+                "file": open(csv_file_path, "a", newline="", encoding="utf-8"),
             }
 
             fieldnames = {
@@ -115,21 +117,34 @@ def create_writers(output_folder, platform_flags, category_key):
 
             delimiter = ';' if platform_flag == 'f' else ','
             writer = csv.DictWriter(csv_files[platform_flag]["file"], fieldnames=fieldnames, delimiter=delimiter)
-            writer.writeheader()
+
+            if not file_exists:
+                writer.writeheader()
+            
             writers[platform_flag] = writer
 
-    return csv_files, writers
+            # Read existing filenames
+            with open(csv_file_path, 'r', encoding='utf-8') as read_file:
+                reader = csv.DictReader(read_file, delimiter=delimiter)
+                existing_filenames[platform_flag] = {row['Filename'] for row in reader}
+
+    return csv_files, writers, existing_filenames
 
 def close_files(csv_files):
     for platform_flag, file_info in csv_files.items():
         file_info["file"].close()
 
-def process_images(folder_path, prompts_file_path, use_file_names, language, describer, csv_files, writers, platform_flags, category_key):
+def process_images(folder_path, prompts_file_path, use_file_names, language, describer, csv_files, writers, platform_flags, existing_filenames, category_key):
     files = get_files(folder_path)
     total_files = len(files)
     start_time = time.time()
 
     for idx, file in enumerate(files):
+        # Skip files already processed
+        if any(file in existing_filenames[flag] for flag in platform_flags):
+            print(f"Skipping already processed file: {file}")
+            continue
+
         file_start_time = time.time()
         
         data = process_file(file, folder_path, prompts_file_path, use_file_names, language, describer)
@@ -149,14 +164,14 @@ def process_images(folder_path, prompts_file_path, use_file_names, language, des
         print(f"Estimated time remaining: {eta_formatted} ({idx+1}/{total_files})")
 
     close_files(csv_files)
-    print(f"Processing complete. {len(set(files))} unique files processed.")
+    print(f"Processing complete. {len(set(files))} unique files processed from the current batch.")
     return csv_files
 
 def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, category_key, use_file_names, language):
     describer = ImageDescriber()
 
-    csv_files, writers = create_writers(output_folder, platform_flags, category_key)
-    csv_files = process_images(folder_path, prompts_file_path, use_file_names, language, describer, csv_files, writers, platform_flags, category_key)
+    csv_files, writers, existing_filenames = create_writers_and_read_existing(output_folder, platform_flags, category_key)
+    csv_files = process_images(folder_path, prompts_file_path, use_file_names, language, describer, csv_files, writers, platform_flags, existing_filenames, category_key)
 
     for platform_flag, file_info in csv_files.items():
         print(f"CSV file created successfully: {os.path.abspath(file_info['path'])}")
@@ -173,7 +188,7 @@ def main():
 
     args = parser.parse_args()
     folder_path = args.folder_path
-    output_folder = folder_path  
+    output_folder = folder_path
     category = args.category
     platform_flags = args.platforms
     use_file_names = args.no_prompt
