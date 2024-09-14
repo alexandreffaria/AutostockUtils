@@ -12,7 +12,6 @@ PROMPTS_FOLDER_PATH = "Prompts"
 PROMPTS_EXTENSION = ".txt"
 
 def clean_text(text):
-    # Remove non-alphanumeric characters and spaces
     return re.sub(r"[^a-zA-Z0-9\s]", "", text)
 
 def find_prompt_for_filename(filename_base, prompts_file_path):
@@ -32,11 +31,70 @@ def format_eta(seconds):
     mins, _ = divmod(remainder, 60)
     return f"{int(hrs)} hrs {int(mins)} min"
 
-def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, category_key, use_file_names, language):
-    describer = ImageDescriber()
+def get_files(folder_path, extensions=('.png', '.jpg')):
+    return [
+        f for f in os.listdir(folder_path)
+        if os.path.isfile(os.path.join(folder_path, f)) and f.lower().endswith(extensions)
+    ]
 
-    csv_files = {}
+def process_file(file, folder_path, prompts_file_path, use_file_names, language, describer):
+    filename_parts = file.split("_")
+    parts_that_matter = filename_parts[1:-2]
+    filename_base = " ".join(parts_that_matter).strip()
+
+    fullPrompt = find_prompt_for_filename(filename_base, prompts_file_path)
+    full_file_path = os.path.join(folder_path, file)
+    image_description = describer.describe_image(full_file_path, fullPrompt)
+
+    if use_file_names:
+        gptTitle = createTitleWithoutPrompt(filename_base, language)
+    else:
+        gptTitle = createTitle(image_description, language)
+
     
+    gptKeywords = getKeywords(image_description, language)
+
+    gptTitle = gptTitle.strip().strip("\n").strip(",")
+    gptKeywords = gptKeywords.strip(".").strip("\n")
+
+    return {
+        "filename": file,
+        "gptTitle": gptTitle,
+        "gptKeywords": gptKeywords,
+        "image_description": image_description,
+    }
+
+def write_row_to_csv(writer, platform_flag, data, category_key):
+    row_data = {
+        'a': {
+            "Filename": data["filename"],
+            "Title": data["gptTitle"],
+            "Keywords": data["gptKeywords"],
+            "Category": category_key,
+            "Releases": "",
+        },
+        'v': {
+            "Filename": data["filename"],
+            "Title": data["gptTitle"],
+            "Description": data["image_description"],
+            "Keywords": data["gptKeywords"],
+            "License": "pro",
+        },
+        'f': {
+            "Filename": data["filename"].replace('.png', '.jpg'),
+            "Title": data["gptTitle"],
+            "Keywords": data["gptKeywords"],
+            "Prompt": data["gptTitle"],
+            "Model": "Midjourney 6",
+        }
+    }[platform_flag]
+
+    writer.writerow(row_data)
+
+def create_writers(output_folder, platform_flags, category_key):
+    csv_files = {}
+    writers = {}
+
     for platform_flag in platform_flags:
         if (csv_file_name := {
             'a': f"{categorias[category_key]}_adobe.csv",
@@ -49,78 +107,35 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, ca
                 "file": open(csv_file_path, "w", newline="", encoding="utf-8"),
             }
 
-    writers = {}
+            fieldnames = {
+                'a': ["Filename", "Title", "Keywords", "Category", "Releases"],
+                'v': ["Filename", "Title", "Description", "Keywords", "License"],
+                'f': ["Filename", "Title", "Keywords", "Prompt", "Model"]
+            }[platform_flag]
+
+            delimiter = ';' if platform_flag == 'f' else ','
+            writer = csv.DictWriter(csv_files[platform_flag]["file"], fieldnames=fieldnames, delimiter=delimiter)
+            writer.writeheader()
+            writers[platform_flag] = writer
+
+    return csv_files, writers
+
+def close_files(csv_files):
     for platform_flag, file_info in csv_files.items():
-        fieldnames = {
-            'a': ["Filename", "Title", "Keywords", "Category", "Releases"],
-            'v': ["Filename", "Title", "Description", "Keywords", "License"],
-            'f': ["Filename", "Title", "Keywords", "Prompt", "Model"]
-        }[platform_flag]
-        
-        delimiter = ';' if platform_flag == 'f' else ','
-        writer = csv.DictWriter(file_info["file"], fieldnames=fieldnames, delimiter=delimiter)
-        writer.writeheader()
-        writers[platform_flag] = writer
+        file_info["file"].close()
 
-    files = [
-        f for f in os.listdir(folder_path)
-        if os.path.isfile(os.path.join(folder_path, f)) and f.lower().endswith(('.png', '.jpg'))
-    ]
-
+def process_images(folder_path, prompts_file_path, use_file_names, language, describer, csv_files, writers, platform_flags, category_key):
+    files = get_files(folder_path)
     total_files = len(files)
     start_time = time.time()
 
     for idx, file in enumerate(files):
         file_start_time = time.time()
         
-        filename_parts = file.split("_")
-        parts_that_matter = filename_parts[1:-2]
-        filename_base = " ".join(parts_that_matter)
-
-        fullPrompt = find_prompt_for_filename(filename_base.strip(), prompts_file_path)
-
-        if use_file_names:
-            gptTitle = createTitleWithoutPrompt(filename_base, language)
-        else:
-            gptTitle = createTitle(fullPrompt, language)
-
-        full_file_path = os.path.join(folder_path, file)
-        image_description = describer.describe_image(full_file_path)
-        print(image_description)
-        gptKeywords = getKeywords(image_description, language)
-
-        gptTitle = gptTitle.strip().strip("\n").strip(",")
-        gptKeywords = gptKeywords.strip(".").strip("\n")
+        data = process_file(file, folder_path, prompts_file_path, use_file_names, language, describer)
 
         for platform_flag in platform_flags:
-            if platform_flag != 'f':
-                gptKeywords = f"{gptKeywords}"
-
-            row_data = {
-                'a': {
-                    "Filename": file,
-                    "Title": gptTitle,
-                    "Keywords": gptKeywords,
-                    "Category": category_key,
-                    "Releases": "",
-                },
-                'v': {
-                    "Filename": file,
-                    "Title": gptTitle,
-                    "Description": image_description,
-                    "Keywords": gptKeywords,
-                    "License": "pro",
-                },
-                'f': {
-                    "Filename": file.replace('.png', '.jpg'),
-                    "Title": gptTitle,
-                    "Keywords": gptKeywords,
-                    "Prompt": gptTitle,
-                    "Model": "Midjourney 6",
-                }
-            }[platform_flag]
-
-            writers[platform_flag].writerow(row_data)
+            write_row_to_csv(writers[platform_flag], platform_flag, data, category_key)
 
         file_end_time = time.time()
         elapsed_time = file_end_time - file_start_time
@@ -133,13 +148,18 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, ca
         eta_formatted = format_eta(eta_seconds)
         print(f"Estimated time remaining: {eta_formatted} ({idx+1}/{total_files})")
 
-    for platform_flag, file_info in csv_files.items():
-        file_info["file"].close()
+    close_files(csv_files)
+    print(f"Processing complete. {len(set(files))} unique files processed.")
+    return csv_files
+
+def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, category_key, use_file_names, language):
+    describer = ImageDescriber()
+
+    csv_files, writers = create_writers(output_folder, platform_flags, category_key)
+    csv_files = process_images(folder_path, prompts_file_path, use_file_names, language, describer, csv_files, writers, platform_flags, category_key)
 
     for platform_flag, file_info in csv_files.items():
         print(f"CSV file created successfully: {os.path.abspath(file_info['path'])}")
-
-    print(f"Processing complete. {len(set(files))} unique files processed.")
 
 def main():
     parser = argparse.ArgumentParser(description='Process image folders and category.')
