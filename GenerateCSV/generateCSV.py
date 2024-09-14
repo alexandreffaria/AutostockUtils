@@ -1,9 +1,10 @@
 import os
 import csv
 import argparse
+import re
+import time
 from gptApi import *
 from categorias import categorias
-import re
 from image_describer import ImageDescriber
 
 # Constants
@@ -26,44 +27,52 @@ def find_prompt_for_filename(filename_base, prompts_file_path):
 
     return None
 
+def format_eta(seconds):
+    hrs, remainder = divmod(seconds, 3600)
+    mins, _ = divmod(remainder, 60)
+    return f"{int(hrs)} hrs {int(mins)} min"
+
 def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, category_key, use_file_names, language):
     describer = ImageDescriber()
 
     csv_files = {}
     
     for platform_flag in platform_flags:
-        if platform_flag == 'a':
-            csv_file_name = f"{categorias[category_key]}_adobe.csv"
-        elif platform_flag == 'f':
-            csv_file_name = f"{categorias[category_key]}_freepik.csv"
-        elif platform_flag == 'v':
-            csv_file_name = f"{categorias[category_key]}_vecteezy.csv"
-            
-        csv_file_path = os.path.join(output_folder, csv_file_name)
-        csv_files[platform_flag] = {
-            "path": csv_file_path,
-            "file": open(csv_file_path, "w", newline="", encoding="utf-8"),
-        }
+        if (csv_file_name := {
+            'a': f"{categorias[category_key]}_adobe.csv",
+            'f': f"{categorias[category_key]}_freepik.csv",
+            'v': f"{categorias[category_key]}_vecteezy.csv"
+        }.get(platform_flag)):
+            csv_file_path = os.path.join(output_folder, csv_file_name)
+            csv_files[platform_flag] = {
+                "path": csv_file_path,
+                "file": open(csv_file_path, "w", newline="", encoding="utf-8"),
+            }
 
     writers = {}
     for platform_flag, file_info in csv_files.items():
-        if platform_flag == 'a':
-            fieldnames = ["Filename", "Title", "Keywords", "Category", "Releases"]
-        elif platform_flag == 'v':
-            fieldnames = ["Filename", "Title", "Description", "Keywords", "License"]
-        elif platform_flag == 'f':
-            fieldnames = ["Filename", "Title", "Keywords", "Prompt", "Model"]
-
+        fieldnames = {
+            'a': ["Filename", "Title", "Keywords", "Category", "Releases"],
+            'v': ["Filename", "Title", "Description", "Keywords", "License"],
+            'f': ["Filename", "Title", "Keywords", "Prompt", "Model"]
+        }[platform_flag]
+        
         delimiter = ';' if platform_flag == 'f' else ','
-        writers[platform_flag] = csv.DictWriter(file_info["file"], fieldnames=fieldnames, delimiter=delimiter)
-        writers[platform_flag].writeheader()
+        writer = csv.DictWriter(file_info["file"], fieldnames=fieldnames, delimiter=delimiter)
+        writer.writeheader()
+        writers[platform_flag] = writer
 
     files = [
         f for f in os.listdir(folder_path)
         if os.path.isfile(os.path.join(folder_path, f)) and f.lower().endswith(('.png', '.jpg'))
     ]
 
-    for file in files:
+    total_files = len(files)
+    start_time = time.time()
+
+    for idx, file in enumerate(files):
+        file_start_time = time.time()
+        
         filename_parts = file.split("_")
         parts_that_matter = filename_parts[1:-2]
         filename_base = " ".join(parts_that_matter)
@@ -87,41 +96,42 @@ def create_csv(folder_path, output_folder, prompts_file_path, platform_flags, ca
             if platform_flag != 'f':
                 gptKeywords = f"{gptKeywords}"
 
-            if platform_flag == 'a':
-                writers[platform_flag].writerow(
-                    {
-                        "Filename": file,
-                        "Title": gptTitle,
-                        "Keywords": gptKeywords,
-                        "Category": category_key,
-                        "Releases": "",
-                    }
-                )
+            row_data = {
+                'a': {
+                    "Filename": file,
+                    "Title": gptTitle,
+                    "Keywords": gptKeywords,
+                    "Category": category_key,
+                    "Releases": "",
+                },
+                'v': {
+                    "Filename": file,
+                    "Title": gptTitle,
+                    "Description": image_description,
+                    "Keywords": gptKeywords,
+                    "License": "pro",
+                },
+                'f': {
+                    "Filename": file.replace('.png', '.jpg'),
+                    "Title": gptTitle,
+                    "Keywords": gptKeywords,
+                    "Prompt": gptTitle,
+                    "Model": "Midjourney 6",
+                }
+            }[platform_flag]
 
-            elif platform_flag == 'v':
-                writers[platform_flag].writerow(
-                    {
-                        "Filename": file,
-                        "Title": gptTitle,
-                        "Description": image_description,
-                        "Keywords": gptKeywords,
-                        "License": "pro",
-                    }
-                )
+            writers[platform_flag].writerow(row_data)
 
-            elif platform_flag == 'f':
-                jpg_file = file.replace('.png', '.jpg')
-                writers[platform_flag].writerow(
-                    {
-                        "Filename": jpg_file,
-                        "Title": gptTitle,
-                        "Keywords": gptKeywords,
-                        "Prompt": gptTitle,
-                        "Model": "Midjourney 6",
-                    }
-                )
+        file_end_time = time.time()
+        elapsed_time = file_end_time - file_start_time
+        print(f"{file} processed in {elapsed_time:.2f} seconds.")
 
-            print(f"{file} | written to {platform_flag.upper()} CSV.")
+        # Calculate ETA
+        elapsed_total_time = file_end_time - start_time
+        avg_time_per_file = elapsed_total_time / (idx + 1)
+        eta_seconds = avg_time_per_file * (total_files - idx - 1)
+        eta_formatted = format_eta(eta_seconds)
+        print(f"Estimated time remaining: {eta_formatted} ({idx+1}/{total_files})")
 
     for platform_flag, file_info in csv_files.items():
         file_info["file"].close()
