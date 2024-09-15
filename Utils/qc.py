@@ -7,7 +7,7 @@ import logging
 from dotenv import load_dotenv
 import zipfile
 import csv
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Set
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -57,22 +57,22 @@ def unzip_files(folder_path: str) -> None:
         except Exception as e:
             logging.error(f"Error deleting file {item}: {e}")
 
-def read_record_file(record_file_path: str) -> List[Tuple[str, str]]:
-    """Read the record file and return a list of (file_name, action) tuples."""
+def read_record_file(record_file_path: str) -> Dict[str, str]:
+    """Read the record file and return a dictionary of {file_name: action}."""
     if not os.path.exists(record_file_path):
-        return []
+        return {}
     try:
         with open(record_file_path, 'r', newline='') as csvfile:
             reader = csv.reader(csvfile)
-            records = [(row[0].strip(), row[1].strip()) for row in reader if len(row) == 2]
+            records = {row[0].strip(): row[1].strip() for row in reader if len(row) == 2}
         return records
     except Exception as e:
         logging.error(f"Error reading record file: {e}")
-        return []
+        return {}
 
-def process_records(records: List[Tuple[str, str]], folder_path: str) -> None:
+def process_records(records: Dict[str, str], folder_path: str) -> None:
     """Process the records to delete or move images as previously recorded."""
-    for file_name, action in records:
+    for file_name, action in records.items():
         file_path = os.path.join(folder_path, file_name)
         if action == 'delete':
             if os.path.exists(file_path):
@@ -91,6 +91,7 @@ def process_records(records: List[Tuple[str, str]], folder_path: str) -> None:
                     logging.info(f"{file_name} moved to 'letterbox' based on record file.")
                 except Exception as e:
                     logging.error(f"Error moving file {file_name} to 'letterbox': {e}")
+        # No action needed for 'keep' as the image remains in place
 
 def get_image_files(folder_path: str, extensions: Tuple[str, ...]) -> List[str]:
     """Get a list of image files in the folder."""
@@ -103,7 +104,7 @@ def write_record_file(record_entries: Dict[str, str], record_file_path: str) -> 
     """Write the record entries to the record file."""
     try:
         # Merge with existing records
-        existing_records = dict(read_record_file(record_file_path))
+        existing_records = read_record_file(record_file_path)
         existing_records.update(record_entries)
         with open(record_file_path, 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
@@ -138,13 +139,14 @@ def read_state_file(state_file_path: str) -> str:
 class ImageViewer(tk.Tk):
     SHIFT_MASK = 0x0001  # Mask for the Shift key in event.state
 
-    def __init__(self, folder_path: str, files: List[str], last_image: str = ''):
+    def __init__(self, folder_path: str, files: List[str], last_image: str = '', existing_records: Dict[str, str] = {}):
         super().__init__()
 
         self.folder_path = folder_path
         self.files = files
         self.current_index = 0
         self.actions_stack = []
+        self.record_entries = existing_records.copy()  # Start with existing records
 
         self.title("Image Viewer")
         self.geometry("800x600")
@@ -158,11 +160,6 @@ class ImageViewer(tk.Tk):
 
         # Bind the window close event
         self.protocol("WM_DELETE_WINDOW", self.close_viewer)
-
-        # Load existing record entries
-        record_file_path = os.path.join(self.folder_path, 'qc_record.txt')
-        existing_records = read_record_file(record_file_path)
-        self.record_entries = dict(existing_records)
 
         # Set current index based on last viewed image
         if last_image:
@@ -203,6 +200,9 @@ class ImageViewer(tk.Tk):
 
     def shift_images(self, step: int) -> None:
         """Jump images by the given step."""
+        # Record current image as 'keep' if not already recorded
+        self.record_current_image_if_not_recorded()
+
         new_index = self.current_index + step
         self.current_index = max(0, min(len(self.files) - 1, new_index))
         self.load_image()
@@ -234,6 +234,9 @@ class ImageViewer(tk.Tk):
                     self.next_image()
 
     def close_viewer(self):
+        # Record the current image as 'keep' if not already recorded
+        self.record_current_image_if_not_recorded()
+
         last_image = self.files[self.current_index] if self.files else ''
         state_file_path = os.path.join(self.folder_path, 'qc_state.txt')
         write_state_file(state_file_path, last_image)
@@ -272,9 +275,8 @@ class ImageViewer(tk.Tk):
             logging.info(f"{file_name} moved to '{target_folder}' folder.")
             self.actions_stack.append(('move', target_folder, file_name))
 
-            # Record the action if it's 'letterbox'
-            if target_folder == 'letterbox':
-                self.record_entries[file_name] = 'letterbox'
+            # Record the action
+            self.record_entries[file_name] = target_folder
 
             del self.files[self.current_index]  # Remove the moved file from the list
 
@@ -298,14 +300,33 @@ class ImageViewer(tk.Tk):
             self.previous_image()
 
     def next_image(self) -> None:
-        if self.files:
-            self.current_index = (self.current_index + 1) % len(self.files)
-            self.load_image()
+        if not self.files:
+            return
+
+        # Record current image as 'keep' if not already recorded
+        self.record_current_image_if_not_recorded()
+
+        self.current_index = (self.current_index + 1) % len(self.files)
+        self.load_image()
 
     def previous_image(self) -> None:
-        if self.files:
-            self.current_index = (self.current_index - 1) % len(self.files)
-            self.load_image()
+        if not self.files:
+            return
+
+        # Record current image as 'keep' if not already recorded
+        self.record_current_image_if_not_recorded()
+
+        self.current_index = (self.current_index - 1) % len(self.files)
+        self.load_image()
+
+    def record_current_image_if_not_recorded(self):
+        """Record the current image as 'keep' if no action has been taken."""
+        if not self.files:
+            return
+
+        file_name = self.files[self.current_index]
+        if file_name not in self.record_entries:
+            self.record_entries[file_name] = 'keep'
 
     def mark_image_for_deletion(self) -> None:
         if not self.files:
@@ -371,8 +392,8 @@ class ImageViewer(tk.Tk):
                 shutil.move(target_path, original_path)
                 logging.info(f"Undid move of {file_name} from '{target_folder}' back to original location.")
                 self.files.insert(self.current_index, file_name)
-                # Remove from record if necessary
-                if self.record_entries.get(file_name) == 'letterbox':
+                # Remove from record
+                if self.record_entries.get(file_name) == target_folder:
                     del self.record_entries[file_name]
                 self.load_image()
             except Exception as e:
@@ -384,6 +405,9 @@ class ImageViewer(tk.Tk):
             if self.record_entries.get(file_name) == 'delete':
                 del self.record_entries[file_name]
             self.load_image()
+        elif action == 'keep':
+            if self.record_entries.get(file_name) == 'keep':
+                del self.record_entries[file_name]
 
     def copy_image_to_special(self) -> None:
         if not self.files:
@@ -421,6 +445,10 @@ class ImageViewer(tk.Tk):
             shutil.move(source_path, target_path)
             logging.info(f"{file_name} moved to '{folder_name}' folder.")
             self.actions_stack.append(('move', folder_name, file_name))
+
+            # Record the action
+            self.record_entries[file_name] = folder_name
+
             del self.files[self.current_index]  # Remove the moved file from the list
 
             if self.current_index >= len(self.files):
@@ -442,17 +470,25 @@ def main() -> None:
     unzip_files(folder_path)
 
     record_file_path = os.path.join(folder_path, 'qc_record.txt')
-    records = read_record_file(record_file_path)
-    process_records(records, folder_path)
+    existing_records = read_record_file(record_file_path)
+    process_records(existing_records, folder_path)
 
     image_extensions = ('.png', '.jpg', '.jpeg', '.bmp', '.gif')
-    files = get_image_files(folder_path, image_extensions)
+    all_files = get_image_files(folder_path, image_extensions)
+
+    # Exclude images that have already been QC'ed
+    qc_images = set(existing_records.keys())
+    files_to_view = [f for f in all_files if f not in qc_images]
+
+    if not files_to_view:
+        logging.info("All images have been QC'ed.")
+        sys.exit(0)
 
     # Read last viewed image from state file
     state_file_path = os.path.join(folder_path, 'qc_state.txt')
     last_image = read_state_file(state_file_path)
 
-    viewer = ImageViewer(folder_path, files, last_image)
+    viewer = ImageViewer(folder_path, files_to_view, last_image, existing_records)
     viewer.mainloop()
 
 if __name__ == "__main__":
