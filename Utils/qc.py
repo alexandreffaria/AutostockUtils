@@ -95,7 +95,7 @@ def process_records(records: List[Tuple[str, str]], folder_path: str) -> None:
 def get_image_files(folder_path: str, extensions: Tuple[str, ...]) -> List[str]:
     """Get a list of image files in the folder."""
     return [
-        f for f in os.listdir(folder_path)
+        f for f in sorted(os.listdir(folder_path))
         if os.path.isfile(os.path.join(folder_path, f)) and f.lower().endswith(extensions)
     ]
 
@@ -113,10 +113,32 @@ def write_record_file(record_entries: Dict[str, str], record_file_path: str) -> 
     except Exception as e:
         logging.error(f"Error writing record file: {e}")
 
+def write_state_file(state_file_path: str, last_image: str) -> None:
+    """Write the last viewed image to the state file."""
+    try:
+        with open(state_file_path, 'w') as f:
+            f.write(last_image)
+        logging.info(f"State file updated with last image: {last_image}")
+    except Exception as e:
+        logging.error(f"Error writing state file: {e}")
+
+def read_state_file(state_file_path: str) -> str:
+    """Read the last viewed image from the state file."""
+    if not os.path.exists(state_file_path):
+        return ''
+    try:
+        with open(state_file_path, 'r') as f:
+            last_image = f.read().strip()
+        logging.info(f"Last viewed image from state file: {last_image}")
+        return last_image
+    except Exception as e:
+        logging.error(f"Error reading state file: {e}")
+        return ''
+
 class ImageViewer(tk.Tk):
     SHIFT_MASK = 0x0001  # Mask for the Shift key in event.state
 
-    def __init__(self, folder_path: str, files: List[str]):
+    def __init__(self, folder_path: str, files: List[str], last_image: str = ''):
         super().__init__()
 
         self.folder_path = folder_path
@@ -141,6 +163,14 @@ class ImageViewer(tk.Tk):
         record_file_path = os.path.join(self.folder_path, 'qc_record.txt')
         existing_records = read_record_file(record_file_path)
         self.record_entries = dict(existing_records)
+
+        # Set current index based on last viewed image
+        if last_image:
+            try:
+                self.current_index = self.files.index(last_image)
+            except ValueError:
+                logging.warning(f"Last viewed image '{last_image}' not found. Starting from the first image.")
+                self.current_index = 0
 
         self.load_image()
 
@@ -204,6 +234,10 @@ class ImageViewer(tk.Tk):
                     self.next_image()
 
     def close_viewer(self):
+        last_image = self.files[self.current_index] if self.files else ''
+        state_file_path = os.path.join(self.folder_path, 'qc_state.txt')
+        write_state_file(state_file_path, last_image)
+
         self.destroy()
         record_file_path = os.path.join(self.folder_path, 'qc_record.txt')
         write_record_file(self.record_entries, record_file_path)
@@ -392,14 +426,18 @@ def main() -> None:
 
     unzip_files(folder_path)
 
-    record_file_path = os.path.join(folder_path, 'qc_record.csv')
+    record_file_path = os.path.join(folder_path, 'qc_record.txt')
     records = read_record_file(record_file_path)
     process_records(records, folder_path)
 
     image_extensions = ('.png', '.jpg', '.jpeg', '.bmp', '.gif')
     files = get_image_files(folder_path, image_extensions)
 
-    viewer = ImageViewer(folder_path, files)
+    # Read last viewed image from state file
+    state_file_path = os.path.join(folder_path, 'qc_state.txt')
+    last_image = read_state_file(state_file_path)
+
+    viewer = ImageViewer(folder_path, files, last_image)
     viewer.mainloop()
 
 if __name__ == "__main__":
