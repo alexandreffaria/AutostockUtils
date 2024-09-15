@@ -238,9 +238,24 @@ class ImageViewer(tk.Tk):
         state_file_path = os.path.join(self.folder_path, 'qc_state.txt')
         write_state_file(state_file_path, last_image)
 
-        self.destroy()
         record_file_path = os.path.join(self.folder_path, 'qc_record.txt')
         write_record_file(self.record_entries, record_file_path)
+
+        self.process_deletions_at_end()
+
+        self.destroy()
+
+    def process_deletions_at_end(self):
+        """Delete images marked for deletion upon closing the viewer."""
+        for file_name, action in self.record_entries.items():
+            if action == 'delete':
+                file_path = os.path.join(self.folder_path, file_name)
+                if os.path.exists(file_path):
+                    try:
+                        remove_file(file_path)
+                        logging.info(f"{file_name} deleted upon closing the viewer.")
+                    except Exception as e:
+                        logging.error(f"Error deleting file {file_name}: {e}")
 
     def move_image_to_folder(self, target_folder: str) -> None:
         if not self.files:
