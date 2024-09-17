@@ -1,4 +1,3 @@
-import torch
 from transformers import AutoModelForCausalLM, AutoProcessor
 from PIL import Image
 import base64
