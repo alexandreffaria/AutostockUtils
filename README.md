@@ -60,3 +60,11 @@ Just clone and install the libs:
 
 ---
 https://github.com/Sanster/IOPaint/releases/tag/iopaint-1.0.0b2
+
+Ja tamo usando visao, vamo tira a categoria de uma vez, deixa gpt escolher a que ele achar melhor
+Convert to jpg não ta pulando imagens convertidas
+image description ta morrendo as vezes
+podia remover todas as images processadas da lista de uma vez, só pra ficar mais clean memo
+já tamo com ai local, porque continuar pagando gpt?
+agora que csv demora pacas, maybe we should save it.
+add region to inpaint via qc (drag rect for each area)
