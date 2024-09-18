@@ -87,7 +87,7 @@ def write_row_to_csv(writer, platform_flag, data):
         'd': {
             "Filename": data["filename"].replace('.png', '.jpg'),
             "Image Name": data["gptTitle"],
-            "Description": data["image_description"],
+            "Description": data["image_description"] + " - This image was created using AI, Midjourney 6 to be specifc.",
             "Category 1": data["category_dreamstime"],
             "Category 2": "",
             "Category 3": "",
