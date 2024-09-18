@@ -81,17 +81,7 @@ def process_records(records: Dict[str, str], folder_path: str) -> None:
                     logging.info(f"{file_name} deleted based on record file.")
                 except Exception as e:
                     logging.error(f"Error deleting file {file_name}: {e}")
-        elif action == 'letterbox':
-            target_folder = os.path.join(folder_path, 'letterbox')
-            os.makedirs(target_folder, exist_ok=True)
-            target_path = os.path.join(target_folder, file_name)
-            if os.path.exists(file_path):
-                try:
-                    shutil.move(file_path, target_path)
-                    logging.info(f"{file_name} moved to 'letterbox' based on record file.")
-                except Exception as e:
-                    logging.error(f"Error moving file {file_name} to 'letterbox': {e}")
-        # No action needed for 'keep' as the image remains in place
+        
 
 def get_image_files(folder_path: str, extensions: Tuple[str, ...]) -> List[str]:
     """Get a list of image files in the folder."""
@@ -135,6 +125,34 @@ def read_state_file(state_file_path: str) -> str:
     except Exception as e:
         logging.error(f"Error reading state file: {e}")
         return ''
+    
+def merge_records_to_master_csv(folder_path: str, new_records: Dict[str, str]) -> None:
+    """
+    Merge new records into the master CSV file.
+    
+    Args:
+        folder_path (str): The path of the current folder.
+        new_records (Dict[str, str]): New records to be merged.
+    """
+    master_csv_path = os.path.join(os.path.dirname(folder_path), "allQualityControlled.csv")
+    
+    # Read existing records from the master CSV
+    existing_records = {}
+    if os.path.exists(master_csv_path):
+        with open(master_csv_path, 'r', newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            existing_records = {row[0]: row[1] for row in reader}
+    
+    # Merge new records with existing records
+    existing_records.update(new_records)
+    
+    # Write merged records back to the master CSV
+    with open(master_csv_path, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        for file_name, action in existing_records.items():
+            writer.writerow([file_name, action])
+    
+    logging.info(f"Records merged into master CSV: {master_csv_path}")
 
 class ImageViewer(tk.Tk):
     SHIFT_MASK = 0x0001  # Mask for the Shift key in event.state
@@ -244,6 +262,9 @@ class ImageViewer(tk.Tk):
         record_file_path = os.path.join(self.folder_path, 'qc_record.txt')
         write_record_file(self.record_entries, record_file_path)
 
+        # Merge records to the master CSV
+        merge_records_to_master_csv(self.folder_path, self.record_entries)
+
         self.process_deletions_at_end()
 
         self.destroy()
@@ -276,7 +297,7 @@ class ImageViewer(tk.Tk):
             self.actions_stack.append(('move', target_folder, file_name))
 
             # Record the action
-            self.record_entries[file_name] = target_folder
+            self.record_entries[file_name] = "keep"
 
             del self.files[self.current_index]  # Remove the moved file from the list
 
@@ -471,7 +492,6 @@ def main() -> None:
 
     record_file_path = os.path.join(folder_path, 'qc_record.txt')
     existing_records = read_record_file(record_file_path)
-    process_records(existing_records, folder_path)
 
     image_extensions = ('.png', '.jpg', '.jpeg', '.bmp', '.gif')
     all_files = get_image_files(folder_path, image_extensions)
