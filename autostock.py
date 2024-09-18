@@ -117,6 +117,8 @@ class AutostockGUI:
         tk.Checkbutton(self.master, text="Adobe", variable=self.adobe_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
         self.freepik_var = tk.BooleanVar(value=self.settings.get("selected_freepik", True))
         tk.Checkbutton(self.master, text="Freepik", variable=self.freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
+        self.dreamstime_var = tk.BooleanVar(value=self.settings.get("selected_dreamstime", True))
+        tk.Checkbutton(self.master, text="Dreamstime", variable=self.freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
 
         # Process button
         tk.Button(
@@ -215,6 +217,8 @@ class AutostockGUI:
             platforms += " f "
         if self.adobe_var.get():
             platforms += " a "
+        if self.dreamstime_var.get():
+            platforms += " d "
 
         # Step 1: Upscale images
         if self.upscale_var.get():
@@ -253,7 +257,7 @@ class AutostockGUI:
         self.run_command(f"python Utils/convertToJPG.py {png_folder}")
 
     def create_csv(self, folder_path, selected_category, platforms, language):
-        self.run_command(f"python generateCSV/generateCSV.py {folder_path} \"{selected_category}\" -p {platforms} --language {language}")
+        self.run_command(f"python generateCSV/generateCSV.py {folder_path} -p {platforms} --language {language}")
 
     def add_quotes_to_csv(self, folder_path):
         freepik_csv_files = glob.glob(os.path.join(folder_path, "*_freepik.csv"))
