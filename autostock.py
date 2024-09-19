@@ -119,6 +119,8 @@ class AutostockGUI:
         tk.Checkbutton(self.master, text="Freepik", variable=self.freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
         self.dreamstime_var = tk.BooleanVar(value=self.settings.get("selected_dreamstime", True))
         tk.Checkbutton(self.master, text="Dreamstime", variable=self.freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
+        self.RF_var = tk.BooleanVar(value=self.settings.get("selected_rf", True))
+        tk.Checkbutton(self.master, text="123RF", variable=self.freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
 
         # Process button
         tk.Button(
@@ -219,6 +221,8 @@ class AutostockGUI:
             platforms += " a "
         if self.dreamstime_var.get():
             platforms += " d "
+        if self.RF_var.get():
+            platforms += " r "
 
         # Step 1: Upscale images
         if self.upscale_var.get():
@@ -293,6 +297,8 @@ class AutostockGUI:
             "selected_language": self.language_var.get(),
             "selected_adobe": self.adobe_var.get(),
             "selected_freepik": self.freepik_var.get(),
+            "selected_dreamstime": self.dreamstime_var.get(),
+            "selected_RF": self.RF_var.get(),
         }
         save_settings(settings)
 
