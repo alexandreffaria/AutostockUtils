@@ -21,7 +21,6 @@ def find_prompt_for_filename(filename_base):
                     for prompt in prompts:
                         if substring in prompt:
                             return prompt.strip()
-
     return None
 
 def format_eta(seconds):
@@ -102,19 +101,16 @@ def write_row_to_csv(writer, platform_flag, data):
             "Editorial": 0,
             "MR doc Ids": "",
             "Pr Docs": "",
-
         },
-         'r': {
+        'r': {
             "oldfilename": data["filename"].replace('.png', '.jpg'),
             "description": data["image_description"],
-            "keywords ": data["gptKeywords"],
+            "keywords": data["gptKeywords"],
             "country": data["country"]
-
         },
     }[platform_flag]
 
     writer.writerow(row_data)
-
 def create_writers_and_read_existing(output_folder, platform_flags, folder_name):
     csv_files = {}
     writers = {}
@@ -125,7 +121,8 @@ def create_writers_and_read_existing(output_folder, platform_flags, folder_name)
             'a': f"{folder_name}_adobe.csv",
             'f': f"{folder_name}_freepik.csv",
             'v': f"{folder_name}_vecteezy.csv",
-            'd': f"{folder_name}_dreamstime.csv"
+            'd': f"{folder_name}_dreamstime.csv",
+            'r': f"{folder_name}_123RF.csv",
         }.get(platform_flag)
 
         if csv_file_name:
@@ -141,8 +138,8 @@ def create_writers_and_read_existing(output_folder, platform_flags, folder_name)
                 'a': ["Filename", "Title", "Keywords", "Category", "Releases"],
                 'v': ["Filename", "Title", "Description", "Keywords", "License"],
                 'f': ["Filename", "Title", "Keywords", "Prompt", "Model"],
-                'd': ["Filename", "Image Name", "Description", "Category 1", "Category 2", "Category 3","Keywords","Free","W-EL","P-EL", "SR-EL","SR-Pice","Editorial","MR doc Ids","Pr Docs"],
-                'r': ["oldfilename ","description ","keywords ","country "],
+                'd': ["Filename", "Image Name", "Description", "Category 1", "Category 2", "Category 3", "Keywords", "Free", "W-EL", "P-EL", "SR-EL", "SR-Pice", "Editorial", "MR doc Ids", "Pr Docs"],
+                'r': ["oldfilename", "description", "keywords", "country"],
             }[platform_flag]
 
             delimiter = ';' if platform_flag == 'f' else ','
@@ -156,9 +153,11 @@ def create_writers_and_read_existing(output_folder, platform_flags, folder_name)
             # Read existing filenames
             with open(csv_file_path, 'r', encoding='utf-8') as read_file:
                 reader = csv.DictReader(read_file, delimiter=delimiter)
-                existing_filenames[platform_flag] = {row['Filename'] for row in reader}
+                filename_field = 'oldfilename' if platform_flag == 'r' else 'Filename'
+                existing_filenames[platform_flag] = {row[filename_field] for row in reader}
 
     return csv_files, writers, existing_filenames
+
 
 def close_files(csv_files):
     for platform_flag, file_info in csv_files.items():
@@ -171,7 +170,7 @@ def process_images(folder_path, language, describer, csv_files, writers, platfor
 
     for idx, file in enumerate(files):
         # Skip files already processed
-        if any(file in existing_filenames[flag] for flag in platform_flags):
+        if any(file.replace('.png', '.jpg') in existing_filenames[flag] for flag in platform_flags):
             print(f"Skipping already processed file: {file}")
             continue
 
@@ -211,8 +210,8 @@ def create_csv(folder_path, output_folder, platform_flags, language):
 def main():
     parser = argparse.ArgumentParser(description='Process image folders and assign categories dynamically.')
     parser.add_argument('folder_path', type=str, help='Path to the image folder.')
-    parser.add_argument('-p', '--platforms', type=str, nargs='+', choices=['a', 'f', 'v', 'd'], default=['a'],
-                        help='Choose one or more platforms: -p a for Adobe, -p v for Vecteezy, -p f for Freepik')
+    parser.add_argument('-p', '--platforms', type=str, nargs='+', choices=['a', 'f', 'v', 'd', 'r'], default=['a'],
+                        help='Choose one or more platforms: -p a for Adobe, -p v for Vecteezy, -p f for Freepik, -p d for Dreamstime, -p r for 123RF')
     parser.add_argument('--language', type=str, default='pt', help='Language for titles and keywords (pt or en).')
 
     args = parser.parse_args()
