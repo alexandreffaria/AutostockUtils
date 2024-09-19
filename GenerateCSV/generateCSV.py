@@ -90,7 +90,7 @@ def write_row_to_csv(writer, platform_flag, data):
             "Image Name": data["gptTitle"],
             "Description": data["image_description"] + " - This image was created using AI, Midjourney 6 to be specifc.",
             "Category 1": data["category_dreamstime"],
-            "Category 2": "",
+            "Category 2": "212",
             "Category 3": "",
             "Keywords": data["gptKeywords"],
             "Free": 0,
