@@ -339,3 +339,23 @@ and here is the real description for you: {description}
 """
     category = getGPTResponse(gptPrompt)
     return category
+
+def getCountry(imageDescription):
+    gptPrompt = f"""
+Considering a description of an image give me a two letter code of the country that would most likely be the country where the image could be, if the description gives no indication just give the code for the united stated, here is an example:
+INPUT:
+A group of dancers celebrating carnival in the streets, cover with glitter and colors.
+OUTPUT:
+BR
+INPUT:
+A silluete of a person in a park
+OUTPUT:
+US
+
+** Don't answer anything that is not a two letter code for a country
+Here is the description:
+{imageDescription}
+"""
+    
+    country = getGPTResponse(gptPrompt)
+    return country

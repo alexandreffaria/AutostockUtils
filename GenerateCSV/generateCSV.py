@@ -43,6 +43,7 @@ def process_file(file, folder_path, language, describer):
     fullPrompt = find_prompt_for_filename(filename_base)
     full_file_path = os.path.join(folder_path, file)
     image_description = describer.describe_image(full_file_path, fullPrompt)
+    country = getCountry(image_description)
 
     gptTitle = createTitle(image_description, language)
     gptKeywords = getKeywords(image_description, language)
@@ -59,6 +60,7 @@ def process_file(file, folder_path, language, describer):
         "image_description": image_description,
         "category_adobe": image_category_adobe,
         "category_dreamstime": image_category_dreamstime,
+        "country": country,
     }
 
 def write_row_to_csv(writer, platform_flag, data):
@@ -102,6 +104,13 @@ def write_row_to_csv(writer, platform_flag, data):
             "Pr Docs": "",
 
         },
+         'r': {
+            "oldfilename": data["filename"].replace('.png', '.jpg'),
+            "description": data["image_description"],
+            "keywords ": data["gptKeywords"],
+            "country": data["country"]
+
+        },
     }[platform_flag]
 
     writer.writerow(row_data)
@@ -132,7 +141,8 @@ def create_writers_and_read_existing(output_folder, platform_flags, folder_name)
                 'a': ["Filename", "Title", "Keywords", "Category", "Releases"],
                 'v': ["Filename", "Title", "Description", "Keywords", "License"],
                 'f': ["Filename", "Title", "Keywords", "Prompt", "Model"],
-                'd': ["Filename", "Image Name", "Description", "Category 1", "Category 2", "Category 3","Keywords","Free","W-EL","P-EL", "SR-EL","SR-Pice","Editorial","MR doc Ids","Pr Docs"]
+                'd': ["Filename", "Image Name", "Description", "Category 1", "Category 2", "Category 3","Keywords","Free","W-EL","P-EL", "SR-EL","SR-Pice","Editorial","MR doc Ids","Pr Docs"],
+                'r': ["oldfilename ","description ","keywords ","country "],
             }[platform_flag]
 
             delimiter = ';' if platform_flag == 'f' else ','
