@@ -90,9 +90,9 @@ class AutostockGUI:
         tk.Entry(self.master, textvariable=self.folder_var, width=16, bg="#4d4d4d", fg="#ffffff", font=("Arial", 20)).pack(pady=5)
         tk.Button(self.master, text="🔎", command=self.select_folder, bg=accent_color, fg="#ffffff", font=("Arial", 20)).pack(pady=20)
 
-        # Category selection
-        self.category_var = tk.StringVar(value=self.settings.get("selected_category", "Categoria"))
-        tk.OptionMenu(self.master, self.category_var, *categorias.values()).pack(pady=25)
+        # # Category selection
+        # self.category_var = tk.StringVar(value=self.settings.get("selected_category", "Categoria"))
+        # tk.OptionMenu(self.master, self.category_var, *categorias.values()).pack(pady=25)
 
         # QC Button
         tk.Button(self.master, text="🔬 QC", command=self.run_qc, bg=accent_color, width=12, height=2, fg="#ffffff").pack(pady=5)
@@ -118,9 +118,9 @@ class AutostockGUI:
         self.freepik_var = tk.BooleanVar(value=self.settings.get("selected_freepik", True))
         tk.Checkbutton(self.master, text="Freepik", variable=self.freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
         self.dreamstime_var = tk.BooleanVar(value=self.settings.get("selected_dreamstime", True))
-        tk.Checkbutton(self.master, text="Dreamstime", variable=self.freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
+        tk.Checkbutton(self.master, text="Dreamstime", variable=self.dreamstime_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
         self.RF_var = tk.BooleanVar(value=self.settings.get("selected_rf", True))
-        tk.Checkbutton(self.master, text="123RF", variable=self.freepik_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
+        tk.Checkbutton(self.master, text="123RF", variable=self.RF_var, bg="#2b2b2b", fg="#ffffff", selectcolor=accent_color).pack(pady=5)
 
         # Process button
         tk.Button(
@@ -202,10 +202,10 @@ class AutostockGUI:
             messagebox.showerror("Error", "A gente precisa de uma pasta bebê.")
             return
 
-        selected_category = self.category_var.get()
-        if selected_category == "Categoria":
-            messagebox.showerror("Error", "A gente precisa de uma categoria bebê.")
-            return
+        # selected_category = self.category_var.get()
+        # if selected_category == "Categoria":
+        #     messagebox.showerror("Error", "A gente precisa de uma categoria bebê.")
+        #     return
 
         self.save_current_settings()
 
@@ -234,7 +234,7 @@ class AutostockGUI:
 
          # Step 3: Create CSVs for all selected platforms
         if self.create_csv_var.get() and platforms:
-            self.create_csv(folder_path, selected_category, platforms, self.language_var.get())
+            self.create_csv(folder_path, platforms, self.language_var.get())
 
         # Step 4: Add quotes to the Freepik CSV
         if self.freepik_var.get():
@@ -260,7 +260,7 @@ class AutostockGUI:
         png_folder = os.path.join(folder_path, "realesrgan")
         self.run_command(f"python Utils/convertToJPG.py {png_folder}")
 
-    def create_csv(self, folder_path, selected_category, platforms, language):
+    def create_csv(self, folder_path, platforms, language):
         self.run_command(f"python generateCSV/generateCSV.py {folder_path} -p {platforms} --language {language}")
 
     def add_quotes_to_csv(self, folder_path):
@@ -290,7 +290,7 @@ class AutostockGUI:
     def save_current_settings(self):
         settings = {
             "folder_path": self.folder_var.get(),
-            "selected_category": self.category_var.get(),
+            # "selected_category": self.category_var.get(),
             "selected_upscale": self.upscale_var.get(),
             "selected_convert_to_jpg": self.convert_to_jpg_var.get(),
             "selected_create_csv": self.create_csv_var.get(),
