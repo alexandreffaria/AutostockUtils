@@ -177,7 +177,7 @@ class AutostockGUI:
             messagebox.showerror("Error", "A gente precisa de uma pasta bebê.")
             return
 
-        self.run_command(f"python Utils/qc.py {folder_path}")
+        self.run_command(f"python qc/qc.py {folder_path}")
 
         if os.path.exists(os.path.join(folder_path, "letterbox")):
             self.run_command(f"python Utils/organize_images.py {os.path.join(folder_path, 'letterbox')}")
