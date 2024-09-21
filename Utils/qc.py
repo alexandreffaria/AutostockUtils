@@ -74,7 +74,7 @@ def process_records(records: Dict[str, str], folder_path: str) -> None:
     """Process the records to delete or move images as previously recorded."""
     for file_name, action in records.items():
         file_path = os.path.join(folder_path, file_name)
-        if action == 'delete':
+        if action == 'delete' or action == "letterbox":
             if os.path.exists(file_path):
                 try:
                     remove_file(file_path)
