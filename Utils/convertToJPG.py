@@ -11,7 +11,7 @@ import shutil
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def convert_image(file, input_folder, temp_folder):
+def convert_image(file, input_folder, temp_folder, already_converted_files):
     """
     Convert a single image to JPEG format and save to temporary folder.
 
@@ -19,14 +19,17 @@ def convert_image(file, input_folder, temp_folder):
         file (str): The filename of the image to convert.
         input_folder (str): The path to the input folder.
         temp_folder (str): The path to the temporary folder.
+        already_converted_files (set): Set of files already converted.
     """
     base_filename = os.path.splitext(file)[0]
-    temp_output_path = os.path.join(temp_folder, f"{base_filename}.jpg")
+    output_filename = f"{base_filename}.jpg"
 
     # Skip if the file has already been converted
-    if os.path.exists(temp_output_path):
-        logging.info(f"Skipping {file} as it is already converted in temp.")
+    if output_filename in already_converted_files:
+        logging.info(f"Skipping {file} as it is already converted.")
         return None
+
+    temp_output_path = os.path.join(temp_folder, output_filename)
 
     try:
         start_time = time.time()
@@ -80,6 +83,9 @@ def convert_images(input_folder: str) -> None:
         output_folder = os.path.join(input_folder, "jpgs")
         os.makedirs(output_folder, exist_ok=True)
 
+        # Check which files are already converted
+        already_converted_files = set(os.listdir(output_folder))
+
         # Create a unique temporary directory on the fastest drive
         temp_subfolder = tempfile.mkdtemp(prefix='image_conversion_', dir=tempfile.gettempdir())
 
@@ -95,7 +101,7 @@ def convert_images(input_folder: str) -> None:
 
         # Use multiprocessing to convert images in parallel
         pool = multiprocessing.Pool(processes=num_processors)
-        func = partial(convert_image, input_folder=input_folder, temp_folder=temp_subfolder)
+        func = partial(convert_image, input_folder=input_folder, temp_folder=temp_subfolder, already_converted_files=already_converted_files)
         conversion_times = pool.map(func, files)
         pool.close()
         pool.join()
