@@ -5,7 +5,7 @@ from typing import List, Dict
 
 # Import functions from other modules
 from file_operations import unzip_files, get_image_files
-from record_management import read_record_file, read_state_file
+from record_management import read_record_file
 from image_viewer import ImageViewer
 from utils import load_environment_variables
 from constants import IMAGE_EXTENSIONS
@@ -42,11 +42,7 @@ def main() -> None:
         logging.info("All images have been QC'ed.")
         sys.exit(0)
 
-    # Read last viewed image from state file
-    state_file_path = os.path.join(folder_path, 'qc_state.txt')
-    last_image = read_state_file(state_file_path)
-
-    viewer = ImageViewer(folder_path, files_to_view, last_image, existing_records)
+    viewer = ImageViewer(folder_path, files_to_view, existing_records)
     viewer.mainloop()
 
 if __name__ == "__main__":

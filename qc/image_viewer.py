@@ -5,20 +5,20 @@ import logging
 from typing import List, Dict
 
 from constants import (
-    ICON_PATH, ACTION_KEEP, KEY_NEXT, KEY_PREV, KEY_DELETE, KEY_QUIT,
+    ICON_PATH, ACTION_KEEP, ACTION_MOVE, ACTION_DELETE, KEY_NEXT, KEY_PREV, KEY_DELETE, KEY_QUIT,
     KEY_UNDO, KEY_SPECIAL, KEY_LULZ, KEY_TUT
 )
 from action_handlers import (
     mark_image_for_deletion, move_image_to_folder, copy_image_to_special,
     move_to_lulz, move_to_tut
 )
-from record_management import write_state_file, write_record_file, merge_records_to_master_csv
+from record_management import write_record_file, merge_records_to_master_csv
 from file_operations import remove_file
 
 class ImageViewer(tk.Tk):
     SHIFT_MASK = 0x0001  # Mask for the Shift key in event.state
 
-    def __init__(self, folder_path: str, files: List[str], last_image: str = '', existing_records: Dict[str, str] = {}):
+    def __init__(self, folder_path: str, files: List[str], existing_records: Dict[str, str] = {}):
         super().__init__()
 
         self.folder_path = folder_path
@@ -29,14 +29,6 @@ class ImageViewer(tk.Tk):
 
         self.setup_ui()
         self.bind_keys()
-
-        # Set current index based on last viewed image
-        if last_image:
-            try:
-                self.current_index = self.files.index(last_image)
-            except ValueError:
-                logging.warning(f"Last viewed image '{last_image}' not found. Starting from the first image.")
-                self.current_index = 0
 
         self.load_image()
 
@@ -100,10 +92,6 @@ class ImageViewer(tk.Tk):
     def close_viewer(self):
         self.record_current_image_if_not_recorded()
 
-        last_image = self.files[self.current_index] if self.files else ''
-        state_file_path = os.path.join(self.folder_path, 'qc_state.txt')
-        write_state_file(state_file_path, last_image)
-
         record_file_path = os.path.join(self.folder_path, 'qc_record.txt')
         write_record_file(self.record_entries, record_file_path)
 
@@ -115,7 +103,7 @@ class ImageViewer(tk.Tk):
 
     def process_deletions_at_end(self):
         for file_name, action in self.record_entries.items():
-            if action == ACTION_KEEP:
+            if action in [ACTION_DELETE, "letterbox"]:
                 file_path = os.path.join(self.folder_path, file_name)
                 if os.path.exists(file_path):
                     try:
@@ -199,12 +187,29 @@ class ImageViewer(tk.Tk):
                 self.load_image()
             except Exception as e:
                 logging.error(f"Error undoing move of file {file_name}: {e}")
-        elif action == ACTION_KEEP:
+
+        elif action == ACTION_DELETE:
+            # Restore the file from deletion
             self.files.insert(self.current_index, file_name)
             logging.info(f"Undid deletion of {file_name}.")
-            if self.record_entries.get(file_name) == ACTION_KEEP:
+            if self.record_entries.get(file_name) == ACTION_DELETE:
                 del self.record_entries[file_name]
             self.load_image()
+
+        elif action == ACTION_MOVE:
+            # Move the file back from the letterbox folder to its original location
+            letterbox_folder = args[0]
+            letterbox_path = os.path.join(self.folder_path, letterbox_folder, file_name)
+            original_path = os.path.join(self.folder_path, file_name)
+            try:
+                os.rename(letterbox_path, original_path)
+                logging.info(f"Undid letterbox move of {file_name} from '{letterbox_folder}' back to original location.")
+                self.files.insert(self.current_index, file_name)
+                if self.record_entries.get(file_name) == letterbox_folder:
+                    del self.record_entries[file_name]
+                self.load_image()
+            except Exception as e:
+                logging.error(f"Error undoing letterbox move of file {file_name}: {e}")
 
     def copy_image_to_special(self) -> None:
         if not self.files:
