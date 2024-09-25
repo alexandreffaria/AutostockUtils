@@ -4,10 +4,12 @@ from image_loader import load_images
 from gui_module import ImageViewer
 from key_bindings import get_key_bindings
 from data_manager import load_processed_images, save_processed_images
+from unzip import unzip_files
 import os
 
 def main() -> None:
     folder = parse_arguments()
+    unzip_files(folder)
     processed_images = load_processed_images(folder)
     all_processed_images = processed_images['deleted'] | processed_images['letterbox']
     current_index = processed_images.get('current_index', 0)
