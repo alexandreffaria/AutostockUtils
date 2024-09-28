@@ -14,13 +14,6 @@ Of course, you could always sell stock images on the internet. But now Adobe Sto
 
 ```.env
 OPENAI_API_KEY=
-SFTP_USERNAME_adobe=
-SFTP_PASSWORD_adobe=
-SFTP_HOST_adobe=sftp.contributor.adobestock.com
-SFTP_USERNAME_freepik=
-SFTP_PASSWORD_freepik=
-SFTP_HOST_freepik=
-SFTP_PORT=22
 MOUSE_X=
 MOUSE_Y=
 ICON_PATH=meulindo.ico
