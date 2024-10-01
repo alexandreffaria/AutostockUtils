@@ -34,6 +34,6 @@ def submitFiles(times):
         # platform drop down
         pyau.moveTo(2335, 467)
         pyau.click()
-        time.sleep(10)
+        time.sleep(15)
 
 submitFiles(int(sys.argv[1]))
