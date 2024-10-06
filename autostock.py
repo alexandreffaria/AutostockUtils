@@ -72,6 +72,7 @@ class AutostockGUI:
         self.master.geometry("300x900")
         self.master.configure(bg="#2b2b2b")
         self.master.wm_iconbitmap(ICON_PATH)
+        self.master.iconbitmap(ICON_PATH)
 
         self.bold_font = Font(family="Arial", size=12, weight="bold")
         self.small_font = Font(family="Arial", size=9)
