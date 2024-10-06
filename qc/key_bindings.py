@@ -96,7 +96,7 @@ def get_key_bindings(viewer: ImageViewer) -> KeyBindingsType:
     return {
         ('<l>', '<Right>'): lambda event: next_image(event, viewer),
         ('<h>', '<Left>'): lambda event: previous_image(event, viewer),
-        ('<x>',): lambda event: delete_image(event, viewer),
-        ('<b>',): lambda event: move_to_letterbox(event, viewer),
+        ('<x>', '<,>'): lambda event: delete_image(event, viewer),
+        ('<b>','<m>'): lambda event: move_to_letterbox(event, viewer),
         ('<u>',): lambda event: undo_action(event, viewer),
     }
