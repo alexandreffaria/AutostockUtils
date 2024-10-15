@@ -3,16 +3,20 @@ import re
 import sys
 
 def parse_line(line):
-    parts = re.split(r'\s\s+', line.strip())
-    if len(parts) < 4:
-        return None
-    timestamp, id_str, license, royalty_str = parts
-    royalty = float(royalty_str.replace('US$', '').replace(',', '.'))
-    date, time = timestamp.split(', ')
+    parts = line.split("\t")
+
+    date = parts[0].split(', ')[0]
+    time = parts[0].split(', ')[1]
+    id_str = parts[2]
+    license = parts[3]
+    royalty_str = parts[4].replace('US$', '').replace(',', '.')
+    royalty = float(royalty_str)
+
     return date, time, id_str, license, royalty
 
+
 def main(file_path):
-    connection = sqlite3.connect('sales_data.db')
+    connection = sqlite3.connect('./Stats/Data/sales_data.db')
     cursor = connection.cursor()
     
     cursor.execute('''
@@ -29,8 +33,11 @@ def main(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         next(file)  # Skip the header
         for line in file:
-            if data := parse_line(line):
+            data = parse_line(line)
+            try:
                 cursor.execute('INSERT OR IGNORE INTO royalties (date, time, id, license, royalty) VALUES (?, ?, ?, ?, ?)', data)
+            except sqlite3.Error as e:
+                print(f"An error occurred: {e.args[0]}")
 
     connection.commit()
     connection.close()
