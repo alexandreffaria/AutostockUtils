@@ -4,7 +4,7 @@ import time
 import sys
 
 if len(sys.argv) != 2:
-    print("Usage: python3 freepikSubmit.py <number of times to repeat.")
+    print("Usage: python3 dreamstimeSubmit.py <number of times to repeat.")
     sys.exit(1)
 
 paused = False
@@ -24,16 +24,16 @@ def submitFiles(times):
                 time.sleep(0.1)
         print(f"{i+1} times  submited")
         # Select all
-        pyau.moveTo(2219, 481)
+        pyau.moveTo(3354, 522)
         pyau.click()
         time.sleep(1)
         # Select AI Generated
-        pyau.moveTo(3705, 1247)
-        pyau.click()
-        time.sleep(1)
-        # platform drop down
-        pyau.moveTo(3022, 863)
+        pyau.moveTo(2961, 855)
         pyau.click()
         time.sleep(5)
+        # platform drop down
+        pyau.moveTo(2335, 467)
+        pyau.click()
+        time.sleep(15)
 
 submitFiles(int(sys.argv[1]))
