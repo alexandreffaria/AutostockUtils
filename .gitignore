@@ -12,3 +12,5 @@ autoEnv
 settings.json
 log
 dailyIndexFile
+__pycache__
+*.safetensors
