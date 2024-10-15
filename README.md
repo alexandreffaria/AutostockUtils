@@ -1,6 +1,6 @@
 # AutoStock Utils 🤖
 
-![Autostock Utils](https://github.com/alexandresanlim/AutostockUtils/assets/109694/d8f1e3d0-a7a0-4f0a-b4c7-e4e7e5b8b7c3)
+![Autostock Utils](https://github.com/alexandreffaria/AutostockUtils/blob/main/Autostock.png?raw=true)
 
 ## what it do?
 
