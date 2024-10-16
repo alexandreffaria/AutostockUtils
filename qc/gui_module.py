@@ -4,7 +4,7 @@ from typing import List, Dict, Tuple, Callable, Set, Any
 from styles import get_dark_mode_styles
 
 KeyBindingsType = Dict[Tuple[str, ...], Callable[[tk.Event], None]]
-
+ICON_PATH = "meulindo.ico"
 class ImageViewer:
     def __init__(
             self, 
@@ -13,13 +13,14 @@ class ImageViewer:
             processed_images: Dict[str, Set[str]],
             start_index: int = 0
             ) -> None:
-
+        
         self.deleted_images = processed_images['deleted']
         self.letterbox_images = processed_images['letterbox']
         self.undo_stack: List[Dict[str, Any]] = []
 
         self.root: tk.Tk = tk.Tk()
         self.root.title("QC")
+        self.root.iconbitmap(ICON_PATH)
 
         styles = get_dark_mode_styles()
         self.root.configure(bg=styles['background'])
