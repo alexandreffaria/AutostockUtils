@@ -54,9 +54,8 @@ Just clone and install the libs:
 
 ### To-do's
 
-- [x] Integrate upscaling
-- [x] GUI
-- [x] Connect everything together
+- [ ] Integrate old workflow with new one
+- [ ] remove openAi completely
 - [ ] Integrate inpainting
 
 ---
