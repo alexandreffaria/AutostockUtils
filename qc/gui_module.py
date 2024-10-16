@@ -47,7 +47,7 @@ class ImageViewer:
 
         self.bind_keys()
         self.root.bind('<Configure>', self.on_resize)
-        self.root.geometry("800x600")  # Set initial window size
+        self.root.geometry("500x500")  # Set initial window size
 
     def _resize_image(self, pil_image: Image.Image, max_width: int, max_height: int) -> ImageTk.PhotoImage:
         """
@@ -68,8 +68,11 @@ class ImageViewer:
         self.label.configure(image=tk_image)
         self.label.image = tk_image  # Keep a reference to prevent garbage collection
 
-        # Add the first 20 characters of the file name to the title
-        short_file_name = image_path.split('/')[-1][17:90]
+        # String whichcraft manipulation to get the file name
+        short_file_name = " ".join(image_path.split('/')[-1].split('\\')[-1].split("_")[1:-2])
+        if "-" in short_file_name:
+            short_file_name = short_file_name.split("-")[0] 
+
         self.root.title(f"QC ({index + 1}/{len(self.image_paths)}) - {short_file_name}")
 
     def bind_keys(self) -> None:
