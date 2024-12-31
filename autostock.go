@@ -1,13 +1,13 @@
 package main
 
 import (
-	"image/color"
 	"log"
 	"os"
 
 	"gioui.org/app"
+	"gioui.org/io/system"
+	"gioui.org/layout"
 	"gioui.org/op"
-	"gioui.org/text"
 	"gioui.org/widget"
 	"gioui.org/widget/material"
 	"github.com/sqweek/dialog"
@@ -15,9 +15,7 @@ import (
 
 func main() {
 	go func() {
-		window := new(app.Window)
-		err := run(window)
-		if err != nil {
+		if err := runApp(); err != nil {
 			log.Fatal(err)
 		}
 		os.Exit(0)
@@ -25,25 +23,41 @@ func main() {
 	app.Main()
 }
 
-func run(window *app.Window) error {
-	theme := material.NewTheme()
+func runApp() error {
 	var ops op.Ops
-	selectBtn := new(widget.Clickable)
+	window := app.NewWindow()
+	theme := material.NewTheme()
+
+	printBtn := new(widget.Clickable)  // Button to print a message
+	folderBtn := new(widget.Clickable) // Button to select a folder
 
 	for {
-		switch e := window.Event().(type) {
-		case app.DestroyEvent:
+		e := <-window.Events()
+		switch e := e.(type) {
+		case system.DestroyEvent:
 			return e.Err
-		case app.FrameEvent:
-			gtx := app.NewContext(&ops, e)
+		case system.FrameEvent:
+			gtx := layout.NewContext(&ops, e)
 
-			// Define an illustrative label
-			title := material.H1(theme, "Hello, Gio")
-			title.Color = color.NRGBA{R: 127, G: 0, B: 0, A: 255}
-			title.Alignment = text.Middle
+			layout.Flex{
+				Axis:    layout.Vertical,
+				Spacing: layout.SpaceAround,
+			}.Layout(gtx,
+				layout.Rigid(func(gtx layout.Context) layout.Dimensions {
+					return material.Button(theme, printBtn, "Print Message").Layout(gtx)
+				}),
+				layout.Rigid(func(gtx layout.Context) layout.Dimensions {
+					return material.Button(theme, folderBtn, "Select Folder").Layout(gtx)
+				}),
+			)
 
-			// Check for button click with the correct context
-			if selectBtn.Clicked(gtx) {
+			// Handle Print Button click
+			if printBtn.Clicked(gtx) {
+				log.Println("Print Message button clicked")
+			}
+
+			// Handle Folder Button click
+			if folderBtn.Clicked(gtx) {
 				selectedFolder, err := dialog.Directory().Title("Select Folder").Browse()
 				if err != nil {
 					log.Println("No folder selected:", err)
@@ -51,11 +65,6 @@ func run(window *app.Window) error {
 					log.Println("Selected folder:", selectedFolder)
 				}
 			}
-
-			// Create a button layout
-			btnLayout := material.Button(theme, selectBtn, "Select Folder")
-			title.Layout(gtx)
-			btnLayout.Layout(gtx)
 
 			e.Frame(gtx.Ops)
 		}
