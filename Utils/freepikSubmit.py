@@ -24,15 +24,15 @@ def submitFiles(times):
                 time.sleep(0.1)
         print(f"{i+1} times  submited")
         # Select all
-        pyau.moveTo(2219, 481)
+        pyau.moveTo(299, 271)
         pyau.click()
         time.sleep(1)
         # Select AI Generated
-        pyau.moveTo(3705, 1247)
+        pyau.moveTo(1818, 995)
         pyau.click()
         time.sleep(1)
         # platform drop down
-        pyau.moveTo(3022, 863)
+        pyau.moveTo(1124, 639)
         pyau.click()
         time.sleep(5)
 
