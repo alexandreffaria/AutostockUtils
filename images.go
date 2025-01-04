@@ -2,14 +2,68 @@ package main
 
 import (
 	"image"
+	"image/color"
 	"os"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
+
+var WindowSizeHeight = binding.NewFloat()
+var WindowSizeWidth = binding.NewFloat()
+
+type ResizeDetection struct {
+	widget.BaseWidget
+	qcWindow           fyne.Window
+	thumbnailContainer *fyne.Container
+	activeImage        *canvas.Image
+}
+
+func NewResizeDetection(qcWindow fyne.Window, thumbnailContainer *fyne.Container, activeImage *canvas.Image) *ResizeDetection {
+	wg := &ResizeDetection{
+		qcWindow:           qcWindow,
+		thumbnailContainer: thumbnailContainer,
+		activeImage:        activeImage,
+	}
+	wg.ExtendBaseWidget(wg)
+	return wg
+}
+
+func (wg *ResizeDetection) CreateRenderer() fyne.WidgetRenderer {
+	el := canvas.NewRectangle(color.Transparent)
+	return &resizeDetectionRenderer{widget: wg, el: el}
+}
+
+type resizeDetectionRenderer struct {
+	widget *ResizeDetection
+	el     *canvas.Rectangle
+}
+
+func (r *resizeDetectionRenderer) Layout(size fyne.Size) {
+	WindowSizeHeight.Set(float64(size.Height))
+	WindowSizeWidth.Set(float64(size.Width))
+	r.el.Resize(size)
+	updateThumbnails(r.widget.qcWindow, r.widget.thumbnailContainer, r.widget.activeImage)
+}
+
+func (r *resizeDetectionRenderer) MinSize() fyne.Size {
+	return r.el.MinSize()
+}
+
+func (r *resizeDetectionRenderer) Refresh() {
+	r.el.Refresh()
+}
+
+func (r *resizeDetectionRenderer) Objects() []fyne.CanvasObject {
+	return []fyne.CanvasObject{r.el}
+}
+
+func (r *resizeDetectionRenderer) Destroy() {}
 
 func createStartQCButton(a fyne.App, w fyne.Window) *widget.Button {
 	return widget.NewButton("Start QC", func() {
@@ -27,23 +81,34 @@ func startQCWindow(a fyne.App) {
 
 	activeImage := canvas.NewImageFromFile(images[currentIndex])
 	activeImage.FillMode = canvas.ImageFillContain
-	activeImage.SetMinSize(fyne.NewSize(800, 570))
 
-	thumbnailContainer := container.NewHBox()
-	updateThumbnails(thumbnailContainer, activeImage)
+	thumbnailContainer := container.NewGridWrap(fyne.NewSize(75, 75))
+	updateThumbnails(qcWindow, thumbnailContainer, activeImage)
 
-	qcWindow.Canvas().SetOnTypedKey(handleKeyPress(activeImage, thumbnailContainer))
-	qcWindow.SetContent(container.NewVBox(activeImage, thumbnailContainer))
+	thumbnailScroll := container.NewVScroll(thumbnailContainer)
+	thumbnailScroll.SetMinSize(fyne.NewSize(0, 100))
+
+	resizeDetector := NewResizeDetection(qcWindow, thumbnailContainer, activeImage)
+	content := container.New(layout.NewBorderLayout(nil, thumbnailScroll, nil, nil), resizeDetector, activeImage, thumbnailScroll)
+	qcWindow.SetContent(content)
+
+	qcWindow.Canvas().SetOnTypedKey(handleKeyPress(qcWindow, activeImage, thumbnailContainer))
 	qcWindow.Show()
 }
 
-func updateThumbnails(thumbnailContainer *fyne.Container, activeImage *canvas.Image) {
+func updateThumbnails(qcWindow fyne.Window, thumbnailContainer *fyne.Container, activeImage *canvas.Image) {
 	thumbnailContainer.Objects = nil
-	start := currentIndex - 5
+
+	windowWidth := qcWindow.Canvas().Size().Width
+	thumbnailSize := 75
+	visibleCount := int(windowWidth) / thumbnailSize
+	halfVisibleCount := visibleCount / 2
+
+	start := currentIndex - halfVisibleCount
 	if start < 0 {
 		start = 0
 	}
-	end := currentIndex + 5
+	end := currentIndex + halfVisibleCount
 	if end >= len(images) {
 		end = len(images) - 1
 	}
@@ -51,6 +116,7 @@ func updateThumbnails(thumbnailContainer *fyne.Container, activeImage *canvas.Im
 	for i := start; i <= end; i++ {
 		img, err := loadThumbnail(images[i])
 		if err == nil {
+			img.SetMinSize(fyne.NewSize(float32(thumbnailSize), float32(thumbnailSize)))
 			thumbnailContainer.Add(img)
 		}
 	}
@@ -68,6 +134,6 @@ func loadThumbnail(imagePath string) (*canvas.Image, error) {
 		return nil, err
 	}
 	thumb := canvas.NewImageFromImage(img)
-	thumb.SetMinSize(fyne.NewSize(50, 50))
+	thumb.FillMode = canvas.ImageFillContain
 	return thumb, nil
 }
