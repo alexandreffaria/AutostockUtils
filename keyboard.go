@@ -5,31 +5,29 @@ import (
 	"fyne.io/fyne/v2/canvas"
 )
 
-func handleKeyPress(qcWindow fyne.Window, activeImage *canvas.Image, thumbnailContainer *fyne.Container) func(*fyne.KeyEvent) {
+func handleKeyPress(qcWindow fyne.Window, activeImage *canvas.Image) func(*fyne.KeyEvent) {
 	return func(key *fyne.KeyEvent) {
 		switch key.Name {
 		case fyne.KeyLeft, fyne.KeyH:
-			movePrev(qcWindow, activeImage, thumbnailContainer)
+			movePrev(activeImage)
 		case fyne.KeyRight, fyne.KeyL:
-			moveNext(qcWindow, activeImage, thumbnailContainer)
+			moveNext(activeImage)
 		}
 	}
 }
 
-func movePrev(qcWindow fyne.Window, activeImage *canvas.Image, thumbnailContainer *fyne.Container) {
+func movePrev(activeImage *canvas.Image) {
 	if currentIndex > 0 {
 		currentIndex--
 		activeImage.File = images[currentIndex]
 		activeImage.Refresh()
-		updateThumbnails(qcWindow, thumbnailContainer, activeImage)
 	}
 }
 
-func moveNext(qcWindow fyne.Window, activeImage *canvas.Image, thumbnailContainer *fyne.Container) {
+func moveNext(activeImage *canvas.Image) {
 	if currentIndex < len(images)-1 {
 		currentIndex++
 		activeImage.File = images[currentIndex]
 		activeImage.Refresh()
-		updateThumbnails(qcWindow, thumbnailContainer, activeImage)
 	}
 }

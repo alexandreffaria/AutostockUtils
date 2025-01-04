@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"sync"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/dialog"
@@ -23,7 +24,7 @@ func createSelectFolderButton(label *widget.Label, w fyne.Window) *widget.Button
 				zipFiles := checkForZipFiles(folderPath)
 
 				if len(zipFiles) > 0 {
-					err := processZipFiles(folderPath, zipFiles)
+					err := processZipFilesConcurrently(folderPath, zipFiles)
 					if err != nil {
 						dialog.ShowError(err, w)
 						label.SetText("Error during extraction.")
@@ -52,14 +53,31 @@ func checkForZipFiles(folderPath string) []string {
 	return zipFiles
 }
 
-func processZipFiles(folderPath string, zipFiles []string) error {
+func processZipFilesConcurrently(folderPath string, zipFiles []string) error {
+	var wg sync.WaitGroup
+	errors := make(chan error, len(zipFiles))
+
 	for _, zipFilePath := range zipFiles {
-		if err := unzip(zipFilePath, folderPath); err != nil {
-			return fmt.Errorf("failed to unzip %s: %w", zipFilePath, err)
-		}
-		if err := os.Remove(zipFilePath); err != nil {
-			return fmt.Errorf("failed to delete zip file %s: %w", zipFilePath, err)
-		}
+		wg.Add(1)
+		go func(zipPath string) {
+			defer wg.Done()
+			if err := unzip(zipPath, folderPath); err != nil {
+				errors <- fmt.Errorf("failed to unzip %s: %w", zipPath, err)
+				return
+			}
+			if err := os.Remove(zipPath); err != nil {
+				errors <- fmt.Errorf("failed to delete zip file %s: %w", zipPath, err)
+				return
+			}
+		}(zipFilePath)
+	}
+
+	wg.Wait()
+	close(errors)
+
+	// Collect and return the first error if any
+	if len(errors) > 0 {
+		return <-errors
 	}
 
 	processImagesInFolder(folderPath)
@@ -73,7 +91,7 @@ func processImagesInFolder(folderPath string) {
 	for _, entry := range entries {
 		if !entry.IsDir() {
 			name := entry.Name()
-			if filepath.Ext(name) == ".jpg" || filepath.Ext(name) == ".jpeg" || filepath.Ext(name) == ".png" {
+			if ext := filepath.Ext(name); ext == ".jpg" || ext == ".jpeg" || ext == ".png" {
 				images = append(images, filepath.Join(folderPath, name))
 			}
 		}
@@ -93,7 +111,9 @@ func unzip(src string, dest string) error {
 		fpath := filepath.Join(dest, f.Name)
 
 		if f.FileInfo().IsDir() {
-			os.MkdirAll(fpath, os.ModePerm)
+			if err := os.MkdirAll(fpath, os.ModePerm); err != nil {
+				return err
+			}
 			continue
 		}
 
@@ -105,18 +125,15 @@ func unzip(src string, dest string) error {
 		if err != nil {
 			return err
 		}
+		defer outFile.Close()
 
 		rc, err := f.Open()
 		if err != nil {
-			outFile.Close()
 			return err
 		}
+		defer rc.Close()
 
-		_, err = io.Copy(outFile, rc)
-		outFile.Close()
-		rc.Close()
-
-		if err != nil {
+		if _, err := io.Copy(outFile, rc); err != nil {
 			return err
 		}
 	}
