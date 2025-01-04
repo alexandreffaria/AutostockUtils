@@ -26,6 +26,12 @@ func main() {
 		}
 	})
 
+	// Define the "Magic" button and its action
+	magicBtn := widget.NewButton("Magic", func() {
+		// Define what should happen when "Magic" is pressed
+		label.SetText("Abracadabra! The magic is done.")
+	})
+
 	// Load and set the icon for the application window
 	iconPath := "meulindo-ilus-invert.png"
 	iconFile, err := os.ReadFile(iconPath)
@@ -37,6 +43,6 @@ func main() {
 		fyne.LogError("Failed to load icon", err)
 	}
 
-	w.SetContent(container.NewVBox(label, selectFolderBtn, viewImagesBtn))
+	w.SetContent(container.NewVBox(label, selectFolderBtn, viewImagesBtn, magicBtn))
 	w.ShowAndRun()
 }
