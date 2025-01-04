@@ -101,23 +101,40 @@ func updateThumbnails(qcWindow fyne.Window, thumbnailContainer *fyne.Container, 
 
 	windowWidth := qcWindow.Canvas().Size().Width
 	thumbnailSize := 75
-	visibleCount := int(windowWidth) / thumbnailSize
+	// Reduce visibleCount by one to display fewer images
+	visibleCount := (int(windowWidth) / thumbnailSize) - 1
+	if visibleCount < 1 {
+		visibleCount = 1 // Ensure at least one thumbnail is visible
+	}
 	halfVisibleCount := visibleCount / 2
 
 	start := currentIndex - halfVisibleCount
 	if start < 0 {
 		start = 0
 	}
-	end := currentIndex + halfVisibleCount
+	end := start + visibleCount - 1
 	if end >= len(images) {
 		end = len(images) - 1
+		start = end - visibleCount + 1
+		if start < 0 {
+			start = 0
+		}
 	}
 
 	for i := start; i <= end; i++ {
 		img, err := loadThumbnail(images[i])
 		if err == nil {
 			img.SetMinSize(fyne.NewSize(float32(thumbnailSize), float32(thumbnailSize)))
-			thumbnailContainer.Add(img)
+
+			if i == currentIndex {
+				// Highlight current thumbnail by wrapping it in a border
+				thumbnailContainer.Add(container.NewBorder(
+					canvas.NewRectangle(color.RGBA{255, 0, 0, 255}),
+					nil, nil, nil, img,
+				))
+			} else {
+				thumbnailContainer.Add(img)
+			}
 		}
 	}
 	thumbnailContainer.Refresh()
