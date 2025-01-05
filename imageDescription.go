@@ -111,28 +111,27 @@ func FetchImageMetadata(images []Image) error {
 	}
 
 	// Worker function
+	// Worker function
 	for i := 0; i < concurrentWorkers; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
 			for img := range workChan {
-				select {
-				case <-rateLimiter.C:
-					fileName := filepath.Base(img.Path)
-					if _, exists := existingMetadata[fileName]; exists {
-						fmt.Printf("Skipping image %s as it already has metadata\n", fileName)
-						continue
-					}
-
-					// Fetch Description
-					description, err := FetchDescription(apiURL, apiKey, img)
-					if err != nil {
-						errorChan <- fmt.Errorf("error fetching description for %s: %w", img.Path, err)
-						return
-					}
-
-					descriptionChan <- []string{fileName, description}
+				<-rateLimiter.C
+				fileName := filepath.Base(img.Path)
+				if _, exists := existingMetadata[fileName]; exists {
+					fmt.Printf("Skipping image %s as it already has metadata\n", fileName)
+					continue
 				}
+
+				// Fetch Description
+				description, err := FetchDescription(apiURL, apiKey, img)
+				if err != nil {
+					errorChan <- fmt.Errorf("error fetching description for %s: %w", img.Path, err)
+					return
+				}
+
+				descriptionChan <- []string{fileName, description}
 			}
 		}()
 	}
