@@ -13,7 +13,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-var images []string
+var images []Image
 var currentIndex int
 
 func createSelectFolderButton(label *widget.Label, w fyne.Window) *widget.Button {
@@ -92,7 +92,8 @@ func processImagesInFolder(folderPath string) {
 		if !entry.IsDir() {
 			name := entry.Name()
 			if ext := filepath.Ext(name); ext == ".jpg" || ext == ".jpeg" || ext == ".png" {
-				images = append(images, filepath.Join(folderPath, name))
+				fullPath := filepath.Join(folderPath, name)
+				images = append(images, Image{Path: fullPath, URL: "file://" + fullPath})
 			}
 		}
 	}

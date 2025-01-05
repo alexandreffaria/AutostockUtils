@@ -22,7 +22,7 @@ func showImageViewer(w fyne.Window, icon fyne.Resource) {
 	qcWindow.Resize(fyne.NewSize(800, 600))
 	qcWindow.SetIcon(icon)
 
-	activeImage := canvas.NewImageFromFile(images[currentIndex])
+	activeImage := canvas.NewImageFromFile(images[currentIndex].Path)
 	activeImage.FillMode = canvas.ImageFillContain
 	content := container.NewStack(activeImage)
 	qcWindow.SetContent(content)
@@ -31,15 +31,15 @@ func showImageViewer(w fyne.Window, icon fyne.Resource) {
 
 	qcWindow.Canvas().SetOnTypedKey(handleKeyPress(qcWindow, activeImage))
 
-	// Handle closing the image viewer window to delete marked files
 	qcWindow.SetOnClosed(func() {
 		deleteMarkedImages()
 	})
 
 	qcWindow.Show()
 }
-func updateWindowTitle(qcWindow fyne.Window, imageFile string) {
-	manipulatedName := manipulateFileName(imageFile)
+
+func updateWindowTitle(qcWindow fyne.Window, image Image) {
+	manipulatedName := manipulateFileName(image.Path)
 	title := fmt.Sprintf("%s (%d of %d)", manipulatedName, currentIndex+1, len(images))
 	qcWindow.SetTitle(title)
 }
@@ -53,7 +53,7 @@ func manipulateFileName(fileName string) string {
 		}
 		return joined
 	}
-	return fileName // Return the original if it's too short
+	return fileName
 }
 
 func deleteMarkedImages() {
@@ -65,5 +65,5 @@ func deleteMarkedImages() {
 			log.Printf("Image '%s' deleted successfully.", img.file)
 		}
 	}
-	deletedStack = nil // Clear the stack after deletion
+	deletedStack = nil
 }
