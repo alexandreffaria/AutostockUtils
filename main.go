@@ -35,7 +35,7 @@ func main() {
 		}
 	})
 
-	magicBtn := widget.NewButton("Magic", func() {
+	magicBtn := widget.NewButton("Upscale", func() {
 		label.SetText("Performing magic...")
 
 		err := UpscaleImages(images)
