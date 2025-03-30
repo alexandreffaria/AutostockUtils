@@ -46,21 +46,15 @@ func main() {
 		}
 	})
 
-	descriptionBtn := widget.NewButton("Description", func() {
-		label.SetText("Fetching descriptions...")
-		for i := range images {
-			encodedImage, err := EncodeImageToBase64(images[i].Path)
-			if err != nil {
-				label.SetText(fmt.Sprintf("Error encoding image: %v", err))
-				return
-			}
-			images[i].URL = fmt.Sprintf("data:image/jpeg;base64,%s", encodedImage)
-		}
-		err := FetchImageMetadata(images) // use FetchImageMetadata instead
+	descriptionBtn := widget.NewButton("Generate Metadata", func() {
+		label.SetText("Generating titles and keywords from filenames...")
+
+		// We don't need to encode the images anymore
+		err := FetchImageMetadata(images)
 		if err != nil {
-			label.SetText(fmt.Sprintf("Error fetching metadata: %v", err))
+			label.SetText(fmt.Sprintf("Error generating metadata: %v", err))
 		} else {
-			label.SetText("Metadata fetched!")
+			label.SetText("Metadata generated successfully!")
 		}
 	})
 

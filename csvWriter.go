@@ -48,11 +48,22 @@ func WriteCSVWithExistingMetadata(csvPath string, existingMetadata map[string]st
 		return fmt.Errorf("failed to write CSV header: %w", err)
 	}
 
+	// Write existing metadata first
+	for filename, description := range existingMetadata {
+		if err := writer.Write([]string{filename, description}); err != nil {
+			return fmt.Errorf("failed to write existing record to CSV: %w", err)
+		}
+	}
+
+	// Write new metadata
 	for terms := range responses {
 		filename := terms[0]
 		description := terms[1]
-		if err := writer.Write([]string{filename, description}); err != nil {
-			return fmt.Errorf("failed to write record to CSV: %w", err)
+		// Skip if already wrote existing metadata
+		if _, exists := existingMetadata[filename]; !exists {
+			if err := writer.Write([]string{filename, description}); err != nil {
+				return fmt.Errorf("failed to write record to CSV: %w", err)
+			}
 		}
 	}
 

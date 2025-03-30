@@ -16,9 +16,62 @@ type Image struct {
 	Path        string
 	URL         string
 	Description string
+	Title       string
+	Keywords    string
 }
 
-// FetchImageMetadata retrieves descriptions for images and writes results to CSV
+// Helper function to make OpenAI API calls
+func fetchFromOpenAI(apiURL, apiKey, prompt string) (string, error) {
+	requestBody, err := json.Marshal(map[string]interface{}{
+		"model": "gpt-4o-mini",
+		"messages": []map[string]interface{}{
+			{
+				"role":    "user",
+				"content": prompt,
+			},
+		},
+		"max_tokens": 200,
+	})
+	if err != nil {
+		return "", fmt.Errorf("error creating request body: %w", err)
+	}
+
+	req, err := http.NewRequest("POST", apiURL, bytes.NewBuffer(requestBody))
+	if err != nil {
+		return "", fmt.Errorf("error creating request: %w", err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", "Bearer "+apiKey)
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("error sending request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("error reading response: %w", err)
+	}
+
+	responseData := map[string]interface{}{}
+	if err := json.Unmarshal(body, &responseData); err != nil {
+		return "", fmt.Errorf("error unmarshalling response: %w", err)
+	}
+
+	if choices, ok := responseData["choices"].([]interface{}); ok && len(choices) > 0 {
+		choice := choices[0].(map[string]interface{})
+		if message, ok := choice["message"].(map[string]interface{}); ok {
+			if content, ok := message["content"].(string); ok {
+				return content, nil
+			}
+		}
+	}
+	return "", fmt.Errorf("error parsing API response")
+}
+
+// FetchImageMetadata retrieves titles and keywords for images based on filenames and writes results to CSV
 func FetchImageMetadata(images []Image) error {
 	apiKey := os.Getenv("OPENAI_API_KEY")
 	if apiKey == "" {
@@ -46,71 +99,6 @@ func FetchImageMetadata(images []Image) error {
 	concurrentWorkers := 10
 	workChan := make(chan Image, len(images))
 
-	// Define FetchDescription function
-	FetchDescription := func(apiURL, apiKey string, img Image) (string, error) {
-		encodedImage, err := EncodeImageToBase64(img.Path)
-		if err != nil {
-			return "", fmt.Errorf("error encoding image: %w", err)
-		}
-
-		requestBody, err := json.Marshal(map[string]interface{}{
-			"model": "gpt-4o-mini",
-			"messages": []map[string]interface{}{
-				{
-					"role": "user",
-					"content": []map[string]interface{}{
-						{"type": "text", "text": "Provide a concise description for this image."},
-						{
-							"type": "image_url",
-							"image_url": map[string]string{
-								"url": fmt.Sprintf("data:image/jpeg;base64,%s", encodedImage),
-							},
-						},
-					},
-				},
-			},
-			"max_tokens": 200,
-		})
-		if err != nil {
-			return "", fmt.Errorf("error creating request body: %w", err)
-		}
-
-		req, err := http.NewRequest("POST", apiURL, bytes.NewBuffer(requestBody))
-		if err != nil {
-			return "", fmt.Errorf("error creating request: %w", err)
-		}
-		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("Authorization", "Bearer "+apiKey)
-
-		client := &http.Client{}
-		resp, err := client.Do(req)
-		if err != nil {
-			return "", fmt.Errorf("error sending request: %w", err)
-		}
-		defer resp.Body.Close()
-
-		body, err := io.ReadAll(resp.Body)
-		if err != nil {
-			return "", fmt.Errorf("error reading response: %w", err)
-		}
-
-		responseData := map[string]interface{}{}
-		if err := json.Unmarshal(body, &responseData); err != nil {
-			return "", fmt.Errorf("error unmarshalling response: %w", err)
-		}
-
-		if choices, ok := responseData["choices"].([]interface{}); ok && len(choices) > 0 {
-			choice := choices[0].(map[string]interface{})
-			if message, ok := choice["message"].(map[string]interface{}); ok {
-				if content, ok := message["content"].(string); ok {
-					return content, nil
-				}
-			}
-		}
-		return "", fmt.Errorf("error parsing description response")
-	}
-
-	// Worker function
 	// Worker function
 	for i := 0; i < concurrentWorkers; i++ {
 		wg.Add(1)
@@ -124,13 +112,27 @@ func FetchImageMetadata(images []Image) error {
 					continue
 				}
 
-				// Fetch Description
-				description, err := FetchDescription(apiURL, apiKey, img)
+				// Get the manipulated filename
+				manipulatedName := manipulateFileName(img.Path)
+
+				// First, fetch the title based on the manipulated filename
+				titlePrompt := fmt.Sprintf("Create a concise, marketable title for a stock photo based on this description: '%s'", manipulatedName)
+				title, err := fetchFromOpenAI(apiURL, apiKey, titlePrompt)
 				if err != nil {
-					errorChan <- fmt.Errorf("error fetching description for %s: %w", img.Path, err)
+					errorChan <- fmt.Errorf("error fetching title for %s: %w", img.Path, err)
 					return
 				}
 
+				// Then, use the title to fetch keywords
+				keywordsPrompt := fmt.Sprintf("Generate 5-10 SEO-friendly keywords or tags for this stock photo titled: '%s'. Separate keywords with commas.", title)
+				keywords, err := fetchFromOpenAI(apiURL, apiKey, keywordsPrompt)
+				if err != nil {
+					errorChan <- fmt.Errorf("error fetching keywords for %s: %w", img.Path, err)
+					return
+				}
+
+				// Combine title and keywords in the description field
+				description := fmt.Sprintf("Title: %s\nKeywords: %s", title, keywords)
 				descriptionChan <- []string{fileName, description}
 			}
 		}()
