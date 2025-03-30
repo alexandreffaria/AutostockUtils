@@ -28,7 +28,7 @@ func main() {
 	label := widget.NewLabel("Hey! Where are the images?")
 	selectFolderBtn := createSelectFolderButton(label, w)
 	viewImagesBtn := widget.NewButton("Quality Control", func() {
-		if len(images)s > 0 {
+		if len(images) > 0 {
 			showImageViewer(w, appIcon)
 		} else {
 			label.SetText("No images to display. Please select a folder first.")
@@ -66,7 +66,6 @@ func main() {
 	} else {
 		fyne.LogError("Failed to load icon", err)
 	}
-	// Ending of this dude
 	w.SetContent(container.NewVBox(label, selectFolderBtn, viewImagesBtn, magicBtn, descriptionBtn))
 	w.ShowAndRun()
 }
