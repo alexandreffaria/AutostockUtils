@@ -1,4 +1,4 @@
-package main
+package metadata
 
 import (
 	"encoding/base64"
@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-// LoadExistingMetadata loads existing metadata from the CSV
+// LoadExistingMetadata loads existing metadata from the CSV ;* XOXO Cursor
 func LoadExistingMetadata(csvPath string) (map[string]string, error) {
 	file, err := os.Open(csvPath)
 	if err != nil {
@@ -33,6 +33,7 @@ func LoadExistingMetadata(csvPath string) (map[string]string, error) {
 	return data, nil
 }
 
+// WriteCSVWithExistingMetadata writes metadata to CSV while preserving existing entries ;* XOXO Cursor
 func WriteCSVWithExistingMetadata(csvPath string, existingMetadata map[string]string, responses chan []string) error {
 	file, err := os.Create(csvPath)
 	if err != nil {
@@ -70,7 +71,7 @@ func WriteCSVWithExistingMetadata(csvPath string, existingMetadata map[string]st
 	return nil
 }
 
-// EncodeImageToBase64 reads an image file and encodes it to a base64 string
+// EncodeImageToBase64 reads an image file and encodes it to a base64 string ;* XOXO Cursor
 func EncodeImageToBase64(filePath string) (string, error) {
 	data, err := os.ReadFile(filePath)
 	if err != nil {
