@@ -60,7 +60,7 @@ func loadImagesFromFolder(folderPath string, label *widget.Label) error {
 		if err := processZipFilesConcurrently(folderPath, zipFiles); err != nil {
 			return fmt.Errorf("error processing ZIP files: %w", err)
 		}
-		label.SetText(fmt.Sprintf("Processed ZIPs successfully"))
+		label.SetText("Processed ZIPs successfully")
 	}
 
 	// Depois carrega as imagens
@@ -223,7 +223,7 @@ func createSelectFolderButton(label *widget.Label, w fyne.Window) *widget.Button
 }
 
 // showImageViewer shows a basic image viewer with navigation controls ;* XOXO Cursor
-func showImageViewer(w fyne.Window, icon fyne.Resource) {
+func showImageViewer(icon fyne.Resource) {
 	if len(images) == 0 {
 		return
 	}
@@ -443,15 +443,6 @@ func deleteMarkedImages() {
 	deletedStack = nil
 }
 
-// loadImage loads an image file and returns it as a Fyne resource ;* XOXO Cursor
-func loadImage(path string) (fyne.Resource, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-	return fyne.NewStaticResource(filepath.Base(path), data), nil
-}
-
 // runUpscaleCommand executes the Real-ESRGAN command for upscaling ;* XOXO Cursor
 func runUpscaleCommand(inputImage, outputImage string) error {
 	// Procura o executável em diferentes locais
@@ -582,7 +573,7 @@ func main() {
 
 	viewImagesBtn := widget.NewButton("Quality Control", func() {
 		if len(images) > 0 {
-			showImageViewer(w, appIcon)
+			showImageViewer(appIcon)
 		} else {
 			label.SetText("No images to display. Please select a folder first.")
 		}
